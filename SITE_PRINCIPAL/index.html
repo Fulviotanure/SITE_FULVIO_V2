@@ -1,0 +1,637 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="color-scheme" content="only light dark">
+    <title>Fulvio Tanure | Design Digital & IA</title>
+    <link rel="icon" type="image/png" href="img/favicon.png">
+    <meta name="description" content="Portfólio de Fulvio Tanure - Especialista em criação de imagens, banners, edição digital e sites de alto desempenho baseados em Inteligência Artificial.">
+    <link rel="canonical" href="https://fulviotanure.com.br/">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://fulviotanure.com.br/">
+    <meta property="og:title" content="Fulvio Tanure | Design Digital & IA">
+    <meta property="og:description" content="Portfólio de Fulvio Tanure - Especialista em criação de imagens, banners, edição digital e sites de alto desempenho baseados em Inteligência Artificial.">
+    <meta property="og:image" content="https://fulviotanure.com.br/img/concept-art-ratto.jpg">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://fulviotanure.com.br/">
+    <meta property="twitter:title" content="Fulvio Tanure | Design Digital & IA">
+    <meta property="twitter:description" content="Portfólio de Fulvio Tanure - Especialista em criação de imagens, banners, edição digital e sites de alto desempenho baseados em Inteligência Artificial.">
+    <meta property="twitter:image" content="https://fulviotanure.com.br/img/concept-art-ratto.jpg">
+
+    <!-- Structured Data (JSON-LD) -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Person",
+      "name": "Fulvio Tanure",
+      "url": "https://fulviotanure.com.br",
+      "image": "https://fulviotanure.com.br/img/favicon.png",
+      "sameAs": [
+        "https://github.com/Fulviotanure",
+        "https://www.instagram.com/tanure_photo",
+        "https://www.instagram.com/aylamendesia",
+        "https://www.instagram.com/artimagination.ia"
+      ],
+      "jobTitle": "Designer Digital & Especialista em Inteligência Artificial",
+      "worksFor": {
+        "@type": "Organization",
+        "name": "Fulvio Tanure"
+      },
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "Vitória",
+        "addressRegion": "ES",
+        "addressCountry": "BR"
+      }
+    }
+    </script>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/style.css?v=1.4">
+    <link rel="stylesheet" href="css/home.css?v=1.4">
+    <link rel="stylesheet" href="css/services.css?v=1.4">
+    <link rel="stylesheet" href="css/portfolio.css?v=1.4">
+    <link rel="stylesheet" href="css/contact.css?v=1.4">
+</head>
+<body class="light-theme">
+    <!-- Skip Link para Navegação por Teclado -->
+    <a href="#main-content" class="skip-link" data-i18n="accessibility.skip_link">Pular para o conteúdo principal</a>
+
+    <!-- Background Elements for Glow Effects -->
+    <div class="glow-bg glow-1"></div>
+    <div class="glow-bg glow-2"></div>
+
+    <!-- Global SVG Gradient Definitions (used by service & contact icons) -->
+    <svg width="0" height="0" style="position:absolute;">
+        <defs>
+            <linearGradient id="avatar-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#4f46e5" />
+                <stop offset="50%" stop-color="#8b5cf6" />
+                <stop offset="100%" stop-color="#ec4899" />
+            </linearGradient>
+        </defs>
+    </svg>
+    <header class="header">
+        <div class="header-container">
+            <a href="#home" class="logo" id="logo-nav">
+                <span class="logo-line-1"><span class="logo-dot">.</span>FULVIO</span>
+                <span class="logo-line-2">{TANURE}</span>
+            </a>
+            
+            <nav class="nav-menu" id="nav-menu">
+                <a href="#home" class="nav-link active" data-i18n="nav.home">Home</a>
+                <a href="#services" class="nav-link" data-i18n="nav.services">Especialidades</a>
+                <a href="#portfolio" class="nav-link" data-i18n="nav.portfolio">Criações</a>
+                <a href="#contact" class="nav-link" data-i18n="nav.contact">Contato</a>
+                <a href="PAGINAS/SITE_FOTO/index.html" class="nav-link nav-link-photo" id="nav-fotografia">Fotografia</a>
+                <a href="PAGINAS/SITE_WMACRO/index.html" class="nav-link nav-link-wmacro" id="nav-wmacro">wMacro</a>
+            </nav>
+ 
+            <div class="header-actions">
+                <!-- Theme Toggle Button -->
+                <button type="button" class="theme-btn btn-neu" id="theme-toggle-btn" data-i18n-aria-label="accessibility.theme_btn_aria" aria-label="Alternar tema claro/escuro">
+                    <span class="theme-btn-icon sun-icon">
+                        <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+                    </span>
+                    <span class="theme-btn-icon moon-icon">
+                        <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>
+                    </span>
+                </button>
+
+                <!-- High Contrast Toggle Button -->
+                <button type="button" class="contrast-btn btn-neu" id="contrast-toggle-btn" data-i18n-aria-label="accessibility.contrast_btn_aria" aria-label="Alternar alto contraste" aria-pressed="false">
+                    <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7-10-7-10-7Z" />
+                        <circle cx="12" cy="12" r="4" />
+                        <circle cx="14" cy="10" r="1.5" fill="currentColor" />
+                    </svg>
+                </button>
+
+                <!-- Language Selector -->
+                <div class="lang-selector-wrapper">
+                    <button type="button" class="lang-btn btn-neu" id="lang-btn" data-i18n-aria-label="accessibility.lang_btn_aria" aria-label="Alterar idioma" aria-expanded="false" aria-haspopup="true">
+                        <span class="lang-flag"><img src="img/flags/pt.svg" alt="Brasil" class="flag-icon"></span>
+                        <span class="lang-text">PT</span>
+                    </button>
+                    <div class="lang-dropdown btn-neu" id="lang-dropdown">
+                        <button type="button" class="lang-dropdown-item active" data-lang="pt">
+                            <span class="dropdown-flag"><img src="img/flags/pt.svg" alt="Brasil" class="flag-icon"></span> Português
+                        </button>
+                        <button type="button" class="lang-dropdown-item" data-lang="en">
+                            <span class="dropdown-flag"><img src="img/flags/en.svg" alt="USA" class="flag-icon"></span> English
+                        </button>
+                        <button type="button" class="lang-dropdown-item" data-lang="it">
+                            <span class="dropdown-flag"><img src="img/flags/it.svg" alt="Itália" class="flag-icon"></span> Italiano
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Mobile Menu Button -->
+                <button class="mobile-toggle" id="mobile-toggle" data-i18n-aria-label="accessibility.menu_open" aria-label="Abrir menu" aria-expanded="false" aria-controls="nav-menu">
+                    <svg class="hamburger" viewBox="0 0 100 100" width="30" aria-hidden="true">
+                        <line class="line top" x1="20" y1="35" x2="80" y2="35" stroke="currentColor" stroke-width="6" stroke-linecap="round"></line>
+                        <line class="line middle" x1="20" y1="50" x2="80" y2="50" stroke="currentColor" stroke-width="6" stroke-linecap="round"></line>
+                        <line class="line bottom" x1="20" y1="65" x2="80" y2="65" stroke="currentColor" stroke-width="6" stroke-linecap="round"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main class="main-content" id="main-content">
+        <!-- HERO SECTION -->
+        <section id="home" class="hero-section">
+            <!-- Neural Network Canvas Background -->
+            <canvas id="neural-canvas" aria-hidden="true"></canvas>
+            <div class="hero-container">
+                <div class="hero-text-block">
+                    <div class="hero-glass-layer"></div>
+                    <div class="tag-badge" data-i18n="hero.badge">SOLUÇÕES COM INTELIGÊNCIA ARTIFICIAL</div>
+                    <h1 class="hero-title" data-i18n="hero.title">
+                        Inovação Visual <br>e Design por <span class="highlight">IA</span>
+                    </h1>
+                    <p class="hero-subtitle">
+                        <span data-i18n="hero.subtitle_prefix">Desenvolvimento de soluções visuais e de design inteligente alimentados por Inteligência Artificial. Projetos focados em agilidade e prazos de entrega reduzidos através da criação de </span>
+                        <span class="carousel-text-wrapper">
+                            <span id="typewriter"></span>
+                            <span class="carousel-cursor">|</span>
+                        </span> 
+                        <span data-i18n="hero.subtitle_suffix">aliando alto refinamento estético e engenharia de prompts avançada.</span>
+                    </p>
+                    <div class="hero-buttons">
+                        <a href="#portfolio" class="btn btn-creations btn-neu">
+                            <span class="btn-text" data-i18n="hero.cta">Ver Criações</span>
+                        </a>
+                        <a href="PAGINAS/SITE_WMACRO/index.html" class="btn btn-primary">
+                            <span class="btn-text" data-i18n="hero.wmacro">Acessar wMacro</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SERVICES SECTION -->
+        <section id="services" class="services-section">
+            <div class="container-width">
+                <div class="section-header text-center">
+                    <span class="sub-title" data-i18n="services.sub">O QUE EU FAÇO</span>
+                    <h2 class="section-title" data-i18n="services.title">Especialidades Digitais</h2>
+                    <p class="section-desc" data-i18n="services.desc">
+                        Combinando criatividade humana e algoritmos avançados para entregar resultados rápidos, estéticos e altamente otimizados.
+                    </p>
+                </div>
+
+                <div class="services-grid">
+                    <!-- Service 1: Imagens IA -->
+                    <div class="service-card btn-neu">
+                        <div class="service-icon-wrapper">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="url(#avatar-grad)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="service-icon">
+                                <rect width="18" height="18" x="3" y="3" rx="2" ry="2"/>
+                                <circle cx="9" cy="9" r="2"/>
+                                <path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"/>
+                            </svg>
+                        </div>
+                        <h3 class="service-card-title" data-i18n="services.s1_title">Criação de Imagens e Arte</h3>
+                        <p class="service-card-text" data-i18n="services.s1_text">
+                            Geração de artes conceituais, ilustrações personalizadas e visuais de altíssimo nível usando modelos de difusão de última geração, adaptados à identidade de sua marca.
+                        </p>
+                    </div>
+
+                    <!-- Service 2: Banners IA -->
+                    <div class="service-card btn-neu">
+                        <div class="service-icon-wrapper">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="url(#avatar-grad)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="service-icon">
+                                <path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/>
+                                <line x1="4" x2="4" y1="22" y2="15"/>
+                            </svg>
+                        </div>
+                        <h3 class="service-card-title" data-i18n="services.s2_title">Banners & Social Media</h3>
+                        <p class="service-card-text" data-i18n="services.s2_text">
+                            Desenvolvimento de peças publicitárias inteligentes e banners otimizados para redes sociais e anúncios. Design focado em conversão com layout calibrado por inteligência artificial.
+                        </p>
+                    </div>
+
+                    <!-- Service 3: Edição Inteligente -->
+                    <div class="service-card btn-neu">
+                        <div class="service-icon-wrapper">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="url(#avatar-grad)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="service-icon">
+                                <path d="m21 16-4 4-4-4"/>
+                                <path d="M17 20V4"/>
+                                <path d="m3 8 4-4 4 4"/>
+                                <path d="M7 4v16"/>
+                            </svg>
+                        </div>
+                        <h3 class="service-card-title" data-i18n="services.s3_title">Edição & Upscaling</h3>
+                        <p class="service-card-text" data-i18n="services.s3_text">
+                            Remoção de fundos complexos, restauração de fotos antigas, expansão inteligente de bordas (outpainting) e aumento de resolução (upscaling) sem perda de fidelidade.
+                        </p>
+                    </div>
+
+                    <!-- Service 4: Sites e Web Apps -->
+                    <div class="service-card btn-neu">
+                        <div class="service-icon-wrapper">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="url(#avatar-grad)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="service-icon">
+                                <rect width="20" height="15" x="2" y="3" rx="2"/>
+                                <line x1="2" x2="22" y1="11" y2="11"/>
+                                <path d="M6 16h.01M10 16h.01"/>
+                            </svg>
+                        </div>
+                        <h3 class="service-card-title" data-i18n="services.s4_title">Sites & Web Apps</h3>
+                        <p class="service-card-text" data-i18n="services.s4_text">
+                            Desenvolvimento de landing pages, sites institucionais e painéis dinâmicos interativos. Criação de interfaces web modernas e esteticamente alinhadas à identidade do seu projeto, aliadas a uma arquitetura robusta conectada a APIs.
+                        </p>
+                    </div>
+
+                    <!-- Service 5: Código e Aplicativos -->
+                    <div class="service-card btn-neu">
+                        <div class="service-icon-wrapper">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="url(#avatar-grad)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="service-icon">
+                                <polyline points="16 18 22 12 16 6"/>
+                                <polyline points="8 6 2 12 8 18"/>
+                                <line x1="14" x2="10" y1="4" y2="20"/>
+                            </svg>
+                        </div>
+                        <h3 class="service-card-title" data-i18n="services.s5_title">Código & Aplicativos</h3>
+                        <p class="service-card-text" data-i18n="services.s5_text">
+                            Construção de aplicativos robustos e estruturação de bases de código limpas, modernas e escaláveis. Transformando ideias complexas em soluções mobile nativas e híbridas.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- PORTFOLIO SECTION -->
+        <section id="portfolio" class="portfolio-section">
+            <div class="container-width">
+                <div class="section-header text-center">
+                    <span class="sub-title" data-i18n="portfolio.sub">MEU PORTFÓLIO</span>
+                    <h2 class="section-title" data-i18n="portfolio.title">Galeria de Criações</h2>
+                    <p class="section-desc" data-i18n="portfolio.desc">
+                        Explore alguns dos projetos e conceitos desenvolvidos com o poder das melhores ferramentas de inteligência artificial do mercado.
+                    </p>
+                </div>
+ 
+                <!-- Neumorphic Filter Tabs -->
+                <div class="filter-tabs-wrapper">
+                    <div class="filter-tabs btn-neu">
+                        <button class="filter-btn active" data-filter="all" data-i18n="portfolio.filter_all">Tudo</button>
+                        <button class="filter-btn" data-filter="images" data-i18n="portfolio.filter_images">Imagens IA</button>
+                        <button class="filter-btn" data-filter="banners" data-i18n="portfolio.filter_banners">Banners</button>
+                        <button class="filter-btn" data-filter="editing" data-i18n="portfolio.filter_editing">Edições</button>
+                    </div>
+                </div>
+ 
+                <!-- Portfolio Grid -->
+                <div class="portfolio-grid" id="portfolio-grid">
+                    <!-- Project 1: Imagens IA -->
+                    <div class="portfolio-item btn-neu" data-category="images">
+                        <div class="portfolio-img-container">
+                            <img src="img/concept-art-ratto.jpg" class="placeholder-img" style="object-fit: cover;" alt="Arte Conceito - RATTO // CYBER CITY //">
+                            <span class="item-badge" data-i18n="portfolio.badge_images">Imagens IA</span>
+                        </div>
+                        <div class="portfolio-info">
+                            <h3 class="portfolio-item-title" data-i18n="portfolio.p1_title">Arte Conceito</h3>
+                            <p class="portfolio-item-desc" data-i18n="portfolio.p1_desc">A Arte Conceito é o alicerce visual para a idealização de universos, cenários e personagens. Através da exploração de formas, proporções, atmosferas e vestimentas, este processo estabelece a direção artística e a identidade estética fundamentais que guiarão toda a produção visual de um projeto criativo.</p>
+                            <div class="portfolio-tags">
+                                <span class="p-tag">Concept Art</span>
+                                <span class="p-tag">Character Design</span>
+                            </div>
+                        </div>
+                    </div>
+ 
+                    <!-- Project 2: Imagens IA -->
+                    <div class="portfolio-item btn-neu" data-category="images">
+                        <div class="portfolio-img-container">
+                            <img src="img/creative-concept-packaging.jpg" class="placeholder-img" style="object-fit: cover;" alt="Conceito Criativo de Marcas - Mar.mitas Packaging">
+                            <span class="item-badge" data-i18n="portfolio.badge_images">Imagens IA</span>
+                        </div>
+                        <div class="portfolio-info">
+                            <h3 class="portfolio-item-title" data-i18n="portfolio.p2_title">Conceito Criativo de Marcas</h3>
+                            <p class="portfolio-item-desc" data-i18n="portfolio.p2_desc">O Conceito Criativo de Marcas materializa os valores e a essência de um negócio em elementos visuais e sensoriais tangíveis. Envolve o desenvolvimento de embalagens inteligentes, texturas e mockups que geram valor de marca e criam uma conexão emocional e tátil única com o cliente.</p>
+                            <div class="portfolio-tags">
+                                <span class="p-tag">Packaging</span>
+                                <span class="p-tag">Brand Identity</span>
+                            </div>
+                        </div>
+                    </div>
+ 
+                    <!-- Project 3: Imagens IA -->
+                    <div class="portfolio-item btn-neu" data-category="images">
+                        <div class="portfolio-img-container">
+                            <img src="img/marmitas-logo.jpg" class="placeholder-img" style="object-fit: cover; background-color: white;" alt="Ideias e Design de Logos - Mar.mitas Logo">
+                            <span class="item-badge" data-i18n="portfolio.badge_images">Imagens IA</span>
+                        </div>
+                        <div class="portfolio-info">
+                            <h3 class="portfolio-item-title" data-i18n="portfolio.p3_title">Ideias e Design de Logos</h3>
+                            <p class="portfolio-item-desc" data-i18n="portfolio.p3_desc">A criação de logotipos e identidades visuais consiste em sintetizar o propósito de uma empresa em símbolos memoráveis. O foco é projetar marcas inteligentes, minimalistas e dinâmicas que garantam excelente legibilidade, adaptabilidade em diferentes meios e forte apelo estético.</p>
+                            <div class="portfolio-tags">
+                                <span class="p-tag">Logo Design</span>
+                                <span class="p-tag">Branding</span>
+                            </div>
+                        </div>
+                    </div>
+ 
+                    <!-- Project 4: Banners -->
+                    <div class="portfolio-item btn-neu" data-category="banners">
+                        <div class="portfolio-img-container">
+                            <img src="img/marmitas-ad-banner.jpg" class="placeholder-img" style="object-fit: cover;" alt="Banner Web Publicidade - Tráfego Pago">
+                            <span class="item-badge" data-i18n="portfolio.badge_banners">Banners</span>
+                        </div>
+                        <div class="portfolio-info">
+                            <h3 class="portfolio-item-title" data-i18n="portfolio.p4_title">Banner Web Publicidade</h3>
+                            <p class="portfolio-item-desc" data-i18n="portfolio.p4_desc">Criação de banners digitais otimizados para alta conversão em campanhas de tráfego pago. Integração de copywriting persuasivo e design atraente gerado por IA.</p>
+                            <div class="portfolio-tags">
+                                <span class="p-tag">Social Ads</span>
+                                <span class="p-tag">Performance</span>
+                            </div>
+                        </div>
+                    </div>
+ 
+                    <!-- Project 5: Banners -->
+                    <div class="portfolio-item btn-neu" data-category="banners">
+                        <div class="portfolio-img-container">
+                            <img src="img/marmitas-event-banner.jpg" class="placeholder-img" style="object-fit: cover;" alt="Banner Impressos Eventos - PDV">
+                            <span class="item-badge" data-i18n="portfolio.badge_banners">Banners</span>
+                        </div>
+                        <div class="portfolio-info">
+                            <h3 class="portfolio-item-title" data-i18n="portfolio.p5_title">Banner Impressos Eventos</h3>
+                            <p class="portfolio-item-desc" data-i18n="portfolio.p5_desc">Design de banners em altíssima resolução e painéis físicos para feiras e eventos corporativos. Foco em legibilidade à distância e impacto visual.</p>
+                            <div class="portfolio-tags">
+                                <span class="p-tag">Print Design</span>
+                                <span class="p-tag">Large Format</span>
+                            </div>
+                        </div>
+                    </div>
+ 
+                    <!-- Project 6: Banners -->
+                    <div class="portfolio-item btn-neu" data-category="banners">
+                        <div class="portfolio-img-container">
+                            <img src="img/marmitas-facebook-banner.jpg" class="placeholder-img" style="object-fit: cover;" alt="Banner Web Páginas - Redes Sociais">
+                            <span class="item-badge" data-i18n="portfolio.badge_banners">Banners</span>
+                        </div>
+                        <div class="portfolio-info">
+                            <h3 class="portfolio-item-title" data-i18n="portfolio.p6_title">Banner Web Páginas</h3>
+                            <p class="portfolio-item-desc" data-i18n="portfolio.p6_desc">Banners institucionais e headers envolventes para sites e landing pages. Incorporação de identidade visual da marca para uma primeira impressão memorável.</p>
+                            <div class="portfolio-tags">
+                                <span class="p-tag">UI/UX</span>
+                                <span class="p-tag">Web Design</span>
+                            </div>
+                        </div>
+                    </div>
+ 
+                    <!-- Project 7: Edições -->
+                    <div class="portfolio-item btn-neu" data-category="editing">
+                        <div class="portfolio-img-container">
+                            <img src="img/editing-inpainting.png" class="placeholder-img" style="object-fit: cover;" alt="Modificação de Imagem">
+                            <span class="item-badge" data-i18n="portfolio.badge_editing">Edições</span>
+                        </div>
+                        <div class="portfolio-info">
+                            <h3 class="portfolio-item-title" data-i18n="portfolio.p7_title">Modificação de Imagem</h3>
+                            <p class="portfolio-item-desc" data-i18n="portfolio.p7_desc">Alteração avançada de imagens utilizando IA generativa. Adição e remoção de elementos complexos, troca de fundos e ajustes de iluminação sem perder o realismo.</p>
+                            <div class="portfolio-tags">
+                                <span class="p-tag">Inpainting</span>
+                                <span class="p-tag">Edição IA</span>
+                            </div>
+                        </div>
+                    </div>
+ 
+                    <!-- Project 8: Edições -->
+                    <div class="portfolio-item btn-neu" data-category="editing">
+                        <div class="portfolio-img-container">
+                            <img src="img/photo-restoration.png" class="placeholder-img" style="object-fit: cover;" alt="Restauração de Fotos">
+                            <span class="item-badge" data-i18n="portfolio.badge_editing">Edições</span>
+                        </div>
+                        <div class="portfolio-info">
+                            <h3 class="portfolio-item-title" data-i18n="portfolio.p8_title">Restauração de Fotos</h3>
+                            <p class="portfolio-item-desc" data-i18n="portfolio.p8_desc">Restauração digital de fotografias antigas ou danificadas. Recuperação de detalhes perdidos, remoção de ruídos, arranhões e colorização inteligente por IA.</p>
+                            <div class="portfolio-tags">
+                                <span class="p-tag">Upscaling</span>
+                                <span class="p-tag">Colorização</span>
+                            </div>
+                        </div>
+                    </div>
+ 
+                    <!-- Project 9: Edições -->
+                    <div class="portfolio-item btn-neu" data-category="editing">
+                        <div class="portfolio-img-container">
+                            <img src="img/photo-generation.png" class="placeholder-img" style="object-fit: cover;" alt="Criação de Fotos">
+                            <span class="item-badge" data-i18n="portfolio.badge_editing">Edições</span>
+                        </div>
+                        <div class="portfolio-info">
+                            <h3 class="portfolio-item-title" data-i18n="portfolio.p9_title">Criação de Fotos</h3>
+                            <p class="portfolio-item-desc" data-i18n="portfolio.p9_desc">Geração de fotografias hiper-realistas para catálogos, campanhas e redes sociais a partir do zero, dispensando a necessidade de estúdios fotográficos.</p>
+                            <div class="portfolio-tags">
+                                <span class="p-tag">Photorealism</span>
+                                <span class="p-tag">Geração</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- CONTACT SECTION -->
+        <section id="contact" class="contact-section">
+            <div class="container-width">
+                <div class="section-header text-center">
+                    <span class="sub-title" data-i18n="contact.sub">VAMOS TRABALHAR JUNTOS?</span>
+                    <h2 class="section-title" data-i18n="contact.title">Iniciar Projeto</h2>
+                    <p class="section-desc" data-i18n="contact.desc">
+                        Precisa de imagens exclusivas, banners altamente persuasivos ou de um site inovador para o seu projeto? Entre em contato agora.
+                    </p>
+                </div>
+ 
+                <div class="contact-grid">
+                    <div class="contact-info-block">
+                        <h3 class="info-title" data-i18n="contact.info_title">Informações de Contato</h3>
+                        <p class="info-desc" data-i18n="contact.info_desc">Sinta-se livre para entrar em contato através das minhas redes ou do formulário ao lado. Responderemos o mais breve possível.</p>
+                        
+                        <div class="contact-cards-stack">
+                            <a href="https://www.instagram.com/aylamendesia?utm_source=qr&igsh=dGhhbnByc2MzbnNy" target="_blank" rel="noopener noreferrer" class="contact-info-card btn-neu">
+                                <div class="info-card-icon">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="url(#avatar-grad)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="0.5" fill="currentColor" stroke="none"/></svg>
+                                </div>
+                                <div class="info-card-content">
+                                    <span class="info-label">Instagram</span>
+                                    <span class="info-value">@aylamendesia</span>
+                                </div>
+                            </a>
+ 
+                            <a href="https://www.instagram.com/artimagination.ia?utm_source=qr&igsh=MTVlbXhjYnJoaWRzOA==" target="_blank" rel="noopener noreferrer" class="contact-info-card btn-neu">
+                                <div class="info-card-icon">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="url(#avatar-grad)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="0.5" fill="currentColor" stroke="none"/></svg>
+                                </div>
+                                <div class="info-card-content">
+                                    <span class="info-label">Instagram IA</span>
+                                    <span class="info-value">@artimagination.ia</span>
+                                </div>
+                            </a>
+ 
+                            <a href="https://maps.google.com/?q=Vitória+-+ES,+Brasil" target="_blank" rel="noopener noreferrer" class="contact-info-card btn-neu">
+                                <div class="info-card-icon">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="url(#avatar-grad)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+                                </div>
+                                <div class="info-card-content">
+                                    <span class="info-label" data-i18n="contact.card_location_label">Localização</span>
+                                    <span class="info-value" data-i18n="contact.card_location_value">Vitória - ES, Brasil</span>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+ 
+                    <div class="contact-form-block">
+                        <form id="contact-form" class="contact-form btn-neu">
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="form-name" class="input-label" data-i18n="contact.form_name_label">Seu Nome</label>
+                                    <div class="input-neu-wrapper">
+                                        <input type="text" id="form-name" class="input-neu" required data-i18n-placeholder="contact.form_name_placeholder" placeholder="Digite seu nome completo">
+                                    </div>
+                                </div>
+                            </div>
+ 
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="form-email" class="input-label" data-i18n="contact.form_email_label">Seu E-mail</label>
+                                    <div class="input-neu-wrapper">
+                                        <input type="email" id="form-email" class="input-neu" required data-i18n-placeholder="contact.form_email_placeholder" placeholder="exemplo@email.com">
+                                    </div>
+                                </div>
+                            </div>
+ 
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="form-service" class="input-label" data-i18n="contact.form_service_label">Serviço de Interesse</label>
+                                    <div class="input-neu-wrapper select-wrapper">
+                                        <select id="form-service" class="input-neu select-neu" required>
+                                            <option value="" disabled selected data-i18n="contact.form_service_placeholder">Selecione um serviço</option>
+                                            <option value="images" data-i18n="contact.form_service_images">Criação de Imagens e Arte Digital</option>
+                                            <option value="banners" data-i18n="contact.form_service_banners">Design de Banners & Anúncios</option>
+                                            <option value="editing" data-i18n="contact.form_service_editing">Edição e Tratamento de Imagens</option>
+                                            <option value="sites" data-i18n="contact.form_service_sites">Desenvolvimento de Websites</option>
+                                            <option value="other" data-i18n="contact.form_service_other">Outro Projeto Baseado em IA</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+ 
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="form-message" class="input-label" data-i18n="contact.form_message_label">Detalhes do seu Projeto</label>
+                                    <div class="textarea-neu-wrapper">
+                                        <textarea id="form-message" class="input-neu" required data-i18n-placeholder="contact.form_message_placeholder" placeholder="Conte-nos brevemente o que você precisa..."></textarea>
+                                    </div>
+                                </div>
+                            </div>
+ 
+                            <button type="submit" class="btn btn-creations btn-neu btn-block">
+                                <span class="btn-text" data-i18n="contact.form_send">Enviar Mensagem</span>
+                                <svg class="btn-icon btn-icon-send" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- FOOTER -->
+    <footer class="footer btn-neu inset">
+        <div class="footer-container">
+            <div class="footer-branding">
+                <a href="#home" class="logo">
+                    <span class="logo-line-1"><span class="logo-dot">.</span>FULVIO</span>
+                    <span class="logo-line-2">{TANURE}</span>
+                </a>
+                <p class="footer-motto" data-i18n="footer.motto">Modelando o futuro visual através da inteligência artificial aplicada ao design digital.</p>
+            </div>
+            
+            <div class="footer-socials">
+                <!-- Social Links -->
+                <a href="https://github.com/Fulviotanure" target="_blank" rel="noopener noreferrer" class="social-icon btn-neu" aria-label="GitHub">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4"/><path d="M9 18c-4.51 2-5-2-7-2"/></svg>
+                </a>
+                <a href="https://www.linkedin.com/in/fulvio-tanure-78064a66/" target="_blank" rel="noopener noreferrer" class="social-icon btn-neu" aria-label="LinkedIn">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect width="4" height="12" x="2" y="9"/><circle cx="4" cy="4" r="2"/></svg>
+                </a>
+                <a href="https://www.instagram.com/tanure_photo" target="_blank" rel="noopener noreferrer" class="social-icon btn-neu" aria-label="Instagram @tanure_photo">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="20" x="2" y="2" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" x2="17.51" y1="6.5" y2="6.5"/></svg>
+                </a>
+                <a href="PAGINAS/SITE_FOTO/index.html" class="social-icon btn-neu" aria-label="Portfólio de Fotografia" title="Ver portfólio fotográfico">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"/><circle cx="12" cy="13" r="3"/></svg>
+                </a>
+            </div>
+            
+            <div class="footer-bottom">
+                <div class="footer-accessibility btn-neu inset">
+                    <span class="accessibility-icon" aria-hidden="true">♿</span>
+                    <span data-i18n="footer.accessibility_statement">Este site segue as diretrizes de acessibilidade WCAG 2.1 nível AA.</span>
+                </div>
+                <p data-i18n="footer.copy">&copy; 2026 Fulvio Tanure. Todos os direitos reservados. Design Neomórfico & Inteligência Artificial.</p>
+            </div>
+        </div>
+    </footer>
+ 
+    <!-- PORTFOLIO MODAL (LIGHTBOX) -->
+    <div id="portfolio-modal" class="modal-overlay">
+        <div class="modal-card btn-neu">
+            <button id="modal-close-btn" class="modal-close-btn btn-neu" data-i18n-aria-label="modal.close" aria-label="Fechar">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+            </button>
+            <div class="modal-content-layout">
+                <div class="modal-img-col" id="modal-img-container">
+                    <!-- Image or SVG will be injected here -->
+                </div>
+                <div class="modal-info-col">
+                    <h2 id="modal-title" class="modal-title">Título do Projeto</h2>
+                    <p id="modal-desc" class="modal-desc">Descrição completa do projeto vai aqui.</p>
+                    <div id="modal-tags" class="portfolio-tags">
+                        <!-- Tags injected here -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+ 
+    <!-- MOBILE BOTTOM NAVIGATION TAB BAR -->
+    <nav class="mobile-bottom-nav">
+        <a href="#home" class="mobile-bottom-nav-item active" aria-label="Home">
+            <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="nav-icon"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+            <span class="nav-label" data-i18n="nav.home">Home</span>
+        </a>
+        <a href="#services" class="mobile-bottom-nav-item" aria-label="Serviços">
+            <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="nav-icon"><path d="m12 3-1.912 5.886L5 9l4.886 1.912L11 17l1.912-5.886L19 11l-4.886-1.912z"/><path d="m5 3 1 2.5L8.5 6 6 7 5 9.5 4 7 1.5 6 4 5z"/><path d="m19 17 1 2.5 2.5.5-2.5 1-1 2.5-1-2.5-2.5-1 2.5-1z"/></svg>
+            <span class="nav-label" data-i18n="nav.services">Serviços</span>
+        </a>
+        <a href="#portfolio" class="mobile-bottom-nav-item" aria-label="Criações">
+            <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="nav-icon"><rect width="18" height="18" x="3" y="3" rx="2" ry="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"/></svg>
+            <span class="nav-label" data-i18n="nav.portfolio">Criações</span>
+        </a>
+        <a href="PAGINAS/SITE_FOTO/index.html" class="mobile-bottom-nav-item" aria-label="Fotografia" id="mobile-nav-foto">
+            <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="nav-icon"><path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"/><circle cx="12" cy="13" r="3"/></svg>
+            <span class="nav-label">Fotografia</span>
+        </a>
+        <a href="#contact" class="mobile-bottom-nav-item" aria-label="Contato">
+            <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="nav-icon"><path d="M22 2 11 13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+            <span class="nav-label" data-i18n="nav.contact">Contato</span>
+        </a>
+    </nav>
+ 
+
+
+    <!-- Custom Scripts -->
+    <script src="js/i18n.js?v=1.4" defer></script>
+    <script src="js/main.js?v=1.4" defer></script>
+    <script src="js/home.js?v=1.4" defer></script>
+    <script src="js/portfolio.js?v=1.4" defer></script>
+    <script src="js/contact.js?v=1.4" defer></script>
+    <script src="js/accessibility.js?v=1.4" defer></script>
+</body>
+</html>

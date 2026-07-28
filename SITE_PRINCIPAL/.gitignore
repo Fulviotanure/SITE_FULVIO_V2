@@ -1,0 +1,24 @@
+# Dependências e arquivos gerados
+node_modules/
+.firebase/
+*.log
+package-lock.json
+
+# Arquivos de sistema
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Arquivos locais (servidor de desenvolvimento)
+server.js
+*.bat
+*.ps1
+
+# Fotos (arquivos grandes - não versionar no git)
+# Para deploy no Firebase, elas são enviadas normalmente
+PAGINAS/SITE_FOTO/_ORIGINAIS/
+
+# Pastas de testes e rascunhos temporários
+testes site fulvio novo/
+lixocode/
+

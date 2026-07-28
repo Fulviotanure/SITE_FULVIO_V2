@@ -1,0 +1,269 @@
+/* ==========================================================================
+   NEUMORPHIC PORTFOLIO - FULVIO TANURE
+   MODULAR STYLE: HOME / HERO SECTION
+   ========================================================================== */
+
+.hero-section {
+    padding-top: 150px;
+    padding-bottom: 80px;
+    position: relative;
+    overflow: hidden;
+    min-height: 100vh;
+}
+
+/* --- Neural Network Canvas --- */
+#neural-canvas {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    pointer-events: auto;
+    cursor: default; /* Keep mouse normal instead of crosshair */
+    opacity: 0.95;
+    transform: translateZ(0);
+    will-change: transform;
+}
+
+.hero-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 2rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    position: relative;
+    z-index: 2;
+}
+
+/* ===============================
+   GLASSMORPHISM LAYER
+================================= */
+.hero-text-block {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    position: relative;
+    max-width: 680px;
+
+    z-index: 3;
+    padding: 2rem;
+    border-radius: 32px;
+    backdrop-filter: blur(2px);
+    -webkit-backdrop-filter: blur(2px);
+    /* Fundo gradiente sutil que desaparece nas bordas */
+    background: radial-gradient(circle at center, rgba(255, 255, 255, 0.03) 0%, rgba(255, 255, 255, 0) 100%);
+    border: none;
+    box-shadow: none; /* Removendo qualquer sombra para evitar manchas escuras */
+}
+
+/* Hiding old layer since blur is now directly on the text block */
+.hero-glass-layer {
+    display: none;
+}
+
+/* ===============================
+   LIGHT MODE
+================================= */
+body.light-theme .hero-text-block {
+    background: radial-gradient(circle at center, rgba(255, 255, 255, 0.03) 0%, rgba(255, 255, 255, 0) 100%);
+    box-shadow: none; 
+}
+
+/* ===============================
+   DARK MODE
+================================= */
+body.dark-theme .hero-text-block {
+    background: radial-gradient(circle at center, rgba(15, 15, 20, 0.03) 0%, rgba(15, 15, 20, 0) 100%);
+    border: none;
+    box-shadow: none;
+}
+
+.tag-badge {
+    background-color: var(--card-color);
+    box-shadow: var(--shadow-in-sm);
+    padding: 0.5rem 1.2rem;
+    border-radius: 50px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    color: var(--accent-purple);
+    margin-bottom: 1.5rem;
+    display: inline-block;
+    border: 1px solid var(--glass-border);
+}
+
+.hero-title {
+    font-size: 3.5rem;
+    line-height: 1.15;
+    margin-bottom: 1.5rem;
+    color: var(--text-primary);
+    letter-spacing: -1px;
+}
+
+.hero-title .highlight {
+    background: var(--accent-gradient);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-weight: 800;
+}
+
+.hero-subtitle {
+    font-size: 1.15rem;
+    line-height: 1.6;
+    color: var(--text-secondary);
+    margin-bottom: 2.5rem;
+}
+
+.name-span {
+    color: var(--text-primary);
+    font-weight: 600;
+}
+
+.hero-buttons {
+    display: flex;
+    gap: 1.5rem;
+}
+
+/* --- Neumorphic Inline Writing Bar & Typewriter --- */
+.carousel-text-wrapper {
+    display: inline-flex;
+    align-items: center;
+    vertical-align: middle;
+    height: 38px;
+    background-color: var(--bg-color);
+    box-shadow: var(--shadow-in-sm);
+    border: 1px solid var(--glass-border);
+    border-radius: 8px;
+    overflow: hidden;
+    position: relative;
+    padding: 0 12px;
+    margin: 0 6px;
+    min-width: 250px;
+    transition: background-color var(--transition-normal);
+}
+
+#typewriter {
+    height: 36px;
+    display: inline-flex;
+    align-items: center;
+    font-weight: 700;
+    font-size: 0.95rem;
+    white-space: nowrap;
+    background: var(--accent-gradient);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.carousel-cursor {
+    font-weight: 700;
+    color: var(--accent-purple);
+    animation: blink-cursor-new 0.8s infinite;
+    font-size: 1.1rem;
+    pointer-events: none;
+    margin-left: 4px;
+}
+
+@keyframes blink-cursor-new {
+    0%, 100% { opacity: 0; }
+    50% { opacity: 1; }
+}
+
+/* --- Floating animations --- */
+@keyframes floating {
+    0% { transform: translateY(0px); }
+    50% { transform: translateY(-10px); }
+    100% { transform: translateY(0px); }
+}
+
+@keyframes rotate {
+    100% { transform: rotate(360deg); }
+}
+
+/* ==========================================================================
+   RESPONSIVENESS (HOME SECTION)
+   ========================================================================== */
+@media (max-width: 1024px) {
+    .hero-container {
+        text-align: center;
+    }
+    
+    .hero-text-block {
+        align-items: center;
+        max-width: 100%;
+    }
+    
+    .hero-glass-layer {
+        mask-image: radial-gradient(ellipse 100% 100% at 50% 50%, black 40%, transparent 85%);
+        -webkit-mask-image: radial-gradient(ellipse 100% 100% at 50% 50%, black 40%, transparent 85%);
+    }
+    
+    .hero-title {
+        font-size: 3rem;
+    }
+    
+    .hero-buttons {
+        justify-content: center;
+    }
+}
+
+@media (max-width: 768px) {
+    .hero-section {
+        padding-top: 110px;
+        padding-bottom: 50px;
+        min-height: auto;
+    }
+
+    .hero-title {
+        font-size: 2.3rem;
+    }
+
+    .hero-subtitle {
+        font-size: 1rem;
+    }
+
+    .carousel-text-wrapper {
+        min-width: 200px;
+        height: 34px;
+        margin: 2px 4px;
+    }
+
+    #typewriter {
+        height: 32px;
+        font-size: 0.85rem;
+        background: none !important;
+        -webkit-background-clip: initial !important;
+        background-clip: initial !important;
+        -webkit-text-fill-color: initial !important;
+        color: var(--accent-purple) !important;
+    }
+}
+
+@media (max-width: 480px) {
+    .hero-section {
+        padding-top: 100px;
+        padding-bottom: 40px;
+    }
+
+    .hero-title {
+        font-size: 1.95rem;
+    }
+
+    .hero-subtitle {
+        font-size: 0.95rem;
+        line-height: 1.55;
+    }
+
+    .carousel-text-wrapper {
+        display: block;
+        margin: 8px auto;
+        min-width: 180px;
+        max-width: 220px;
+    }
+
+    .hero-text-block {
+        padding: 1.25rem 0.5rem;
+    }
+}

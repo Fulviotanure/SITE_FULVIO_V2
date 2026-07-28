@@ -1,0 +1,76 @@
+/* ==========================================================================
+   NEUMORPHIC PORTFOLIO - FULVIO TANURE
+   MODULAR STYLE: SERVICES / SPECIALTIES SECTION
+   ========================================================================== */
+
+.services-section {
+    padding: 100px 0;
+    position: relative;
+}
+
+.services-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 1.5rem;
+}
+
+.service-card {
+    padding: 2rem 1.5rem;
+    text-align: left;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.service-card:hover {
+    transform: translateY(-5px);
+}
+
+.service-icon-wrapper {
+    width: 60px;
+    height: 60px;
+    border-radius: 18px;
+    background-color: var(--card-color);
+    box-shadow: var(--shadow-in-sm);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 2rem;
+    border: 1px solid var(--glass-border);
+}
+
+.service-icon {
+    width: 28px;
+    height: 28px;
+}
+
+.service-card-title {
+    font-size: 1.25rem;
+    margin-bottom: 1rem;
+    color: var(--text-primary);
+}
+
+.service-card-text {
+    font-size: 0.95rem;
+    line-height: 1.6;
+    color: var(--text-secondary);
+}
+
+/* ==========================================================================
+   RESPONSIVENESS (SERVICES SECTION)
+   ========================================================================== */
+@media (max-width: 1200px) {
+    .services-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
+    .services-grid {
+        grid-template-columns: 1fr;
+    }
+    .services-section {
+        padding: 60px 0;
+    }
+}

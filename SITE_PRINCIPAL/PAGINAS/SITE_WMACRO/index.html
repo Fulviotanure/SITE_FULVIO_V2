@@ -1,0 +1,1412 @@
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>WMacro</title>
+<link rel="icon" type="image/png" href="wmacro.png">
+
+<!-- Google Fonts -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link
+    href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Fira+Code:wght@400;600&display=swap"
+    rel="stylesheet">
+
+<!-- Lucide Icons -->
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+
+<!-- CSS Stylesheet -->
+<link rel="stylesheet" href="style.css">
+
+<!-- Firebase SDKs (ESM via CDN) -->
+<script type="module">
+  import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js';
+  import {
+    getAuth, onAuthStateChanged, signInWithEmailAndPassword,
+    createUserWithEmailAndPassword, signInWithPopup, GoogleAuthProvider,
+    signOut, updateProfile, sendPasswordResetEmail,
+    sendSignInLinkToEmail, signInWithEmailLink, isSignInWithEmailLink
+  } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js';
+  import {
+    getFirestore, doc, setDoc, getDoc, collection,
+    getDocs, deleteDoc, onSnapshot, query, where
+  } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js';
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyAfVL-E-9KOS3I7vnDtqbuWR9jauSpDn6M",
+    authDomain: "fulviotanure.firebaseapp.com",
+    projectId: "fulviotanure",
+    storageBucket: "fulviotanure.firebasestorage.app",
+    messagingSenderId: "206517139138",
+    appId: "1:206517139138:web:2a4f7c7b65930e1a1b6d5b"
+  };
+
+  window._fbApp  = initializeApp(firebaseConfig);
+  window._fbAuth = getAuth(window._fbApp);
+  window._fbDb   = getFirestore(window._fbApp);
+  window._fbGoogleProvider = new GoogleAuthProvider();
+  window._fbFns = {
+    onAuthStateChanged, signInWithEmailAndPassword, createUserWithEmailAndPassword,
+    signInWithPopup, signOut, updateProfile, sendPasswordResetEmail,
+    sendSignInLinkToEmail, signInWithEmailLink, isSignInWithEmailLink,
+    doc, setDoc, getDoc, collection, getDocs, deleteDoc, onSnapshot, query, where
+  };
+  // Signal to app.js that Firebase is ready
+  document.dispatchEvent(new CustomEvent('firebase-ready'));
+</script>
+</head>
+
+<body class="theme-dark">
+
+    <!-- Background Blobs (Dynamic Aurora Effect) -->
+    <div class="bg-blobs">
+        <div class="blob blob-purple"></div>
+        <div class="blob blob-cyan"></div>
+        <div class="blob blob-pink"></div>
+    </div>
+
+    <!-- Main Container -->
+    <div class="app-container">
+
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <div class="logo">
+                    <img src="wmacro.png" alt="WMacro Logo" class="logo-img">
+                    <h1>WMacro</h1>
+                </div>
+            </div>
+
+            <nav class="sidebar-menu">
+                <button class="menu-item active" data-tab="dashboard">
+                    <i data-lucide="layout-dashboard"></i>
+                    <span>Dashboard</span>
+                </button>
+                <!-- Nova Macro: opens editor tab, not a real nav tab -->
+                <button class="menu-item" id="btn-sidebar-new-macro" title="Criar Nova Macro">
+                    <i data-lucide="plus-circle"></i>
+                    <span>Nova Macro</span>
+                </button>
+                <button class="menu-item" data-tab="macros">
+                    <i data-lucide="message-square"></i>
+                    <span>Minhas Macros</span>
+                </button>
+                <button class="menu-item" data-tab="variables">
+                    <i data-lucide="sliders"></i>
+                    <span>Variáveis</span>
+                </button>
+                <button class="menu-item" data-tab="team" style="position: relative;">
+                    <i data-lucide="users"></i>
+                    <span>Equipe</span>
+                    <span class="notif-badge hidden" id="badge-team-invites">0</span>
+                </button>
+                <button class="menu-item mobile-only" data-tab="profile">
+                    <i data-lucide="user"></i>
+                    <span>Perfil</span>
+                </button>
+                <button class="menu-item" data-tab="settings">
+                    <i data-lucide="settings"></i>
+                    <span>Configurações</span>
+                </button>
+                <button class="menu-item" data-tab="help">
+                    <i data-lucide="help-circle"></i>
+                    <span>Ajuda</span>
+                </button>
+            </nav>
+
+            <div class="sidebar-footer">
+                <button id="btn-theme-toggle" class="btn-theme-toggle" title="Alternar Tema">
+                    <i data-lucide="sun" id="theme-icon-light" class="theme-icon-light"></i>
+                    <i data-lucide="moon" id="theme-icon-dark" class="theme-icon-dark hidden"></i>
+                </button>
+                <!-- User avatar / profile button -->
+                <button class="user-profile" id="btn-sidebar-profile" title="Meu Perfil" data-tab="profile">
+                    <span class="user-avatar-text hidden" id="sidebar-avatar-text"></span>
+                    <img class="user-avatar-img hidden" id="sidebar-avatar-img" alt="Foto do perfil">
+                    <i data-lucide="user" id="sidebar-avatar-icon"></i>
+                </button>
+            </div>
+        </aside>
+
+        <!-- Main Content Area -->
+        <main class="main-content">
+
+            <!-- ======================================== -->
+            <!-- 1. DASHBOARD TAB (Stats only)           -->
+            <!-- ======================================== -->
+            <section id="tab-dashboard" class="tab-panel">
+                <div class="tab-header">
+                    <h2>Dashboard</h2>
+                </div>
+
+                <!-- Empty State: no macros yet -->
+                <div id="workspace-empty" class="workspace-empty-state hidden">
+                    <div class="empty-illustration" style="width:120px;height:120px;display:flex;align-items:center;justify-content:center;background:none;border:none;">
+                        <img src="wmacro.png" alt="WMacro" style="width:100px;height:100px;object-fit:contain;">
+                    </div>
+                    <h2>Boas-vindas ao WMacro! 🚀</h2>
+                    <p>Crie respostas rápidas formatadas e use variáveis inteligentes que se adaptam ao horário de envio
+                        para agilizar seu atendimento.</p>
+                    <button id="btn-create-first-macro" class="btn btn-primary btn-large btn-icon-text">
+                        <i data-lucide="plus"></i> Criar Minha Primeira Macro
+                    </button>
+                </div>
+
+                <!-- Stats Dashboard (shown when macros exist) -->
+                <div id="workspace-active" class="workspace-active hidden">
+
+                    <!-- Animated summary numbers row -->
+                    <div class="dash-summary-row">
+                        <div class="dash-stat-card">
+                            <i data-lucide="layers" class="dash-stat-icon"></i>
+                            <div>
+                                <span id="stat-total-macros" class="dash-stat-number">0</span>
+                                <p class="dash-stat-label">Macros Criadas</p>
+                            </div>
+                        </div>
+                        <div class="dash-stat-card">
+                            <i data-lucide="copy" class="dash-stat-icon"></i>
+                            <div>
+                                <span id="stat-total-copies" class="dash-stat-number">0</span>
+                                <p class="dash-stat-label">Cópias Realizadas</p>
+                            </div>
+                        </div>
+                        <div class="dash-stat-card">
+                            <i data-lucide="tag" class="dash-stat-icon"></i>
+                            <div>
+                                <span id="stat-total-categories" class="dash-stat-number">0</span>
+                                <p class="dash-stat-label">Categorias</p>
+                            </div>
+                        </div>
+                        <div class="dash-stat-card dash-stat-cta" id="dash-quick-create">
+                            <i data-lucide="plus-circle" class="dash-stat-icon"></i>
+                            <div>
+                                <span class="dash-stat-number" style="font-size: 15px;">Nova Macro</span>
+                                <p class="dash-stat-label">Criar agora</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Usage Chart + Ranking -->
+                    <div class="dash-charts-row">
+                        <!-- Horizontal bar chart -->
+                        <div class="dash-chart-card">
+                            <div class="panel-header">
+                                <i data-lucide="bar-chart-3" class="panel-icon"></i>
+                                <h3>Frequência de Uso</h3>
+                            </div>
+                            <div class="usage-chart-container" id="usage-chart-container">
+                                <!-- Bars rendered by JS -->
+                            </div>
+                        </div>
+
+                        <!-- Ranking list -->
+                        <div class="dash-chart-card">
+                            <div class="panel-header">
+                                <i data-lucide="trophy" class="panel-icon"></i>
+                                <h3>Ranking de Cópias</h3>
+                            </div>
+                            <div class="usage-ranking-container" id="usage-ranking-container">
+                                <!-- Ranking rendered by JS -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Top Macros Cards -->
+                    <div class="dash-top-macros-section">
+                        <div class="dash-section-header">
+                            <i data-lucide="flame" class="dash-section-icon"></i>
+                            <h3>Macros Mais Utilizadas</h3>
+                            <span class="dash-section-hint">Clique no card para editar</span>
+                        </div>
+                        <div id="dash-top-macros-list" class="dash-top-macros-grid">
+                            <!-- Rendered by JS -->
+                        </div>
+                    </div>
+
+                </div>
+            </section>
+
+            <!-- ======================================== -->
+            <!-- 2. EDITOR TAB (Create / Edit page)      -->
+            <!-- ======================================== -->
+            <section id="tab-editor" class="tab-panel hidden">
+                <div class="editor-page-header">
+                    <div class="editor-page-back">
+                        <button class="btn btn-secondary btn-small btn-icon-text" id="btn-editor-back">
+                            <i data-lucide="arrow-left"></i> Voltar
+                        </button>
+                        <h2 id="modal-title">Nova Macro</h2>
+                    </div>
+                </div>
+
+                <form id="macro-form" class="editor-page-body">
+                    <input type="hidden" id="macro-id">
+
+                    <div class="editor-layout-grid">
+                        <!-- Left: Form Fields + Rich Text -->
+                        <div class="editor-form-fields">
+                            <div class="form-group">
+                                <label for="macro-name-input">Nome da Macro <span class="required">*</span></label>
+                                <input type="text" id="macro-name-input"
+                                    placeholder="Ex: Saudação Comercial, Link de Pagamento..." required
+                                    autocomplete="off" spellcheck="true" lang="pt-BR">
+                            </div>
+
+                            <div class="form-grid">
+                                <div class="form-group">
+                                    <label for="macro-category-select">Categoria</label>
+                                    <select id="macro-category-select">
+                                        <!-- Dynamically populated -->
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="macro-desc-input">Descrição Breve</label>
+                                    <input type="text" id="macro-desc-input"
+                                        placeholder="Ex: Resposta de boas-vindas com desconto" autocomplete="off" spellcheck="true" lang="pt-BR">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="label-with-hint">
+                                    <label>Conteúdo da Resposta <span class="required">*</span></label>
+                                    <span class="editor-hint">Escreva seu texto e insira imagens/variáveis</span>
+                                </div>
+
+                                <div class="editor-wrapper">
+                                    <!-- Formatting Toolbar -->
+                                    <div class="editor-toolbar">
+                                        <select id="editor-font-family" class="toolbar-select" title="Família da Fonte">
+                                            <option value="Plus Jakarta Sans">Padrão</option>
+                                            <option value="Inter">Inter</option>
+                                            <option value="Roboto">Roboto</option>
+                                            <option value="Georgia">Serif</option>
+                                            <option value="Fira Code">Mono</option>
+                                        </select>
+
+                                        <select id="editor-font-size" class="toolbar-select" title="Tamanho da Fonte">
+                                            <option value="3">Médio</option>
+                                            <option value="2">Pequeno</option>
+                                            <option value="4">Grande</option>
+                                            <option value="5">Muito Grande</option>
+                                        </select>
+
+                                        <div class="toolbar-divider"></div>
+
+                                        <button type="button" class="btn-toolbar" id="btn-undo" title="Desfazer (Ctrl+Z)" disabled><i
+                                                data-lucide="undo-2"></i></button>
+                                        <button type="button" class="btn-toolbar" id="btn-redo" title="Refazer (Ctrl+Y)" disabled><i
+                                                data-lucide="redo-2"></i></button>
+
+                                        <div class="toolbar-divider"></div>
+
+                                        <button type="button" class="btn-toolbar" id="btn-bold" title="Negrito"><i
+                                                data-lucide="bold"></i></button>
+                                        <button type="button" class="btn-toolbar" id="btn-italic" title="Itálico"><i
+                                                data-lucide="italic"></i></button>
+                                        <button type="button" class="btn-toolbar" id="btn-underline"
+                                            title="Sublinhado"><i data-lucide="underline"></i></button>
+                                        <button type="button" class="btn-toolbar" id="btn-strikethrough"
+                                            title="Tachado"><i data-lucide="strikethrough"></i></button>
+                                        <button type="button" class="btn-toolbar" id="btn-clear-format"
+                                            title="Limpar Formatação"><i data-lucide="eraser"></i></button>
+
+                                        <div class="color-picker-wrapper">
+                                            <button type="button" class="btn-toolbar" id="btn-text-color"
+                                                title="Cor do Texto">
+                                                <i data-lucide="palette"></i>
+                                            </button>
+                                            <div id="color-palette-popover" class="color-palette hidden">
+                                                <!-- Green Variations -->
+                                                <button type="button" class="color-dot"
+                                                    style="background-color:#86efac;" data-color="#86efac"
+                                                    title="Verde Claro"></button>
+                                                <button type="button" class="color-dot"
+                                                    style="background-color:#22c55e;" data-color="#22c55e"
+                                                    title="Verde Médio"></button>
+                                                <button type="button" class="color-dot"
+                                                    style="background-color:#15803d;" data-color="#15803d"
+                                                    title="Verde Escuro"></button>
+                                                <button type="button" class="color-dot"
+                                                    style="background-color:#14532d;" data-color="#14532d"
+                                                    title="Verde Profundo"></button>
+
+                                                <!-- Blue Variations -->
+                                                <button type="button" class="color-dot"
+                                                    style="background-color:#93c5fd;" data-color="#93c5fd"
+                                                    title="Azul Claro"></button>
+                                                <button type="button" class="color-dot"
+                                                    style="background-color:#3b82f6;" data-color="#3b82f6"
+                                                    title="Azul Médio"></button>
+                                                <button type="button" class="color-dot"
+                                                    style="background-color:#1d4ed8;" data-color="#1d4ed8"
+                                                    title="Azul Escuro"></button>
+                                                <button type="button" class="color-dot"
+                                                    style="background-color:#1e3a8a;" data-color="#1e3a8a"
+                                                    title="Azul Profundo"></button>
+
+                                                <!-- Red Variations -->
+                                                <button type="button" class="color-dot"
+                                                    style="background-color:#fca5a5;" data-color="#fca5a5"
+                                                    title="Vermelho Claro"></button>
+                                                <button type="button" class="color-dot"
+                                                    style="background-color:#ef4444;" data-color="#ef4444"
+                                                    title="Vermelho Médio"></button>
+                                                <button type="button" class="color-dot"
+                                                    style="background-color:#b91c1c;" data-color="#b91c1c"
+                                                    title="Vermelho Escuro"></button>
+                                                <button type="button" class="color-dot"
+                                                    style="background-color:#7f1d1d;" data-color="#7f1d1d"
+                                                    title="Vermelho Profundo"></button>
+
+                                                <!-- Yellow Variations -->
+                                                <button type="button" class="color-dot"
+                                                    style="background-color:#fef08a;" data-color="#fef08a"
+                                                    title="Amarelo Claro"></button>
+                                                <button type="button" class="color-dot"
+                                                    style="background-color:#eab308;" data-color="#eab308"
+                                                    title="Amarelo Médio"></button>
+                                                <button type="button" class="color-dot"
+                                                    style="background-color:#a16207;" data-color="#a16207"
+                                                    title="Amarelo Escuro"></button>
+                                                <button type="button" class="color-dot"
+                                                    style="background-color:#713f12;" data-color="#713f12"
+                                                    title="Amarelo Profundo"></button>
+
+                                                <!-- Orange Variations -->
+                                                <button type="button" class="color-dot"
+                                                    style="background-color:#fed7aa;" data-color="#fed7aa"
+                                                    title="Laranja Claro"></button>
+                                                <button type="button" class="color-dot"
+                                                    style="background-color:#f97316;" data-color="#f97316"
+                                                    title="Laranja Médio"></button>
+                                                <button type="button" class="color-dot"
+                                                    style="background-color:#c2410c;" data-color="#c2410c"
+                                                    title="Laranja Escuro"></button>
+                                                <button type="button" class="color-dot"
+                                                    style="background-color:#7c2d12;" data-color="#7c2d12"
+                                                    title="Laranja Profundo"></button>
+                                            </div>
+                                        </div>
+
+                                        <div class="color-picker-wrapper">
+                                            <button type="button" class="btn-toolbar" id="btn-highlight-color"
+                                                title="Cor de Destaque">
+                                                <i data-lucide="highlighter"></i>
+                                            </button>
+                                            <div id="highlight-palette-popover" class="color-palette hidden">
+                                                <button type="button" class="color-dot"
+                                                    style="background-color:#fef08a;" data-color="#fef08a"
+                                                    title="Amarelo"></button>
+                                                <button type="button" class="color-dot"
+                                                    style="background-color:#bbf7d0;" data-color="#bbf7d0"
+                                                    title="Verde"></button>
+                                                <button type="button" class="color-dot"
+                                                    style="background-color:#bfdbfe;" data-color="#bfdbfe"
+                                                    title="Azul"></button>
+                                                <button type="button" class="color-dot"
+                                                    style="background-color:#fecdd3;" data-color="#fecdd3"
+                                                    title="Vermelho"></button>
+                                                <button type="button" class="color-dot"
+                                                    style="background-color:#fed7aa;" data-color="#fed7aa"
+                                                    title="Laranja"></button>
+                                                <button type="button" class="color-dot"
+                                                    style="background-color:#e9d5ff;" data-color="#e9d5ff"
+                                                    title="Roxo"></button>
+                                                <button type="button" class="color-dot"
+                                                    style="background-color:#f5f5f5;" data-color="#f5f5f5"
+                                                    title="Cinza Claro"></button>
+                                                <button type="button" class="color-dot"
+                                                    style="background-color:transparent; border: 1px solid var(--glass-border-hover);"
+                                                    data-color="transparent" title="Sem Destaque"></button>
+                                            </div>
+                                        </div>
+
+                                        <div class="toolbar-divider"></div>
+
+                                        <button type="button" class="btn-toolbar" id="btn-align-left"
+                                            title="Alinhar à Esquerda"><i data-lucide="align-left"></i></button>
+                                        <button type="button" class="btn-toolbar" id="btn-align-center"
+                                            title="Centralizar"><i data-lucide="align-center"></i></button>
+                                        <button type="button" class="btn-toolbar" id="btn-align-right"
+                                            title="Alinhar à Direita"><i data-lucide="align-right"></i></button>
+
+                                        <div class="toolbar-divider"></div>
+
+                                        <button type="button" class="btn-toolbar" id="btn-list-bullet"
+                                            title="Lista com Marcadores"><i data-lucide="list"></i></button>
+                                        <button type="button" class="btn-toolbar" id="btn-list-ordered"
+                                            title="Lista Numerada"><i data-lucide="list-ordered"></i></button>
+                                        <button type="button" class="btn-toolbar" id="btn-link-insert"
+                                            title="Inserir Link"><i data-lucide="link"></i></button>
+
+                                        <div class="toolbar-divider"></div>
+
+                                        <button type="button" class="btn-toolbar" id="btn-editor-image"
+                                            title="Inserir Imagem">
+                                            <i data-lucide="image"></i>
+                                        </button>
+                                        <input type="file" id="editor-image-upload" accept="image/*" class="hidden">
+
+                                        <div style="position: relative; display: inline-block;">
+                                            <button type="button" class="btn-toolbar" id="btn-editor-emoji"
+                                                title="Inserir Emoji">
+                                                <i data-lucide="smile"></i>
+                                            </button>
+                                            <div id="emoji-picker" class="emoji-picker hidden">
+                                                <div class="emoji-tabs">
+                                                    <button type="button" class="emoji-tab-btn active"
+                                                        data-category="smileys">😀</button>
+                                                    <button type="button" class="emoji-tab-btn"
+                                                        data-category="people">👋</button>
+                                                    <button type="button" class="emoji-tab-btn"
+                                                        data-category="nature">🌲</button>
+                                                    <button type="button" class="emoji-tab-btn"
+                                                        data-category="food">🍔</button>
+                                                    <button type="button" class="emoji-tab-btn"
+                                                        data-category="activities">⚽</button>
+                                                    <button type="button" class="emoji-tab-btn"
+                                                        data-category="travel">🚀</button>
+                                                    <button type="button" class="emoji-tab-btn"
+                                                        data-category="objects">💡</button>
+                                                    <button type="button" class="emoji-tab-btn"
+                                                        data-category="symbols">❤️</button>
+                                                </div>
+                                                <div class="emoji-grid-content" id="emoji-grid-content"></div>
+                                            </div>
+                                        </div>
+
+                                        <button type="button" class="btn btn-secondary btn-small"
+                                            id="btn-editor-add-var" title="Cadastrar Nova Variável">
+                                            <i data-lucide="plus-circle" style="width:14px;height:14px;"></i> Nova
+                                            Variável
+                                        </button>
+                                    </div>
+
+                                    <!-- Editable Content -->
+                                    <div class="editor-container" id="macro-editor-container" contenteditable="true" spellcheck="true" lang="pt-BR">
+                                    </div>
+
+                                    <!-- AI Cutout Button -->
+                                    <button type="button" class="btn-ai-cutout" id="btn-editor-ai"
+                                        title="Melhorar com Inteligência Artificial">
+                                        <i data-lucide="sparkles" style="width:14px;height:14px;"></i> Melhorar com IA
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div class="form-actions">
+                                <button type="submit" class="btn btn-primary btn-icon-text">
+                                    <i data-lucide="check"></i> Salvar Resposta
+                                </button>
+                                <button type="button" id="btn-cancel-modal" class="btn btn-secondary">
+                                    Cancelar
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Right: Variable Insert Sidebar -->
+                        <div class="editor-variables-helper-sidebar">
+                            <div class="helper-sidebar-header">
+                                <i data-lucide="link"></i>
+                                <span>Inserir Variável</span>
+                            </div>
+                            <p class="helper-sidebar-tip">Clique em qualquer campo abaixo para inseri-lo no ponto atual
+                                do editor.</p>
+
+                            <div class="helper-variables-list" id="helper-variables-list">
+                                <!-- Populated dynamically -->
+                            </div>
+
+                            <button type="button" class="btn-link" id="btn-go-to-variables-tab"
+                                style="margin-top:12px;font-size:12px;">
+                                <i data-lucide="settings"></i> Gerenciar Variáveis
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </section>
+
+            <!-- ======================================== -->
+            <!-- 3. MACROS TAB                           -->
+            <!-- ======================================== -->
+            <section id="tab-macros" class="tab-panel hidden">
+                <div class="tab-header-row">
+                    <h2>Minhas Macros</h2>
+                    <div style="display:flex; gap:12px;">
+                        <button id="btn-share-macros-modal" class="btn btn-secondary btn-icon-text" style="display:none;">
+                            <i data-lucide="share-2"></i> Compartilhar
+                        </button>
+                        <button id="btn-new-macro" class="btn btn-primary btn-icon-text">
+                            <i data-lucide="plus"></i> Criar Nova Macro
+                        </button>
+                    </div>
+                </div>
+
+                <div class="macros-filter-container">
+                    <div class="search-wrapper" style="flex:1;max-width:400px;">
+                        <i data-lucide="search" class="search-icon"></i>
+                        <input type="text" id="search-input" placeholder="Pesquisar macros... (Ctrl+K)" autocomplete="off" spellcheck="true" lang="pt-BR">
+                    </div>
+                    <div class="search-wrapper">
+                        <select id="macros-category-filter" class="toolbar-select"
+                            style="height:44px;padding:0 16px;min-width:180px;">
+                            <option value="all">Todas as Categorias</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="macro-list-container">
+                    <ul id="macro-list" class="macro-list"></ul>
+                    <div id="empty-search-state" class="empty-state hidden">
+                        <i data-lucide="search-code"></i>
+                        <p>Nenhuma macro encontrada para a busca.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ======================================== -->
+            <!-- 4. VARIABLES TAB                        -->
+            <!-- ======================================== -->
+            <section id="tab-variables" class="tab-panel hidden">
+                <div class="tab-header">
+                    <h2>Gestão de Variáveis &amp; Categorias</h2>
+                </div>
+
+                <div class="variables-tab-grid">
+                    <!-- Left: Variables Manager -->
+                    <section class="panel-glass-sub">
+                        <div class="sub-panel-header">
+                            <i data-lucide="sliders"></i>
+                            <h3>Gerenciar Variáveis</h3>
+                        </div>
+                        <div class="sub-panel-body">
+                            <form id="variable-manager-form" class="sub-panel-form">
+                                <div class="form-grid-2">
+                                    <div class="form-group">
+                                        <label for="var-name">Nome <span class="required">*</span></label>
+                                        <input type="text" id="var-name" placeholder="Ex: saudacao, Nome do Lead"
+                                            required autocomplete="off" spellcheck="true" lang="pt-BR">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="var-type">Tipo</label>
+                                        <select id="var-type">
+                                            <option value="static">Fixo</option>
+                                            <option value="temporal">Horário</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="form-grid-2">
+                                    <div class="form-group">
+                                        <label>Cor da Variável</label>
+                                        <div class="color-picker-row">
+                                            <input type="color" id="var-color" value="#3b82f6">
+                                            <span class="color-hex-label">#3b82f6</span>
+                                        </div>
+                                    </div>
+
+                                    <div id="var-static-container" class="form-group">
+                                        <label for="var-default-val">Valor Padrão <span
+                                                class="required">*</span></label>
+                                        <input type="text" id="var-default-val"
+                                            placeholder="Ex: Cliente, Amigo, Atendente..." autocomplete="off" spellcheck="true" lang="pt-BR">
+                                    </div>
+                                </div>
+
+                                <div id="var-temporal-container" class="form-group hidden">
+                                    <label>Regras por Horário</label>
+                                    <div class="temporal-rules-list" id="temporal-rules-list"></div>
+                                    <button type="button" class="btn btn-secondary btn-small btn-icon-text"
+                                        id="btn-add-temporal-rule" style="margin-top:12px;">
+                                        <i data-lucide="plus"></i> Nova Regra
+                                    </button>
+                                </div>
+
+                                <button type="submit" class="btn btn-primary btn-block btn-icon-text">
+                                    <i data-lucide="check"></i> Salvar Variável
+                                </button>
+                            </form>
+                        </div>
+
+                        <hr class="panel-divider-sm">
+
+                        <div class="list-section">
+                            <h4 class="list-section-title">Variáveis Cadastradas</h4>
+                            <div class="scrollable-list">
+                                <div class="table-wrapper">
+                                    <table class="variables-table">
+                                        <thead>
+                                            <tr>
+                                                <th>Variável</th>
+                                                <th>Tipo</th>
+                                                <th>Valor</th>
+                                                <th></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="table-variables-body"></tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Right: Categories Manager -->
+                    <section class="panel-glass-sub">
+                        <div class="sub-panel-header">
+                            <i data-lucide="tag"></i>
+                            <h3>Categorias</h3>
+                        </div>
+                        <div class="sub-panel-body">
+                            <form id="category-manager-form" class="sub-panel-form">
+                                <div class="form-group">
+                                    <label for="cat-name">Nome da Categoria <span class="required">*</span></label>
+                                    <input type="text" id="cat-name" placeholder="Ex: Pós-Venda, Suporte Técnico..."
+                                        required autocomplete="off" spellcheck="true" lang="pt-BR">
+                                </div>
+                                <div class="form-group">
+                                    <label>Cor da Categoria</label>
+                                    <div class="color-picker-row">
+                                        <input type="color" id="cat-color" value="#3b82f6">
+                                        <span class="color-hex-label">#3b82f6</span>
+                                    </div>
+                                </div>
+                                <button type="submit" class="btn btn-primary btn-block btn-icon-text">
+                                    <i data-lucide="check"></i> Salvar Categoria
+                                </button>
+                            </form>
+                        </div>
+
+                        <hr class="panel-divider-sm">
+
+                        <div class="list-section">
+                            <h4 class="list-section-title">Categorias Cadastradas</h4>
+                            <div class="scrollable-list">
+                                <ul id="list-categories" class="categories-config-list"></ul>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+            </section>
+
+            <!-- ======================================== -->
+            <!-- 5. SETTINGS TAB                         -->
+            <!-- ======================================== -->
+            <section id="tab-settings" class="tab-panel hidden">
+                <div class="tab-header">
+                    <h2>Configurações</h2>
+                </div>
+
+                <div class="settings-container">
+                    <!-- API IA (Google Gemini) Card -->
+                    <div class="settings-card">
+                        <div class="settings-icon">
+                            <i data-lucide="sparkles"></i>
+                        </div>
+                        <div class="settings-details" style="width: 100%;">
+                            <div style="display: flex; align-items: center; justify-content: space-between; gap: 8px;">
+                                <h3>API IA (Google Gemini)</h3>
+                                <button id="btn-toggle-ai-tutorial" class="btn-help-icon" title="Como obter uma chave API gratuita?" type="button">
+                                    ?
+                                </button>
+                            </div>
+                            <p>Insira sua chave de API gratuita do Gemini para habilitar o assistente de Inteligência Artificial no editor.</p>
+                            
+                            <!-- Mini Tutorial Box -->
+                            <div id="ai-tutorial-box" class="ai-tutorial-box hidden">
+                                <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px; color: var(--color-primary); font-weight: 700;">
+                                    <i data-lucide="help-circle" style="width:16px;height:16px;"></i>
+                                    <span>Como gerar sua chave API gratuita no Google AI Studio:</span>
+                                </div>
+                                <ol style="margin-left: 20px; display: flex; flex-direction: column; gap: 6px;">
+                                    <li>Acesse o <strong>Google AI Studio</strong>: <a href="https://aistudio.google.com/app/apikey" target="_blank" rel="noopener" style="color: var(--color-primary); text-decoration: underline; font-weight: 600;">aistudio.google.com/app/apikey ↗</a></li>
+                                    <li>Faça login com sua conta do Google.</li>
+                                    <li>Clique no botão <strong>"Create API key"</strong> (Criar chave API).</li>
+                                    <li>Copie a chave gerada (começa com <code>AIzaSy...</code>).</li>
+                                    <li>Cole a chave no campo abaixo e clique em <strong>Salvar Chave</strong>.</li>
+                                </ol>
+                                <div style="margin-top: 10px; font-size: 12px; color: var(--text-muted);">
+                                    💡 <em>A API do Gemini é 100% gratuita para uso pessoal. Sua chave fica salva apenas no seu navegador local.</em>
+                                </div>
+                            </div>
+
+                            <form id="gemini-key-form" class="settings-actions-row" style="display: flex; flex-direction: column; align-items: flex-start; gap: 12px; margin-top: 14px; width: 100%;">
+                                <div class="form-group" style="width: 100%; max-width: 480px; margin-bottom: 0;">
+                                    <input type="password" id="settings-gemini-key" name="gemini-key"
+                                        placeholder="Cole sua API Key (ex: AIzaSy...)" autocomplete="off"
+                                        style="width: 100%; padding: 10px 14px; height: 42px; border-radius: var(--radius-md); border: 1px solid var(--glass-border-hover); background: var(--glass-bg-low); color: var(--text-main);">
+                                </div>
+                                <div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
+                                    <button type="submit" id="btn-save-gemini-key" class="btn btn-primary btn-icon-text">
+                                        <i data-lucide="key"></i> Salvar Chave
+                                    </button>
+                                    <a href="https://aistudio.google.com/app/apikey" target="_blank" rel="noopener" class="btn btn-secondary btn-icon-text">
+                                        <i data-lucide="external-link"></i> Gerar Chave no Google AI Studio
+                                    </a>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+
+                    <!-- Backup Cards -->
+                    <div class="settings-card">
+                        <div class="settings-icon">
+                            <i data-lucide="download"></i>
+                        </div>
+                        <div class="settings-details">
+                            <h3>Exportar Backup</h3>
+                            <p>Salva todas as suas macros, variáveis e categorias em um arquivo JSON para restauração futura.</p>
+                            <div class="settings-actions-row">
+                                <button id="btn-export-data" class="btn btn-secondary btn-icon-text">
+                                    <i data-lucide="download"></i> Baixar Backup
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="settings-card">
+                        <div class="settings-icon">
+                            <i data-lucide="upload"></i>
+                        </div>
+                        <div class="settings-details">
+                            <h3>Importar Backup</h3>
+                            <p>Restaura macros, variáveis e categorias a partir de um arquivo de backup JSON exportado anteriormente.</p>
+                            <div class="settings-actions-row">
+                                <button id="btn-import-trigger" class="btn btn-secondary btn-icon-text">
+                                    <i data-lucide="upload"></i> Carregar Backup
+                                </button>
+                                <input type="file" id="import-data-file" accept=".json" class="hidden">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Theme Card -->
+                    <div class="settings-card">
+                        <div class="settings-icon">
+                            <i data-lucide="moon"></i>
+                        </div>
+                        <div class="settings-details">
+                            <h3>Tema Visual</h3>
+                            <p>Altere a aparência do aplicativo entre o tema claro e escuro.</p>
+                            <div class="settings-actions-row">
+                                <button id="btn-toggle-theme-settings" class="btn btn-secondary btn-icon-text">
+                                    <i data-lucide="sun"></i> Alternar Tema Claro/Escuro
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Termos & Responsabilidade Card -->
+                    <div class="settings-card">
+                        <div class="settings-icon">
+                            <i data-lucide="shield-alert"></i>
+                        </div>
+                        <div class="settings-details">
+                            <h3>Termos & Responsabilidade</h3>
+                            <p>Consulte nossos termos de uso, políticas de proteção de dados e termos de responsabilidade do aplicativo WMacro.</p>
+                            <div class="settings-actions-row" style="display: flex; gap: 10px; flex-wrap: wrap;">
+                                <a href="termos.html" target="_blank" rel="noopener noreferrer" class="btn btn-secondary btn-icon-text">
+                                    <i data-lucide="file-text"></i> Termos de Uso
+                                </a>
+                                <a href="privacidade.html" target="_blank" rel="noopener noreferrer" class="btn btn-secondary btn-icon-text">
+                                    <i data-lucide="shield-check"></i> Termos de Responsabilidade & Privacidade
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Sobre o WMacro Card -->
+                    <div class="settings-card">
+                        <div class="settings-icon">
+                            <i data-lucide="info"></i>
+                        </div>
+                        <div class="settings-details">
+                            <h3>Sobre o WMacro</h3>
+                            <p>O <strong>WMacro</strong> é um sistema inteligente de alta produtividade para gerenciamento, automação e compartilhamento em equipe de respostas rápidas com suporte a variáveis temporais.</p>
+                            <div style="margin-top: 8px; font-size: 13px; color: var(--text-muted); display: flex; gap: 16px; flex-wrap: wrap;">
+                                <span>Versão: <strong style="color: var(--text-main);">2.0.0</strong></span>
+                                <span>Desenvolvedor: <strong style="color: var(--text-main);">Fulvio Tanure</strong></span>
+                                <span>Suporte: <a href="mailto:ftanure3@gmail.com" style="color: var(--color-primary); font-weight: 600;">ftanure3@gmail.com</a></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Danger Card -->
+                    <div class="settings-card card-danger">
+                        <div class="settings-icon">
+                            <i data-lucide="alert-triangle"></i>
+                        </div>
+                        <div class="settings-details">
+                            <h3>Redefinir Dados</h3>
+                            <p>Apaga todos os dados locais e restaura as configurações iniciais. Esta ação não pode ser desfeita.</p>
+                            <div class="settings-actions-row">
+                                <button id="btn-reset-data" class="btn btn-danger btn-icon-text">
+                                    <i data-lucide="trash-2"></i> Redefinir Dados
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ======================================== -->
+            <!-- 6. PREFILL PAGE (Nova Página)           -->
+            <!-- ======================================== -->
+            <section id="tab-prefill" class="tab-panel hidden">
+                <div class="prefill-page-header">
+                    <button class="btn btn-secondary btn-small btn-icon-text" id="btn-prefill-back">
+                        <i data-lucide="arrow-left"></i> Voltar
+                    </button>
+                    <div class="prefill-page-meta">
+                        <span id="prefill-page-badge" class="badge">Categoria</span>
+                        <h2 id="prefill-page-title">Título da Macro</h2>
+                    </div>
+                </div>
+
+                <div class="prefill-page-body">
+                    <!-- Left: Variable inputs -->
+                    <div class="prefill-inputs-col">
+                        <p class="prefill-inputs-label">
+                            <i data-lucide="sliders" style="width:14px;height:14px;vertical-align:-2px;"></i>
+                            Preencha os campos
+                        </p>
+                        <div id="prefill-fields-container" class="prefill-fields">
+                            <!-- Populated by JS -->
+                        </div>
+                        <div id="prefill-no-vars" class="prefill-no-vars hidden">
+                            <i data-lucide="check-circle"></i>
+                            <p>Esta macro não possui variáveis. Pode copiar direto!</p>
+                        </div>
+                    </div>
+
+                    <!-- Right: Live preview -->
+                    <div class="prefill-preview-col">
+                        <p class="prefill-inputs-label">
+                            <i data-lucide="eye" style="width:14px;height:14px;vertical-align:-2px;"></i>
+                            Visualização ao vivo
+                        </p>
+                        <div class="prefill-preview-box">
+                            <div id="prefill-preview-output" class="prefill-preview-content"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Footer: Copy action -->
+                <div class="prefill-page-footer">
+                    <span id="prefill-copy-hint" class="prefill-copy-hint">Clique para copiar o texto final</span>
+                    <div style="display:flex; gap:12px; align-items:center;">
+                        <button id="btn-prefill-copy-to-library" class="btn btn-secondary btn-large btn-icon-text hidden">
+                            <i data-lucide="plus-circle"></i> Salvar na Minha Biblioteca
+                        </button>
+                        <button id="btn-prefill-copy" class="btn btn-primary btn-large btn-icon-text">
+                            <span class="btn-copy-icon-wrapper">
+                                <i data-lucide="copy" class="btn-copy-icon" id="prefill-copy-icon"></i>
+                            </span>
+                            <span id="btn-prefill-copy-text">Copiar Resposta</span>
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+        </main>
+    </div>
+
+    <!-- Modal for Creating New Variable -->
+    <div id="modal-new-variable" class="modal-overlay">
+        <div class="modal-window">
+            <div class="modal-header">
+                <h3><i data-lucide="sliders"></i> Nova Variável</h3>
+                <button type="button" id="btn-close-var-modal" class="modal-close-btn" title="Fechar">
+                    <i data-lucide="x"></i>
+                </button>
+            </div>
+            <form id="modal-variable-form" class="sub-panel-form">
+                <div class="form-grid-2">
+                    <div class="form-group">
+                        <label for="modal-var-name">Nome <span class="required">*</span></label>
+                        <input type="text" id="modal-var-name" placeholder="Ex: saudacao, Nome do Lead" required
+                            autocomplete="off" spellcheck="true" lang="pt-BR">
+                    </div>
+                    <div class="form-group">
+                        <label for="modal-var-type">Tipo</label>
+                        <select id="modal-var-type">
+                            <option value="static">Fixo</option>
+                            <option value="temporal">Horário</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-grid-2">
+                    <div class="form-group">
+                        <label>Cor da Variável</label>
+                        <div class="color-picker-row">
+                            <input type="color" id="modal-var-color" value="#3b82f6">
+                            <span class="color-hex-label" id="modal-var-color-hex">#3b82f6</span>
+                        </div>
+                    </div>
+
+                    <div id="modal-var-static-container" class="form-group">
+                        <label for="modal-var-default-val">Valor Padrão <span class="required">*</span></label>
+                        <input type="text" id="modal-var-default-val" placeholder="Ex: Cliente, Amigo..."
+                            autocomplete="off" spellcheck="true" lang="pt-BR">
+                    </div>
+                </div>
+
+                <div id="modal-var-temporal-container" class="form-group hidden">
+                    <label>Regras por Horário</label>
+                    <div class="temporal-rules-list" id="modal-temporal-rules-list"></div>
+                    <button type="button" class="btn btn-secondary btn-small btn-icon-text"
+                        id="btn-modal-add-temporal-rule" style="margin-top:12px;">
+                        <i data-lucide="plus"></i> Nova Regra
+                    </button>
+                </div>
+
+                <div class="form-actions" style="margin-top: 20px; display: flex; gap: 12px;">
+                    <button type="submit" class="btn btn-primary btn-block btn-icon-text"
+                        style="flex: 1; margin-bottom: 0;">
+                        <i data-lucide="check"></i> Salvar
+                    </button>
+                    <button type="button" id="btn-modal-cancel-var" class="btn btn-secondary" style="flex: 1;">
+                        Cancelar
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal for Sharing Macros -->
+    <div id="modal-share-macros" class="modal-overlay" style="z-index:9999;">
+        <div class="modal-window" style="position:relative; max-width: 500px;">
+            <div class="modal-header">
+                <h3><i data-lucide="share-2"></i> Compartilhar Macros</h3>
+                <button type="button" id="btn-close-share-modal" class="modal-close-btn" title="Fechar">
+                    <i data-lucide="x"></i>
+                </button>
+            </div>
+            <p style="font-size:13px; color:var(--text-muted); margin-bottom:16px;">Selecione as macros que deseja compartilhar com sua equipe.</p>
+            <div id="share-modal-list" style="max-height: 300px; overflow-y: auto; display: flex; flex-direction: column; gap: 12px; margin-bottom: 20px; padding-right: 8px;">
+                <!-- Dynamically loaded list of macros with checkboxes -->
+            </div>
+            <div class="form-actions" style="display: flex; gap: 12px; margin-top: 20px;">
+                <button type="button" id="btn-save-shares" class="btn btn-primary btn-block btn-icon-text" style="flex: 1; margin-bottom: 0;">
+                    <i data-lucide="check"></i> Salvar
+                </button>
+                <button type="button" id="btn-cancel-shares" class="btn btn-secondary" style="flex: 1;">
+                    Cancelar
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div id="toast-notification" class="toast hidden">
+        <span class="toast-icon-wrapper"><i data-lucide="check-circle" class="toast-icon"></i></span>
+        <span id="toast-message">Operação realizada.</span>
+    </div>
+
+    <!-- ======================================== -->
+    <!-- TAB: PROFILE                             -->
+    <!-- ======================================== -->
+    <section id="tab-profile" class="tab-panel hidden" style="position:fixed;top:0;left:280px;right:0;bottom:0;z-index:50;padding:32px 40px;overflow-y:auto;">
+        <div class="tab-header-row">
+            <h2>Meu Perfil</h2>
+            <button id="btn-logout" class="btn btn-secondary btn-icon-text">
+                <i data-lucide="log-out"></i> Sair
+            </button>
+        </div>
+
+        <div class="profile-page-grid">
+            <!-- Left: User card -->
+            <div class="profile-card">
+                <div class="profile-avatar-wrapper">
+                    <div class="profile-avatar-circle" id="profile-avatar-circle">
+                        <img id="profile-avatar-img" class="hidden" alt="Foto">
+                        <span id="profile-avatar-initials"></span>
+                    </div>
+                    <label class="profile-avatar-change" title="Trocar foto">
+                        <i data-lucide="camera"></i>
+                        <input type="file" id="profile-photo-upload" accept="image/*" class="hidden">
+                    </label>
+                </div>
+                <h3 id="profile-display-name" class="profile-name">Usuário</h3>
+                <p id="profile-email" class="profile-email-text"></p>
+                <div class="profile-code-badge" title="Código único da sua equipe">
+                    <i data-lucide="hash"></i>
+                    <span id="profile-team-code">----</span>
+                    <button class="profile-code-copy" id="btn-copy-team-code" title="Copiar código">
+                        <i data-lucide="copy"></i>
+                    </button>
+                </div>
+                <p class="profile-code-hint">Compartilhe este código com sua equipe</p>
+                
+                <!-- Mobile Shortcut Links for Settings and Help -->
+                <div class="profile-mobile-shortcuts mobile-only" style="margin-top: 24px; display: flex; flex-direction: column; gap: 12px; width: 100%;">
+                    <button class="btn btn-secondary btn-icon-text" id="btn-mobile-settings" style="width: 100%; justify-content: center; padding: 12px; border-radius: 12px;">
+                        <i data-lucide="settings"></i> Configurações
+                    </button>
+                    <button class="btn btn-secondary btn-icon-text" id="btn-mobile-help" style="width: 100%; justify-content: center; padding: 12px; border-radius: 12px;">
+                        <i data-lucide="help-circle"></i> Ajuda
+                    </button>
+                </div>
+            </div>
+
+            <!-- Right: Share macros + add member -->
+            <div class="profile-right-col">
+                <!-- Add team member -->
+                <div class="profile-section-card">
+                    <div class="profile-section-header">
+                        <i data-lucide="user-plus"></i>
+                        <h3>Adicionar Membro</h3>
+                    </div>
+                    <div class="profile-add-member-row">
+                        <input type="text" id="input-member-code" placeholder="Código do membro  ex: A3F9"
+                            autocomplete="off" maxlength="4" class="profile-code-input" spellcheck="false">
+                        <button id="btn-add-member" class="btn btn-primary btn-icon-text">
+                            <i data-lucide="user-plus"></i> Adicionar
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Share macros -->
+                <div class="profile-section-card">
+                    <div class="profile-section-header">
+                        <i data-lucide="share-2"></i>
+                        <h3>Macros Compartilhadas</h3>
+                    </div>
+                    <p class="profile-section-hint">Selecione as macros que sua equipe poderá visualizar e copiar.</p>
+                    <div id="profile-share-macros-list" class="profile-share-list">
+                        <!-- Populated by JS -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ======================================== -->
+    <!-- TAB: TEAM (member list + library view)   -->
+    <!-- ======================================== -->
+    <section id="tab-team" class="tab-panel hidden" style="position:fixed;top:0;left:280px;right:0;bottom:0;z-index:50;padding:32px 40px;overflow-y:auto;">
+        <!-- Member list view -->
+        <div id="team-members-view">
+            <!-- New Solicitações Pendentes Section -->
+            <div id="team-invites-container" class="hidden" style="margin-bottom: 32px; border-bottom: 1px solid var(--glass-border); padding-bottom: 24px;">
+                <h3 style="margin-bottom:16px; font-size:16px; color:var(--text-primary); display:flex; align-items:center; gap:8px;">
+                    <i data-lucide="bell"></i> Solicitações Pendentes
+                </h3>
+                <div id="team-invites-list" style="display:flex; flex-direction:column; gap:12px;">
+                    <!-- Invites populated by JS -->
+                </div>
+            </div>
+
+            <div class="tab-header" style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
+                <h2>Equipe</h2>
+                <button id="btn-refresh-team" class="btn btn-secondary btn-icon-text" style="gap: 6px; padding: 8px 14px; border-radius: 12px; font-size: 13px; cursor: pointer;">
+                    <i data-lucide="refresh-cw"></i> Verificar Solicitações
+                </button>
+            </div>
+
+            <!-- Add team member directly in Team tab -->
+            <div class="profile-section-card" style="margin-bottom: 28px; padding: 20px; border-radius: var(--radius-lg); background: var(--glass-bg-normal); border: 1px solid var(--glass-border);">
+                <div class="profile-section-header" style="display: flex; align-items: center; gap: 8px; margin-bottom: 14px;">
+                    <i data-lucide="user-plus" style="width: 18px; height: 18px;"></i>
+                    <h3 style="font-size: 15px; font-weight: 700; margin: 0; color: var(--text-main);">Adicionar Membro à Equipe</h3>
+                </div>
+                <div class="profile-add-member-row">
+                    <input type="text" id="input-member-code-team" placeholder="Código do membro  ex: A3F9"
+                        autocomplete="off" maxlength="4" class="profile-code-input" spellcheck="false" style="flex: 1;">
+                    <button id="btn-add-member-team" class="btn btn-primary btn-icon-text">
+                        <i data-lucide="user-plus"></i> Adicionar
+                    </button>
+                </div>
+            </div>
+            <div id="team-members-list" class="team-members-grid">
+                <!-- Populated by JS -->
+            </div>
+            <div id="team-empty-state" class="empty-state hidden">
+                <i data-lucide="users"></i>
+                <p>Nenhum membro na equipe ainda.<br>Vá em <strong>Meu Perfil</strong> e adicione pelo código.</p>
+            </div>
+        </div>
+
+        <!-- Member library view (shown when a member is clicked) -->
+        <div id="team-library-view" class="hidden">
+            <div class="tab-header-row">
+                <div style="display:flex;align-items:center;gap:12px;">
+                    <button id="btn-team-lib-back" class="btn btn-secondary btn-small btn-icon-text">
+                        <i data-lucide="arrow-left"></i> Voltar
+                    </button>
+                    <div>
+                        <h2 id="team-lib-member-name">Macros de Usuário</h2>
+                        <p style="font-size:13px;color:var(--text-muted);">Clique em uma macro para copiá-la para sua biblioteca</p>
+                    </div>
+                </div>
+            </div>
+            <div class="macros-filter-container" style="margin-bottom:16px;">
+                <div class="search-wrapper" style="flex:1;max-width:400px;">
+                    <i data-lucide="search" class="search-icon"></i>
+                    <input type="text" id="team-lib-search-input" placeholder="Pesquisar nas macros da equipe..." autocomplete="off" spellcheck="true" lang="pt-BR">
+                </div>
+            </div>
+            <div id="team-library-macros-list" class="macro-list-container">
+                <ul class="macro-list" id="team-lib-macro-list"></ul>
+                <div id="team-lib-empty" class="empty-state hidden">
+                    <i data-lucide="package-open"></i>
+                    <p>Este membro não tem macros compartilhadas ainda.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ======================================== -->
+    <!-- TAB: HELP                                -->
+    <!-- ======================================== -->
+    <section id="tab-help" class="tab-panel hidden" style="position:fixed;top:0;left:280px;right:0;bottom:0;z-index:50;padding:32px 40px;overflow-y:auto;">
+        <div class="tab-header">
+            <h2>Central de Ajuda</h2>
+        </div>
+        <div class="help-container">
+
+            <div class="help-section">
+                <button class="help-accordion-btn active" data-help="primeiros-passos">
+                    <i data-lucide="rocket"></i> Primeiros Passos
+                    <i data-lucide="chevron-down" class="help-chevron"></i>
+                </button>
+                <div class="help-accordion-body">
+                    <p><strong>1. Crie sua conta:</strong> Clique no ícone de perfil (canto inferior esquerdo) e em "Criar Conta". Preencha seu nome, e-mail e senha.</p>
+                    <p><strong>2. Faça login:</strong> Use seu e-mail e senha, ou clique em "Entrar com Google" para autenticação instantânea.</p>
+                    <p><strong>3. Explore:</strong> Após o login, todas as suas macros, variáveis e categorias ficam sincronizadas na nuvem automaticamente.</p>
+                </div>
+            </div>
+
+            <div class="help-section">
+                <button class="help-accordion-btn" data-help="dashboard">
+                    <i data-lucide="layout-dashboard"></i> Dashboard
+                    <i data-lucide="chevron-down" class="help-chevron"></i>
+                </button>
+                <div class="help-accordion-body hidden">
+                    <p><strong>Macros Criadas:</strong> Total de respostas rápidas salvas na sua conta.</p>
+                    <p><strong>Cópias Realizadas:</strong> Quantas vezes você usou o botão "Copiar Resposta" no app.</p>
+                    <p><strong>Categorias:</strong> Número de categorias criadas para organizar suas macros.</p>
+                    <p><strong>Frequência de Uso:</strong> Gráfico de barras mostrando as macros mais acessadas.</p>
+                    <p><strong>Nova Macro (card CTA):</strong> Atalho rápido para criar uma nova resposta sem ir ao menu lateral.</p>
+                </div>
+            </div>
+
+            <div class="help-section">
+                <button class="help-accordion-btn" data-help="criar-macros">
+                    <i data-lucide="plus-circle"></i> Criar Macros
+                    <i data-lucide="chevron-down" class="help-chevron"></i>
+                </button>
+                <div class="help-accordion-body hidden">
+                    <p><strong>Nome:</strong> Dê um nome descritivo — ex: "Saudação Comercial" ou "Link de Pagamento".</p>
+                    <p><strong>Categoria:</strong> Selecione uma categoria existente (Suporte, Vendas, Pós-Venda) ou crie uma nova em Variáveis &amp; Categorias.</p>
+                    <p><strong>Descrição Breve:</strong> Resumo opcional para facilitar a busca.</p>
+                    <p><strong>Conteúdo:</strong> Escreva o texto principal da macro no editor rico abaixo.</p>
+                    <p>Clique em <strong>"Salvar Resposta"</strong> para salvar na sua biblioteca.</p>
+                </div>
+            </div>
+
+            <div class="help-section">
+                <button class="help-accordion-btn" data-help="editor">
+                    <i data-lucide="type"></i> Editor de Texto
+                    <i data-lucide="chevron-down" class="help-chevron"></i>
+                </button>
+                <div class="help-accordion-body hidden">
+                    <p><strong>Barra de ferramentas:</strong> Negrito, Itálico, Sublinhado, Tachado, Cor de texto, Destaque, Alinhamento, Listas e Links.</p>
+                    <p><strong>Desfazer / Refazer:</strong> Use os botões ↩ / ↪ ou os atalhos <code>Ctrl+Z</code> e <code>Ctrl+Y</code>.</p>
+                    <p><strong>Inserir Imagem:</strong> Clique no ícone 🖼️ e selecione uma imagem do seu dispositivo.</p>
+                    <p><strong>Inserir Emoji:</strong> Clique no ícone 😊 para abrir o seletor de emojis.</p>
+                    <p><strong>Melhorar com IA:</strong> O botão ✨ usa o Gemini para reescrever e melhorar o texto selecionado. Configure a API Key em Configurações.</p>
+                </div>
+            </div>
+
+            <div class="help-section">
+                <button class="help-accordion-btn" data-help="variaveis">
+                    <i data-lucide="sliders"></i> Variáveis
+                    <i data-lucide="chevron-down" class="help-chevron"></i>
+                </button>
+                <div class="help-accordion-body hidden">
+                    <p><strong>Variável Fixa:</strong> Tem um valor padrão que você define — ex: "Nome do Cliente" com padrão "Cliente". Ao usar a macro, você pode substituir antes de copiar.</p>
+                    <p><strong>Variável por Horário:</strong> O valor muda automaticamente de acordo com a hora atual. Ex: "saudacao" → "Bom dia" (00h–12h), "Boa tarde" (12h–18h), "Boa noite" (18h–24h).</p>
+                    <p><strong>Inserir variável no editor:</strong> No painel lateral direito do editor, clique sobre o nome da variável para inseri-la no cursor. Ela aparece como uma pílula colorida.</p>
+                    <p><strong>Criar variável pelo editor:</strong> Clique em "Nova Variável" na barra de ferramentas para criar sem sair do editor.</p>
+                </div>
+            </div>
+
+            <div class="help-section">
+                <button class="help-accordion-btn" data-help="usar-macros">
+                    <i data-lucide="copy"></i> Usar Macros
+                    <i data-lucide="chevron-down" class="help-chevron"></i>
+                </button>
+                <div class="help-accordion-body hidden">
+                    <p><strong>1.</strong> Na lista "Minhas Macros", localize a macro desejada (use a busca ou filtro de categoria).</p>
+                    <p><strong>2.</strong> Clique em <strong>"Usar"</strong> — abre a tela de preenchimento.</p>
+                    <p><strong>3.</strong> Preencha os campos das variáveis (já mostram o valor padrão).</p>
+                    <p><strong>4.</strong> Veja a <strong>Visualização ao vivo</strong> à direita com o texto final.</p>
+                    <p><strong>5.</strong> Clique em <strong>"Copiar Resposta"</strong> — o texto é copiado para a área de transferência, pronto para colar no WhatsApp, e-mail, etc.</p>
+                </div>
+            </div>
+
+            <div class="help-section">
+                <button class="help-accordion-btn" data-help="equipe">
+                    <i data-lucide="users"></i> Equipe &amp; Compartilhamento
+                    <i data-lucide="chevron-down" class="help-chevron"></i>
+                </button>
+                <div class="help-accordion-body hidden">
+                    <p><strong>Seu código de equipe:</strong> Um código único de 4 letras exibido no seu Perfil (ex: A3F9). Compartilhe com quem deseja ter acesso às suas macros.</p>
+                    <p><strong>Adicionar membro:</strong> No Perfil, cole o código de 4 letras do colega e clique em "Adicionar". Ele aparecerá na aba Equipe.</p>
+                    <p><strong>Ver macros de um membro:</strong> Na aba Equipe, clique no card de um membro para abrir a biblioteca de macros que ele compartilhou.</p>
+                    <p><strong>Copiar macro da equipe:</strong> Na biblioteca de macros de um membro, clique em "Copiar para Minha Biblioteca" para salvar uma cópia nas suas macros.</p>
+                    <p><strong>Compartilhar suas macros:</strong> No Perfil, na seção "Macros Compartilhadas", ative o toggle ao lado de cada macro que deseja liberar para sua equipe ver.</p>
+                </div>
+            </div>
+
+            <div class="help-section">
+                <button class="help-accordion-btn" data-help="configuracoes">
+                    <i data-lucide="settings"></i> Configurações
+                    <i data-lucide="chevron-down" class="help-chevron"></i>
+                </button>
+                <div class="help-accordion-body hidden">
+                    <p><strong>Integração Gemini AI:</strong> Insira sua chave de API gratuita do Google Gemini para usar o recurso "Melhorar com IA" no editor.</p>
+                    <p><strong>Exportar Backup:</strong> Baixa um arquivo JSON com todas as suas macros, variáveis e categorias para backup local.</p>
+                    <p><strong>Importar Backup:</strong> Restaura os dados a partir de um arquivo JSON exportado anteriormente.</p>
+                    <p><strong>Redefinir Dados:</strong> Apaga todos os dados e volta aos exemplos padrão. <em>Esta ação não pode ser desfeita.</em></p>
+                    <p><strong>Tema:</strong> Alterne entre modo claro e escuro no botão ☀️/🌙 no canto inferior da barra lateral.</p>
+                </div>
+            </div>
+
+            <div class="help-section">
+                <button class="help-accordion-btn" data-help="atalhos">
+                    <i data-lucide="keyboard"></i> Atalhos de Teclado
+                    <i data-lucide="chevron-down" class="help-chevron"></i>
+                </button>
+                <div class="help-accordion-body hidden">
+                    <table class="help-shortcuts-table">
+                        <tr><td><code>Ctrl + Z</code></td><td>Desfazer última ação no editor</td></tr>
+                        <tr><td><code>Ctrl + Y</code></td><td>Refazer última ação desfeita</td></tr>
+                        <tr><td><code>Ctrl + Shift + Z</code></td><td>Refazer (alternativo)</td></tr>
+                        <tr><td><code>Ctrl + B</code></td><td>Negrito</td></tr>
+                        <tr><td><code>Ctrl + I</code></td><td>Itálico</td></tr>
+                        <tr><td><code>Ctrl + U</code></td><td>Sublinhado</td></tr>
+                        <tr><td><code>F7</code></td><td>Ativar/desativar Navegação por Cursor (browser)</td></tr>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- ======================================== -->
+    <!-- MODAL: AUTH (Login / Register)           -->
+    <!-- ======================================== -->
+    <div id="modal-auth" class="modal-overlay hidden" style="z-index:9999;">
+        <div class="modal-window auth-modal-window" style="position:relative;">
+            <!-- Close button for cancelling auth -->
+            <button type="button" id="btn-close-auth-modal" class="modal-close-btn" title="Fechar e voltar ao Dashboard" style="position:absolute;top:16px;right:16px;">
+                <i data-lucide="x"></i>
+            </button>
+
+            <div class="auth-modal-logo">
+                <img src="wmacro.png" alt="WMacro" style="width:40px;height:40px;object-fit:contain;">
+                <h2>WMacro</h2>
+            </div>
+
+            <!-- Auth Tabs -->
+            <div class="auth-tabs">
+                <button class="auth-tab-btn active" id="auth-tab-login">Entrar</button>
+                <button class="auth-tab-btn" id="auth-tab-register">Criar Conta</button>
+            </div>
+
+            <!-- Login Form -->
+            <form id="auth-login-form" class="auth-form">
+                <div class="form-group">
+                    <label>E-mail</label>
+                    <input type="email" id="auth-login-email" placeholder="seu@email.com" autocomplete="email" required spellcheck="false">
+                </div>
+                <div class="form-group">
+                    <label>Senha</label>
+                    <input type="password" id="auth-login-password" placeholder="Sua senha" autocomplete="current-password" required>
+                </div>
+                <p class="auth-error hidden" id="auth-login-error"></p>
+                <button type="submit" class="btn btn-primary btn-block">Entrar</button>
+                <div class="auth-divider"><span>ou</span></div>
+                <button type="button" id="btn-google-login" class="btn btn-google btn-block btn-icon-text">
+                    <svg width="18" height="18" viewBox="0 0 18 18"><path fill="#4285F4" d="M17.64 9.2c0-.637-.057-1.251-.164-1.84H9v3.481h4.844c-.209 1.125-.843 2.078-1.796 2.717v2.258h2.908c1.702-1.567 2.684-3.874 2.684-6.615z"/><path fill="#34A853" d="M9 18c2.43 0 4.467-.806 5.956-2.184l-2.908-2.258c-.806.54-1.837.86-3.048.86-2.344 0-4.328-1.584-5.036-3.711H.957v2.332A8.997 8.997 0 0 0 9 18z"/><path fill="#FBBC05" d="M3.964 10.707A5.41 5.41 0 0 1 3.682 9c0-.593.102-1.17.282-1.707V4.961H.957A8.996 8.996 0 0 0 0 9c0 1.452.348 2.827.957 4.039l3.007-2.332z"/><path fill="#EA4335" d="M9 3.58c1.321 0 2.508.454 3.44 1.345l2.582-2.58C13.463.891 11.426 0 9 0A8.997 8.997 0 0 0 .957 4.961L3.964 6.293C4.672 4.166 6.656 3.58 9 3.58z"/></svg>
+                    Entrar com Google
+                </button>
+                <div class="auth-helper-links" style="display:flex; justify-content:space-between; margin-top:16px; font-size:0.85rem;">
+                    <a href="#" id="link-forgot-password" style="color:var(--accent-purple); text-decoration:none;">Esqueceu a senha?</a>
+                    <a href="#" id="link-email-code" style="color:var(--accent-purple); text-decoration:none;">Entrar sem senha</a>
+                </div>
+            </form>
+
+            <!-- Register Form -->
+            <form id="auth-register-form" class="auth-form hidden">
+                <div class="form-group">
+                    <label>Nome</label>
+                    <input type="text" id="auth-reg-name" placeholder="Seu nome completo" autocomplete="name" required spellcheck="true" lang="pt-BR">
+                </div>
+                <div class="form-group">
+                    <label>E-mail</label>
+                    <input type="email" id="auth-reg-email" placeholder="seu@email.com" autocomplete="email" required spellcheck="false">
+                </div>
+                <div class="form-group">
+                    <label>Senha</label>
+                    <input type="password" id="auth-reg-password" placeholder="Mínimo 6 caracteres" autocomplete="new-password" required minlength="6">
+                </div>
+                <div class="form-group">
+                    <label>Confirmar Senha</label>
+                    <input type="password" id="auth-reg-confirm" placeholder="Repita a senha" autocomplete="new-password" required minlength="6">
+                </div>
+                <p class="auth-error hidden" id="auth-reg-error"></p>
+                <button type="submit" class="btn btn-primary btn-block">Criar Conta</button>
+                <div class="auth-divider"><span>ou</span></div>
+                <button type="button" id="btn-google-register" class="btn btn-google btn-block btn-icon-text">
+                    <svg width="18" height="18" viewBox="0 0 18 18"><path fill="#4285F4" d="M17.64 9.2c0-.637-.057-1.251-.164-1.84H9v3.481h4.844c-.209 1.125-.843 2.078-1.796 2.717v2.258h2.908c1.702-1.567 2.684-3.874 2.684-6.615z"/><path fill="#34A853" d="M9 18c2.43 0 4.467-.806 5.956-2.184l-2.908-2.258c-.806.54-1.837.86-3.048.86-2.344 0-4.328-1.584-5.036-3.711H.957v2.332A8.997 8.997 0 0 0 9 18z"/><path fill="#FBBC05" d="M3.964 10.707A5.41 5.41 0 0 1 3.682 9c0-.593.102-1.17.282-1.707V4.961H.957A8.996 8.996 0 0 0 0 9c0 1.452.348 2.827.957 4.039l3.007-2.332z"/><path fill="#EA4335" d="M9 3.58c1.321 0 2.508.454 3.44 1.345l2.582-2.58C13.463.891 11.426 0 9 0A8.997 8.997 0 0 0 .957 4.961L3.964 6.293C4.672 4.166 6.656 3.58 9 3.58z"/></svg>
+                    Continuar com Google
+                </button>
+            </form>
+
+            <!-- Password Recovery Form -->
+            <form id="auth-recovery-form" class="auth-form hidden">
+                <div class="form-group">
+                    <label>E-mail de Recuperação</label>
+                    <input type="email" id="auth-recovery-email" placeholder="seu@email.com" required spellcheck="false">
+                </div>
+                <p class="auth-error hidden" id="auth-recovery-error"></p>
+                <p class="auth-success hidden" id="auth-recovery-success" style="color: #10b981; font-size: 0.85rem; margin-top: 8px;"></p>
+                <button type="submit" class="btn btn-primary btn-block">Enviar E-mail de Recuperação</button>
+                <div class="auth-divider"><span>ou</span></div>
+                <button type="button" id="btn-back-to-login-1" class="btn btn-secondary btn-block">Voltar ao Login</button>
+            </form>
+
+            <!-- Email Link Login Form -->
+            <form id="auth-email-link-form" class="auth-form hidden">
+                <div class="form-group">
+                    <label>E-mail para Login</label>
+                    <input type="email" id="auth-email-link-input" placeholder="seu@email.com" required spellcheck="false">
+                </div>
+                <p class="auth-error hidden" id="auth-email-link-error"></p>
+                <p class="auth-success hidden" id="auth-email-link-success" style="color: #10b981; font-size: 0.85rem; margin-top: 8px;"></p>
+                <button type="submit" class="btn btn-primary btn-block">Enviar Link de Acesso</button>
+                <div class="auth-divider"><span>ou</span></div>
+                <button type="button" id="btn-back-to-login-2" class="btn btn-secondary btn-block">Voltar ao Login</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Floating Mobile Theme Toggle -->
+    <button id="btn-theme-toggle-mobile" class="btn-theme-toggle mobile-theme-btn mobile-only" title="Alternar Tema">
+        <i data-lucide="sun" class="theme-icon-light"></i>
+        <i data-lucide="moon" class="theme-icon-dark hidden"></i>
+    </button>
+
+    <!-- Discrete Cloud / Connection Status Indicator (Bottom Right) -->
+    <div id="cloud-sync-status" class="discrete-status-indicator" title="Status da Conexão e Sincronização">
+        <span class="status-dot online"></span>
+        <span id="sync-status-text">Online</span>
+    </div>
+
+    <!-- JavaScript -->
+    <script src="app.js?v=3.2.0"></script>
+</body>
+
+</html>

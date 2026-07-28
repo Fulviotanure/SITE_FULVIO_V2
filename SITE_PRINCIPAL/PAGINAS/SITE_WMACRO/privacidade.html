@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Política de Privacidade — WMacro</title>
+    <link rel="icon" type="image/png" href="wmacro.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        body {
+            height: auto;
+            min-height: 100vh;
+            overflow-y: auto;
+            align-items: flex-start;
+            padding: 40px 20px;
+        }
+
+        .legal-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: var(--glass-bg-high);
+            border: 1px solid var(--glass-border);
+            backdrop-filter: blur(var(--glass-blur-md));
+            -webkit-backdrop-filter: blur(var(--glass-blur-md));
+            border-radius: var(--radius-lg);
+            padding: 40px;
+            box-shadow: var(--glass-shadow);
+        }
+
+        .legal-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 32px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid var(--glass-border);
+        }
+
+        .legal-logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+        }
+
+        .legal-logo img {
+            width: 36px;
+            height: 36px;
+        }
+
+        .legal-logo h1 {
+            font-size: 22px;
+            font-weight: 800;
+            color: var(--text-main);
+        }
+
+        .back-link {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--color-primary);
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .back-link:hover {
+            text-decoration: underline;
+        }
+
+        .legal-content h2 {
+            font-size: 26px;
+            font-weight: 800;
+            margin-bottom: 8px;
+            color: var(--text-main);
+        }
+
+        .legal-date {
+            font-size: 13px;
+            color: var(--text-muted);
+            margin-bottom: 28px;
+        }
+
+        .legal-section {
+            margin-bottom: 28px;
+        }
+
+        .legal-section h3 {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 12px;
+            color: var(--text-main);
+        }
+
+        .legal-section p, .legal-section ul {
+            font-size: 15px;
+            line-height: 1.7;
+            color: var(--text-main);
+            margin-bottom: 12px;
+        }
+
+        .legal-section ul {
+            padding-left: 24px;
+        }
+
+        .legal-section li {
+            margin-bottom: 8px;
+        }
+    </style>
+</head>
+
+<body class="theme-dark">
+    <div class="legal-container">
+        <header class="legal-header">
+            <a href="index.html" class="legal-logo">
+                <img src="wmacro.png" alt="WMacro Logo">
+                <h1>WMacro</h1>
+            </a>
+            <a href="index.html" class="back-link">← Voltar ao App</a>
+        </header>
+
+        <main class="legal-content">
+            <h2>Política de Privacidade</h2>
+            <p class="legal-date">Última atualização: 19 de Julho de 2026</p>
+
+            <section class="legal-section">
+                <h3>1. Introdução</h3>
+                <p>O <strong>WMacro</strong> valoriza a sua privacidade. Esta Política de Privacidade descreve como coletamos, usamos, armazenamos e protegemos suas informações pessoais ao utilizar nossa aplicação web de produtividade e gestão de respostas rápidas.</p>
+            </section>
+
+            <section class="legal-section">
+                <h3>2. Dados Coletados</h3>
+                <p>Para fornecer nossos serviços de sincronização em nuvem e autenticação, podemos coletar os seguintes dados:</p>
+                <ul>
+                    <li><strong>Informações de Autenticação do Google:</strong> Ao utilizar o login com o Google (Google Sign-In), recebemos seu nome completo, endereço de e-mail e URL da foto de perfil.</li>
+                    <li><strong>Conteúdo das Macros e Variáveis:</strong> Textos, variáveis personalizadas e categorias criadas por você para sincronização com o banco de dados seguro do Firebase Firestore.</li>
+                    <li><strong>Chave de API do Gemini (Opcional):</strong> Caso utilize o recurso de inteligência artificial, a chave de API fornecida por você é armazenada localmente no seu navegador (`localStorage`) para chamadas diretas ao serviço da Google AI.</li>
+                </ul>
+            </section>
+
+            <section class="legal-section">
+                <h3>3. Como Usamos Seus Dados</h3>
+                <p>Os dados coletados têm as seguintes finalidades exclusivas:</p>
+                <ul>
+                    <li>Autenticar seu acesso de forma segura e identificar sua conta.</li>
+                    <li>Sincronizar suas macros, variáveis e configurações entre múltiplos dispositivos.</li>
+                    <li>Permitir o compartilhamento opcional de macros com os membros da sua equipe autorizados por você.</li>
+                </ul>
+                <p><strong>Não vendemos, não alugamos e não compartilhamos seus dados pessoais com terceiros para fins de marketing ou publicidade.</strong></p>
+            </section>
+
+            <section class="legal-section">
+                <h3>4. Armazenamento e Segurança</h3>
+                <p>Seus dados são armazenados na infraestrutura do <strong>Google Firebase (Firestore & Firebase Auth)</strong>, utilizando comunicação criptografada por HTTPS/TLS e regras rigorosas de controle de acesso.</p>
+            </section>
+
+            <section class="legal-section">
+                <h3>5. Seus Direitos</h3>
+                <p>Você tem o direito de:</p>
+                <ul>
+                    <li><strong>Exportar seus dados:</strong> Baixar uma cópia completa de suas macros e configurações em formato JSON a qualquer momento através do painel de Configurações.</li>
+                    <li><strong>Excluir seus dados:</strong> Apagar suas macros e redefinir sua biblioteca de dados através do app.</li>
+                    <li><strong>Solicitar a remoção da conta:</strong> Entre em contato conosco para excluir permanentemente sua conta e dados do nosso banco de dados.</li>
+                </ul>
+            </section>
+
+            <section class="legal-section">
+                <h3>6. Contato</h3>
+                <p>Se tiver dúvidas sobre esta Política de Privacidade ou sobre o tratamento dos seus dados, entre em contato através do e-mail: <strong>ftanure3@gmail.com</strong>.</p>
+            </section>
+        </main>
+    </div>
+</body>
+
+</html>

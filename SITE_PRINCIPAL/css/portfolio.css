@@ -1,0 +1,387 @@
+/* ==========================================================================
+   NEUMORPHIC PORTFOLIO - FULVIO TANURE
+   MODULAR STYLE: PORTFOLIO GALLERY SECTION
+   ========================================================================== */
+
+.portfolio-section {
+    padding: 100px 0;
+    position: relative;
+}
+
+.filter-tabs-wrapper {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 3.5rem;
+}
+
+.filter-tabs {
+    display: flex;
+    gap: 0.5rem;
+    padding: 0.5rem;
+    border-radius: 50px;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.filter-btn {
+    border: none;
+    background: none;
+    padding: 0.75rem 1.5rem;
+    font-family: var(--font-heading);
+    font-weight: 600;
+    font-size: 0.95rem;
+    color: var(--text-secondary);
+    border-radius: 50px;
+    cursor: pointer;
+    transition: all var(--transition-fast);
+}
+
+.filter-btn:hover {
+    color: var(--text-primary);
+}
+
+.filter-btn.active {
+    color: var(--text-primary);
+    box-shadow: var(--shadow-in-sm);
+    background-color: var(--card-color);
+}
+
+.portfolio-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+    gap: 2.5rem;
+}
+
+.portfolio-item {
+    overflow: hidden;
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    opacity: 1;
+    transform: scale(1);
+    transition: transform var(--transition-normal), box-shadow var(--transition-normal), opacity var(--transition-normal), background-color var(--transition-normal);
+}
+
+.portfolio-item:hover {
+    transform: translateY(-5px);
+}
+
+.portfolio-img-container {
+    width: 100%;
+    height: 200px;
+    border-radius: 15px;
+    overflow: hidden;
+    position: relative;
+    box-shadow: var(--shadow-in-sm);
+    border: 1px solid var(--glass-border);
+}
+
+/* Custom Neon Art Visuals in Placeholders */
+.placeholder-img {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform var(--transition-slow);
+}
+
+.portfolio-item:hover .placeholder-img {
+    transform: scale(1.05);
+}
+
+.img-neon-cyan {
+    background: radial-gradient(circle at center, #0e1726 0%, #060b13 100%);
+    color: var(--accent-cyan);
+    filter: drop-shadow(0 0 10px rgba(6, 182, 212, 0.4));
+}
+
+.img-neon-purple {
+    background: radial-gradient(circle at center, #19142b 0%, #0a0812 100%);
+    color: var(--accent-purple);
+    filter: drop-shadow(0 0 10px rgba(139, 92, 246, 0.4));
+}
+
+.img-neon-blue {
+    background: radial-gradient(circle at center, #0f132e 0%, #070917 100%);
+    color: var(--accent-indigo);
+    filter: drop-shadow(0 0 10px rgba(99, 102, 241, 0.4));
+}
+
+.img-neon-pink {
+    background: radial-gradient(circle at center, #261121 0%, #0f060d 100%);
+    color: var(--accent-pink);
+    filter: drop-shadow(0 0 10px rgba(236, 72, 153, 0.4));
+}
+
+.item-badge {
+    position: absolute;
+    top: 1rem;
+    left: 1rem;
+    background-color: var(--glass-bg);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid var(--glass-border);
+    padding: 0.35rem 0.85rem;
+    border-radius: 50px;
+    font-size: 0.7rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.portfolio-info {
+    padding: 1.5rem 0.5rem 0.5rem 0.5rem;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.portfolio-item-title {
+    font-size: 1.25rem;
+    margin-bottom: 0.75rem;
+    color: var(--text-primary);
+}
+
+.portfolio-item-desc {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    line-height: 1.5;
+    margin-bottom: 1.25rem;
+    flex-grow: 1;
+}
+
+.portfolio-tags {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+}
+
+.p-tag {
+    background-color: var(--bg-color);
+    box-shadow: var(--shadow-in-sm);
+    padding: 0.25rem 0.75rem;
+    border-radius: 50px;
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    font-weight: 600;
+    border: 1px solid var(--glass-border);
+}
+
+/* ==========================================================================
+   RESPONSIVENESS (PORTFOLIO SECTION)
+   ========================================================================== */
+@media (max-width: 768px) {
+    .portfolio-section {
+        padding: 60px 0;
+    }
+
+    .filter-tabs-wrapper {
+        justify-content: flex-start;
+        margin-bottom: 2rem;
+        width: calc(100% + 3rem);
+        margin-left: -1.5rem; /* pull left to align with edge */
+        margin-right: -1.5rem; /* pull right to align with edge */
+        padding: 0 1.5rem 0.5rem 1.5rem;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
+    }
+
+    .filter-tabs-wrapper::-webkit-scrollbar {
+        display: none;
+    }
+
+    .filter-tabs {
+        flex-wrap: nowrap !important;
+        justify-content: flex-start !important;
+        gap: 0.5rem;
+        padding: 0.4rem;
+    }
+
+    .filter-btn {
+        white-space: nowrap;
+        padding: 0.6rem 1.2rem;
+        font-size: 0.85rem;
+    }
+
+    .portfolio-grid {
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+        gap: 1.5rem;
+    }
+}
+
+/* ==========================================================================
+   PORTFOLIO MODAL (LIGHTBOX)
+   ========================================================================== */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.modal-overlay.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+.modal-card {
+    position: relative;
+    width: 90%;
+    max-width: 1000px;
+    max-height: 90vh;
+    overflow-y: auto;
+    padding: 2.5rem;
+    border-radius: 24px;
+    background-color: var(--bg-color);
+    box-shadow: var(--shadow-out);
+    transform: scale(0.9);
+    transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.modal-overlay.active .modal-card {
+    transform: scale(1);
+}
+
+.modal-close-btn {
+    position: absolute;
+    top: 1.5rem;
+    right: 1.5rem;
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    color: var(--text-secondary);
+    cursor: pointer;
+    z-index: 10;
+    background-color: var(--bg-color);
+    box-shadow: var(--shadow-out);
+    transition: all 0.2s ease;
+}
+
+.modal-close-btn:hover {
+    color: var(--accent-pink);
+    box-shadow: var(--shadow-in-sm);
+}
+
+.modal-content-layout {
+    display: flex;
+    gap: 2.5rem;
+    align-items: center;
+    margin-top: 1rem;
+}
+
+.modal-img-col {
+    flex: 1.5;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: var(--shadow-in-sm);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--glass-bg);
+}
+
+.modal-img-col img, .modal-img-col svg {
+    width: 100%;
+    max-height: 70vh;
+    object-fit: contain;
+    border-radius: 16px;
+}
+
+.modal-info-col {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.modal-title {
+    font-size: 2rem;
+    color: var(--text-primary);
+    margin-bottom: 1rem;
+    font-family: var(--font-heading);
+}
+
+.modal-desc {
+    font-size: 1.05rem;
+    color: var(--text-secondary);
+    line-height: 1.6;
+    margin-bottom: 2rem;
+}
+
+/* Modal Responsive */
+@media (max-width: 992px) {
+    .modal-content-layout {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    
+    .modal-img-col img, .modal-img-col svg {
+        max-height: 50vh;
+    }
+}
+
+@media (max-width: 768px) {
+    .modal-card {
+        padding: 1.5rem;
+        padding-top: 4rem;
+    }
+    
+    .modal-title {
+        font-size: 1.5rem;
+    }
+}
+
+/* ==========================================================================
+   IMAGE ZOOM OVERLAY
+   ========================================================================== */
+.zoom-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.95);
+    z-index: 10000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: auto;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.zoom-overlay.active {
+    opacity: 1;
+}
+
+.zoom-overlay img {
+    margin: auto;
+    max-width: 95vw;
+    max-height: 95vh;
+    object-fit: contain;
+    cursor: zoom-in;
+    transition: max-width 0.3s ease, max-height 0.3s ease;
+}
+
+.zoom-overlay img.zoomed {
+    max-width: none;
+    max-height: none;
+    cursor: zoom-out;
+}

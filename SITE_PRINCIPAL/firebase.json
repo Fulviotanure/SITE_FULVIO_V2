@@ -1,0 +1,53 @@
+{
+  "hosting": {
+    "site": "fulviotanure",
+    "public": ".",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**",
+      ".git/**",
+      ".firebase/**",
+      "node_modules/**",
+      "*.log",
+      "server.js",
+      "package.json",
+      "package-lock.json",
+      "*.ps1",
+      "*.bat",
+      "PAGINAS/SITE_FOTO/_ORIGINAIS/**"
+    ],
+    "rewrites": [
+      {
+        "source": "/PAGINAS/SITE_FOTO",
+        "destination": "/PAGINAS/SITE_FOTO/index.html"
+      },
+      {
+        "source": "/PAGINAS/SITE_FOTO/**",
+        "destination": "/PAGINAS/SITE_FOTO/index.html"
+      }
+    ],
+    "headers": [
+      {
+        "source": "**",
+        "headers": [
+          { "key": "X-Content-Type-Options", "value": "nosniff" },
+          { "key": "X-Frame-Options", "value": "SAMEORIGIN" },
+          { "key": "Referrer-Policy", "value": "strict-origin-when-cross-origin" }
+        ]
+      },
+      {
+        "source": "/PAGINAS/SITE_FOTO/api/**",
+        "headers": [
+          { "key": "Cache-Control", "value": "no-store" }
+        ]
+      },
+      {
+        "source": "**/*.@(jpg|jpeg|png|webp|gif)",
+        "headers": [
+          { "key": "Cache-Control", "value": "public, max-age=604800, immutable" }
+        ]
+      }
+    ]
+  }
+}
