@@ -124,9 +124,11 @@ body {
     font-family: var(--font-body);
     background-color: var(--bg-color);
     background-image: 
-        linear-gradient(to right, rgba(15, 23, 42, 0.04) 1px, transparent 1px),
-        linear-gradient(to bottom, rgba(15, 23, 42, 0.04) 1px, transparent 1px);
-    background-size: 28px 28px;
+        linear-gradient(to right, rgba(15, 23, 42, 0.03) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(15, 23, 42, 0.03) 1px, transparent 1px),
+        linear-gradient(to right, rgba(15, 23, 42, 0.015) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(15, 23, 42, 0.015) 1px, transparent 1px);
+    background-size: 120px 120px, 120px 120px, 24px 24px, 24px 24px;
     color: var(--text-primary);
     min-height: 100vh;
     overflow-x: hidden;
@@ -136,13 +138,12 @@ body {
 }
 
 #constellation-canvas {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    pointer-events: none;
-    z-index: 0;
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    pointer-events: auto;
 }
 
 /* --- Glowing Background Orbs --- */
@@ -442,21 +443,52 @@ body:not(.light-theme) .btn-creations:active .btn-icon {
     width: 100%;
     height: 80px;
     z-index: 100;
-    background-color: var(--glass-bg);
+    background-color: rgba(255, 255, 255, 0.75);
     backdrop-filter: blur(15px);
     -webkit-backdrop-filter: blur(15px);
-    border-bottom: 1px solid var(--glass-border);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
     transition: background-color var(--transition-normal), border var(--transition-normal);
 }
 
+body.dark-theme .header {
+    background-color: rgba(15, 23, 42, 0.75);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
 .header-container {
-    max-width: 1200px;
+    width: 100%;
     height: 100%;
-    margin: 0 auto;
-    padding: 0 2rem;
+    padding: 0 1.5rem 0 0.5rem; /* Tight left, normal right */
     display: flex;
     align-items: center;
     justify-content: space-between;
+    gap: 0;
+}
+
+.header-brand {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+}
+
+.eye-brand-btn {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--card-color);
+    box-shadow: var(--shadow-out-sm);
+    border: 1px solid var(--glass-border);
+    color: var(--text-primary);
+    cursor: pointer;
+    transition: all var(--transition-normal);
+}
+
+.eye-brand-btn:hover {
+    box-shadow: var(--shadow-out-hover);
+    transform: scale(1.05);
 }
 
 .logo {
@@ -469,7 +501,6 @@ body:not(.light-theme) .btn-creations:active .btn-icon {
     flex-direction: column;
     align-items: flex-start;
     line-height: 0.85;
-    /* Extremely tight line spacing like the image */
 }
 
 .logo-line-1 {
@@ -479,37 +510,55 @@ body:not(.light-theme) .btn-creations:active .btn-icon {
 .logo-line-2 {
     display: block;
     padding-left: 1.4em;
-    /* Ajuste exato solicitado pelo usuário */
 }
 
 .logo-dot {
-    color: var(--accent-purple);
-    /* Mantendo a identidade neon atual */
+    color: #ef4444; /* Ponto vermelho decorativo como na referência */
+    font-weight: 800;
 }
 
-.nav-menu {
+/* Nav Menu Pill Container (como na referência) */
+.nav-menu-pill {
     display: flex;
-    gap: 1.5rem;
+    align-items: center;
+    gap: 0.4rem;
+    background: rgba(0, 0, 0, 0.04);
+    padding: 5px 8px;
+    border-radius: 9999px;
+    border: 1px solid rgba(0, 0, 0, 0.04);
+}
+
+body.dark-theme .nav-menu-pill {
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 .nav-link {
     font-family: var(--font-heading);
     font-weight: 500;
-    font-size: 0.95rem;
+    font-size: 0.9rem;
     color: var(--text-secondary);
-    padding: 0.5rem 1rem;
-    border-radius: 12px;
+    padding: 0.45rem 1.25rem;
+    border-radius: 9999px;
     transition: all var(--transition-fast);
 }
 
 .nav-link:hover {
     color: var(--text-primary);
-    box-shadow: var(--shadow-out-sm);
+    background: rgba(0, 0, 0, 0.03);
 }
 
 .nav-link.active {
-    color: var(--text-primary);
-    box-shadow: var(--shadow-in-sm);
+    color: #0f172a;
+    background: #ffffff;
+    font-weight: 700;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+body.dark-theme .nav-link.active {
+    color: #ffffff;
+    background: rgba(255, 255, 255, 0.15);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
 }
 
 /* Link especial: Fotografia — destaque com gradiente */
@@ -1153,60 +1202,72 @@ body.light-theme .footer-accessibility .accessibility-icon {
 /* ==========================================================================
    ACCESSIBILITY HIGH CONTRAST MODE STYLE OVERRIDES (WCAG LEVEL AAA)
    ========================================================================== */
-body.accessibility-high-contrast {
-    --bg-color: #000000 !important;
-    --card-color: #0c0f14 !important;
-    --text-primary: #ffffff !important;
-    --text-secondary: #f3f4f6 !important;
-    --text-muted: #e5e7eb !important;
-    --glass-bg: #000000 !important;
-    --glass-border: #ffffff !important;
-    --accent-indigo: #818cf8 !important;
-    --accent-purple: #c084fc !important;
-    --accent-pink: #f472b6 !important;
-    --accent-cyan: #22d3ee !important;
-    --accent-gradient: linear-gradient(135deg, #818cf8, #c084fc, #f472b6) !important;
-}
-
+body.accessibility-high-contrast,
 body.accessibility-high-contrast.light-theme {
-    --bg-color: #ffffff !important;
-    --card-color: #f8fafc !important;
-    --text-primary: #000000 !important;
-    --text-secondary: #0f172a !important;
-    --text-muted: #334155 !important;
-    --glass-bg: #ffffff !important;
-    --glass-border: #000000 !important;
-    --accent-indigo: #312e81 !important;
-    --accent-purple: #4c1d95 !important;
-    --accent-pink: #831843 !important;
-    --accent-cyan: #083344 !important;
-    --accent-gradient: linear-gradient(135deg, #312e81, #4c1d95, #831843) !important;
+    background: #000000 !important;
+    --bg-color: #000000 !important;
+    --card-color: #000000 !important;
+    --glass-bg: #000000 !important;
 }
 
-body.accessibility-high-contrast *:focus-visible {
-    outline: 4px solid #ffffff !important;
-    outline-offset: 4px !important;
+/* Force everything to black background, no shadows, no animations */
+body.accessibility-high-contrast * {
+    animation: none !important;
+    transition: none !important;
+    box-shadow: none !important;
+    text-shadow: none !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    background-image: none !important; /* Remove gradients and paper textures */
 }
 
-body.accessibility-high-contrast.light-theme *:focus-visible {
-    outline: 4px solid #000000 !important;
-    outline-offset: 4px !important;
+/* Force all text to white by default, with yellow accents */
+body.accessibility-high-contrast h1,
+body.accessibility-high-contrast h2,
+body.accessibility-high-contrast h3,
+body.accessibility-high-contrast h4,
+body.accessibility-high-contrast h5,
+body.accessibility-high-contrast h6,
+body.accessibility-high-contrast p,
+body.accessibility-high-contrast span,
+body.accessibility-high-contrast li,
+body.accessibility-high-contrast div {
+    color: #ffffff !important;
+    background-color: transparent !important;
+    border-color: #ffff00 !important;
 }
 
-/* Eliminate neumorphic soft shadows in High Contrast */
-body.accessibility-high-contrast .btn-neu,
+body.accessibility-high-contrast header,
+body.accessibility-high-contrast section,
+body.accessibility-high-contrast footer,
+body.accessibility-high-contrast .hero-text-block,
+body.accessibility-high-contrast .nav-menu-pill,
+body.accessibility-high-contrast .nav-dropdown-menu,
 body.accessibility-high-contrast .service-card,
 body.accessibility-high-contrast .portfolio-item,
 body.accessibility-high-contrast .contact-info-card,
 body.accessibility-high-contrast .contact-form,
-body.accessibility-high-contrast .lang-btn,
-body.accessibility-high-contrast .lang-dropdown,
-body.accessibility-high-contrast .mobile-bottom-nav,
-body.accessibility-high-contrast .modal-card,
-body.accessibility-high-contrast .modal-close-btn {
-    box-shadow: none !important;
-    border: 2px solid var(--text-primary) !important;
-    background-color: var(--card-color) !important;
+body.accessibility-high-contrast .btn-neu,
+body.accessibility-high-contrast .code-card {
+    background: #000000 !important;
+    border: 2px solid #ffff00 !important;
+}
+
+body.accessibility-high-contrast a,
+body.accessibility-high-contrast button,
+body.accessibility-high-contrast .tag-badge,
+body.accessibility-high-contrast .highlight,
+body.accessibility-high-contrast .nav-link,
+body.accessibility-high-contrast svg,
+body.accessibility-high-contrast .badge-icon {
+    color: #ffff00 !important;
+    stroke: #ffff00 !important;
+    fill: #ffff00 !important;
+}
+
+body.accessibility-high-contrast *:focus-visible {
+    outline: 4px solid #ffff00 !important;
+    outline-offset: 4px !important;
 }
 
 /* Focused inputs in High Contrast */
@@ -1387,7 +1448,7 @@ body.accessibility-large-text .mobile-bottom-nav-item .nav-label {
    HERO CODE COMPARISON CARDS (CONVENTIONAL VS VIBE CODING IA)
    ========================================================================== */
 .code-preview-container {
-    margin-top: 3rem;
+    margin-top: 2rem;
     width: 100%;
     display: flex;
     justify-content: center;
@@ -1396,9 +1457,9 @@ body.accessibility-large-text .mobile-bottom-nav-item .nav-label {
 .code-preview-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 1.5rem;
+    gap: 1.25rem;
     width: 100%;
-    max-width: 840px;
+    max-width: 700px;
 }
 
 @media (max-width: 768px) {
@@ -1408,10 +1469,10 @@ body.accessibility-large-text .mobile-bottom-nav-item .nav-label {
 }
 
 .code-card {
-    border-radius: 18px;
-    padding: 1.25rem;
+    border-radius: 12px;
+    padding: 1.1rem;
     font-family: 'JetBrains Mono', monospace;
-    font-size: 0.85rem;
+    font-size: 0.75rem;
     box-shadow: var(--shadow-out);
     text-align: left;
     display: flex;
@@ -1465,40 +1526,180 @@ body.accessibility-large-text .mobile-bottom-nav-item .nav-label {
 .code-dot-green { background-color: #10b981; }
 
 .code-card-body {
-    line-height: 1.6;
+    line-height: 1.5;
     white-space: pre-wrap;
     word-break: break-word;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
 }
 
 .code-keyword { color: #f43f5e; font-weight: 600; }
 .code-func { color: #38bdf8; }
 .code-str { color: #34d399; }
 .code-comment { color: #64748b; font-style: italic; }
+.code-cursor {
+    display: inline-block;
+    width: 6px;
+    height: 12px;
+    background-color: currentColor;
+    vertical-align: middle;
+    animation: blink-cursor-new 0.8s infinite;
+}
 
 .ai-prompt-box {
     display: flex;
     align-items: center;
-    gap: 0.6rem;
-    background-color: rgba(37, 99, 235, 0.05);
-    border: 1px dashed rgba(37, 99, 235, 0.3);
-    padding: 0.75rem 0.9rem;
-    border-radius: 12px;
-    font-size: 0.82rem;
+    gap: 0.5rem;
+    margin-bottom: 0.5rem;
+    font-size: 0.75rem;
     color: #1e293b;
 }
 
-.ai-badge-instant {
-    display: inline-flex;
+.ai-preview-dash {
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 6px;
+    padding: 8px;
+    display: none;
+    flex-direction: column;
+    gap: 6px;
+    margin-top: 5px;
+    animation: fadeIn 0.4s ease-out forwards;
+}
+
+.ai-preview-header {
+    display: flex;
+    justify-content: space-between;
     align-items: center;
+    border-bottom: 1px solid #e2e8f0;
+    padding-bottom: 4px;
+}
+.ai-preview-title { font-size: 0.6rem; font-weight: bold; font-family: sans-serif; color: #475569;}
+.ai-preview-chart {
+    height: 30px;
+    background: linear-gradient(90deg, #3b82f6 30%, #ec4899 70%);
+    border-radius: 4px;
+    opacity: 0.8;
+}
+
+.ai-badge-instant, .conventional-badge-slow {
+    display: flex;
+    align-items: center;
+    justify-content: center;
     gap: 0.35rem;
-    background-color: rgba(16, 185, 129, 0.12);
-    color: #059669;
-    font-size: 0.78rem;
+    font-size: 0.7rem;
     font-weight: 700;
-    padding: 0.4rem 0.8rem;
-    border-radius: 10px;
-    margin-top: 0.25rem;
-    align-self: flex-start;
+    padding: 0.4rem;
+    border-radius: 6px;
+    margin-top: auto;
+}
+
+.ai-badge-instant {
+    background-color: #10b981;
+    color: #ffffff;
+    box-shadow: 0 2px 4px rgba(16, 185, 129, 0.3);
+}
+
+.conventional-badge-slow {
+    background-color: #ef4444;
+    color: #ffffff;
+    box-shadow: 0 2px 4px rgba(239, 68, 68, 0.3);
+}
+
+/* ==========================================================================
+   HIGH CONTRAST UIVERSE TOGGLE BUTTON
+   ========================================================================== */
+.toggle-high-contrast {
+  position: fixed;
+  left: -1.5rem; /* Slightly off left edge for aesthetic */
+  top: 0;
+  transform: scale(0.55);
+  transform-origin: left top;
+  z-index: 1001;
+}
+
+.toggle {
+  display: inline-block;
+  position: relative;
+  height: 100px;
+  width: 100px;
+}
+
+.toggle:before {
+  box-shadow: 0;
+  border-radius: 84.5px;
+  background: #fff;
+  position: absolute;
+  margin-left: -36px;
+  margin-top: -36px;
+  opacity: 0.2;
+  height: 72px;
+  width: 72px;
+  left: 50%;
+  top: 50%;
+  content: "";
+}
+
+.toggle .button {
+  transition: all 300ms cubic-bezier(0.23, 1, 0.32, 1);
+  box-shadow: 0 15px 25px -4px rgba(0, 0, 0, 0.5), inset 0 -3px 4px -1px rgba(0, 0, 0, 0.2), 0 -10px 15px -1px rgba(255, 255, 255, 0.6), inset 0 3px 4px -1px rgba(255, 255, 255, 0.2), inset 0 0 5px 1px rgba(255, 255, 255, 0.8), inset 0 20px 30px 0 rgba(255, 255, 255, 0.2);
+  border-radius: 68.8px;
+  position: absolute;
+  background: #eaeaea;
+  margin-left: -34.4px;
+  margin-top: -34.4px;
+  display: block;
+  height: 68.8px;
+  width: 68.8px;
+  left: 50%;
+  top: 50%;
+}
+
+.toggle .label {
+  transition: color 300ms ease-out;
+  line-height: 101px;
+  text-align: center;
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0.9;
+  height: 100%;
+  width: 100%;
+  color: rgba(0, 0, 0, 0.9);
+  z-index: 2;
+  pointer-events: none;
+}
+
+.toggle input {
+  opacity: 0;
+  position: absolute;
+  cursor: pointer;
+  z-index: 3;
+  height: 100%;
+  width: 100%;
+  left: 0;
+  top: 0;
+}
+
+.toggle input:active ~ .button {
+  filter: blur(0.5px);
+  box-shadow: 0 12px 25px -4px rgba(0, 0, 0, 0.4), inset 0 -8px 30px 1px rgba(255, 255, 255, 0.9), 0 -10px 15px -1px rgba(255, 255, 255, 0.6), inset 0 8px 25px 0 rgba(0, 0, 0, 0.4), inset 0 0 10px 1px rgba(255, 255, 255, 0.6);
+}
+
+.toggle input:checked ~ .button {
+  filter: blur(0.5px);
+  box-shadow: 0 10px 25px -4px rgba(0, 0, 0, 0.4), inset 0 -8px 25px -1px rgba(255, 255, 255, 0.9), 0 -10px 15px -1px rgba(255, 255, 255, 0.6), inset 0 8px 20px 0 rgba(0, 0, 0, 0.2), inset 0 0 5px 1px rgba(255, 255, 255, 0.6);
+}
+
+.toggle input:checked ~ .label {
+  color: rgba(0, 0, 0, 0.8);
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(5px); }
+    to { opacity: 1; transform: translateY(0); }
 }
 
 body.accessibility-large-text .mobile-bottom-nav-item {

@@ -5,8 +5,7 @@
 
 (() => {
     document.addEventListener('DOMContentLoaded', () => {
-        // --- Initialize All Global Core Modules ---
-        initThemeManager();
+        // Dark mode removed
         initMobileNavigation();
         initScrollSpy();
         initLanguageManager();
@@ -14,40 +13,7 @@
         initPhotographyPreloader();
     });
 
-    /* ==========================================================================
-       THEME MANAGER (LIGHT / DARK SYSTEM)
-       ========================================================================== */
-    function initThemeManager() {
-        const themeToggleBtn = document.getElementById('theme-toggle-btn');
-        const bodyElement = document.body;
 
-        // Check saved theme preference or system default
-        const savedTheme = localStorage.getItem('portfolio-theme');
-
-        // Default to Light Theme. Load Dark Theme only if explicitly chosen by the user in the past.
-        if (savedTheme === 'dark') {
-            bodyElement.classList.remove('light-theme');
-            bodyElement.classList.add('dark-theme');
-        } else {
-            bodyElement.classList.remove('dark-theme');
-            bodyElement.classList.add('light-theme');
-        }
-
-        // Toggle theme on button click
-        if (themeToggleBtn) {
-            themeToggleBtn.addEventListener('click', () => {
-                if (bodyElement.classList.contains('light-theme')) {
-                    bodyElement.classList.replace('light-theme', 'dark-theme');
-                    localStorage.setItem('portfolio-theme', 'dark');
-                } else {
-                    bodyElement.classList.replace('dark-theme', 'light-theme');
-                    localStorage.setItem('portfolio-theme', 'light');
-                }
-            });
-        }
-    }
-
-    /* ==========================================================================
        MOBILE NAVIGATION MENU & BOTTOM NAV
        ========================================================================== */
     function initMobileNavigation() {

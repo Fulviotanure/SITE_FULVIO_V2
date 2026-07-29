@@ -62,7 +62,6 @@
     <link rel="stylesheet" href="css/contact.css?v=1.4">
 </head>
 <body class="light-theme">
-    <canvas id="constellation-canvas" aria-hidden="true"></canvas>
     <!-- Skip Link para Navegação por Teclado -->
     <a href="#main-content" class="skip-link" data-i18n="accessibility.skip_link">Pular para o conteúdo principal</a>
 
@@ -80,14 +79,31 @@
             </linearGradient>
         </defs>
     </svg>
+
+    <!-- High Contrast Toggle - Fixed to left edge of screen -->
+    <label class="toggle toggle-high-contrast" aria-label="Alternar alto contraste">
+        <input type="checkbox" id="contrast-toggle-btn">
+        <span class="button"></span>
+        <span class="label">
+            <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7-10-7-10-7Z" />
+                <circle cx="12" cy="12" r="4" />
+                <circle cx="14" cy="10" r="1.5" fill="currentColor" />
+            </svg>
+        </span>
+    </label>
+
     <header class="header">
         <div class="header-container">
-            <a href="#home" class="logo" id="logo-nav">
-                <span class="logo-line-1"><span class="logo-dot">.</span>FULVIO</span>
-                <span class="logo-line-2">{TANURE}</span>
-            </a>
+            <div class="header-brand">
+                <a href="#home" class="logo" id="logo-nav">
+                    <span class="logo-line-1"><span class="logo-dot">.</span>FULVIO</span>
+                    <span class="logo-line-2">{TANURE}</span>
+                </a>
+            </div>
             
-            <nav class="nav-menu" id="nav-menu">
+            <!-- Central Nav Menu Pill (per reference image) -->
+            <nav class="nav-menu nav-menu-pill" id="nav-menu">
                 <a href="#home" class="nav-link active">Home</a>
                 <a href="#services" class="nav-link">Serviços</a>
                 <div class="nav-dropdown">
@@ -104,24 +120,6 @@
             </nav>
  
             <div class="header-actions">
-                <!-- Theme Toggle Button -->
-                <button type="button" class="theme-btn btn-neu" id="theme-toggle-btn" aria-label="Alternar tema claro/escuro">
-                    <span class="theme-btn-icon sun-icon">
-                        <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
-                    </span>
-                    <span class="theme-btn-icon moon-icon">
-                        <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>
-                    </span>
-                </button>
-
-                <!-- High Contrast Toggle Button -->
-                <button type="button" class="contrast-btn btn-neu" id="contrast-toggle-btn" aria-label="Alternar alto contraste" aria-pressed="false">
-                    <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7-10-7-10-7Z" />
-                        <circle cx="12" cy="12" r="4" />
-                        <circle cx="14" cy="10" r="1.5" fill="currentColor" />
-                    </svg>
-                </button>
 
                 <!-- Mobile Menu Button -->
                 <button class="mobile-toggle" id="mobile-toggle" aria-label="Abrir menu" aria-expanded="false" aria-controls="nav-menu">
@@ -138,6 +136,7 @@
     <main class="main-content" id="main-content">
         <!-- HERO SECTION -->
         <section id="home" class="hero-section">
+            <canvas id="constellation-canvas" aria-hidden="true"></canvas>
             <div class="hero-container">
                 <div class="hero-text-block">
                     <div class="tag-badge">DESENVOLVIMENTO DE SITES, APPWEB E DESIGN</div>
@@ -145,44 +144,55 @@
                         Tire seus planos do papel <br>e tenha hoje mesmo <br>seu site pro seu negócio.
                     </h1>
                     <p class="hero-subtitle">
-                        Soluções para você ter seu site hoje com design profissional e a segurança que merece, de forma quase instantânea e com prazos extremamente curtos.
+                        Soluções para você ter seu site hoje com design profissional <br>e a segurança que merece, de forma quase instantânea e com <br>prazos extremamente curtos.
                     </p>
 
-                    <!-- Hero Code Comparison Cards -->
+                    <!-- Hero Code Comparison Cards (Side-by-Side) -->
                     <div class="code-preview-container">
                         <div class="code-preview-grid">
                             <!-- Card 1: Conventional Code -->
                             <div class="code-card code-card-dark">
                                 <div class="code-card-header">
-                                    <span>CONVENTIONAL CODE</span>
                                     <div class="code-dots">
                                         <span class="code-dot code-dot-red"></span>
                                         <span class="code-dot code-dot-yellow"></span>
                                         <span class="code-dot code-dot-green"></span>
                                     </div>
+                                    <span class="code-header-title">CONVENTIONAL CODE</span>
                                 </div>
-                                <div class="code-card-body"><span class="code-keyword">function</span> <span class="code-func">initializeWebApp</span>() {
-    console.<span class="code-func">log</span>(<span class="code-str">"Iniciando carregamento manual..."</span>);
-    <span class="code-keyword">const</span> appContainer = document.<span class="code-func">getElementById</span>(<span class="code-str">"app"</span>);
-}</div>
+                                <div class="code-card-body">
+                                    <div id="conventional-code-container" class="code-editor-area"><span class="code-cursor"></span></div>
+                                    <div class="conventional-badge-slow">
+                                        <span class="badge-icon">🐢</span> Lento & Manual
+                                    </div>
+                                </div>
                             </div>
 
                             <!-- Card 2: Vibe Coding (IA) -->
                             <div class="code-card code-card-light">
                                 <div class="code-card-header">
-                                    <span>VIBE CODING (IA)</span>
                                     <div class="code-dots">
                                         <span class="code-dot code-dot-red"></span>
                                         <span class="code-dot code-dot-yellow"></span>
                                         <span class="code-dot code-dot-green"></span>
                                     </div>
+                                    <span class="code-header-title">VIBE CODING (IA)</span>
                                 </div>
                                 <div class="code-card-body">
                                     <div class="ai-prompt-box">
-                                        <span>🤖 <strong>Agent:</strong> "Gera dashboard admin com gráficos dinâmicos"</span>
+                                        <span>🤖 <strong class="ai-agent-label">Agent</strong> <span id="vibe-coding-prompt"><span class="code-cursor"></span></span></span>
+                                    </div>
+                                    <div id="vibe-coding-preview" class="ai-preview-dash">
+                                        <div class="ai-preview-header">
+                                            <span class="ai-preview-title">Admin Dashboard</span>
+                                            <svg width="12" height="12" fill="none" stroke="#94a3b8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+                                        </div>
+                                        <div class="ai-preview-chart" style="width: 100%;"></div>
+                                        <div class="ai-preview-chart" style="width: 75%; background: linear-gradient(90deg, #10b981 30%, #34d399 70%);"></div>
+                                        <div class="ai-preview-chart" style="width: 50%; background: linear-gradient(90deg, #f59e0b 30%, #fbbf24 70%);"></div>
                                     </div>
                                     <div class="ai-badge-instant">
-                                        ⚡ Instantâneo & IA
+                                        <span class="badge-icon">⚡</span> Instantâneo & IA
                                     </div>
                                 </div>
                             </div>

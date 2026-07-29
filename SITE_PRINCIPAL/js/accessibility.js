@@ -26,17 +26,16 @@
         // Apply initial setting
         setHighContrast(savedContrast);
 
-        // Click event listener
-        contrastToggleBtn.addEventListener('click', () => {
-            const newState = !window.accessibilitySettings.highContrast;
+        // Change event listener for the checkbox
+        contrastToggleBtn.addEventListener('change', (e) => {
+            const newState = e.target.checked;
             setHighContrast(newState);
             localStorage.setItem('acc-high-contrast', newState);
         });
 
         function setHighContrast(contrast) {
             window.accessibilitySettings.highContrast = contrast;
-            contrastToggleBtn.setAttribute('aria-pressed', contrast ? 'true' : 'false');
-            contrastToggleBtn.classList.toggle('inset', contrast);
+            contrastToggleBtn.checked = contrast; // Update checkbox state
             document.body.classList.toggle('accessibility-high-contrast', contrast);
         }
     }

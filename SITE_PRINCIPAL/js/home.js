@@ -7,6 +7,7 @@
     document.addEventListener('DOMContentLoaded', () => {
         initNeuralCanvas();
         initTypewriterEffect();
+        initCodeCardsAnimation();
     });
 
     /* ==========================================================================
@@ -519,4 +520,124 @@
         // Start typewriter effect
         timeoutId = setTimeout(type, 1000);
     }
+
+    /* ==========================================================================
+       HERO CODE CARDS ANIMATION (CONVENTIONAL VS VIBE CODING)
+       ========================================================================== */
+    function initCodeCardsAnimation() {
+        const conventionalContainer = document.getElementById('conventional-code-container');
+        const vibePrompt = document.getElementById('vibe-coding-prompt');
+        const vibePreview = document.getElementById('vibe-coding-preview');
+
+        if (!conventionalContainer || !vibePrompt || !vibePreview) return;
+
+        // Sequence texts (idênticos à imagem de referência REFERENCIA_PRINCIPAL.png)
+        const convText1 = '<span class="code-keyword">function</span> <span class="code-func">initializeWebApp</span>() {\n    console.<span class="code-func">log</span>(<span class="code-str">"Iniciando carregamento manual..."</span>);\n    <span class="code-keyword">const</span> appContainer = docment'; // Typo!
+        const convTextMistake = '.getElmentById'; // Typo!
+        const convCorrection = 'ument.<span class="code-func">getElementById</span>';
+        
+        const vibeText = 'Gere dashboard admin com gráficos dinâmicos';
+
+        let isAnimating = true;
+
+        async function sleep(ms) {
+            return new Promise(resolve => setTimeout(resolve, ms));
+        }
+
+        async function typeHTMLSlowly(element, html, speed = 80, fastMode = false) {
+            if (!isAnimating) return;
+            // Parse HTML to type text but inject tags instantly
+            let i = 0;
+            let currentHTML = '';
+            while (i < html.length) {
+                if (!isAnimating) return;
+                if (html[i] === '<') {
+                    let tag = '';
+                    while (html[i] !== '>' && i < html.length) {
+                        tag += html[i];
+                        i++;
+                    }
+                    tag += '>';
+                    currentHTML += tag;
+                    i++;
+                } else {
+                    currentHTML += html[i];
+                    i++;
+                    element.innerHTML = currentHTML + '<span class="code-cursor"></span>';
+                    await sleep(fastMode ? speed / 3 : speed + Math.random() * 50);
+                }
+            }
+            element.innerHTML = currentHTML + '<span class="code-cursor"></span>';
+        }
+
+        async function deleteSlowly(element, currentHTML, count, speed = 50) {
+            if (!isAnimating) return;
+            // Simplistic delete (assumes we are just deleting plain text chars at the end, not crossing HTML tags in our specific case)
+            for (let i = 0; i < count; i++) {
+                if (!isAnimating) return;
+                currentHTML = currentHTML.slice(0, -1);
+                element.innerHTML = currentHTML + '<span class="code-cursor"></span>';
+                await sleep(speed);
+            }
+            return currentHTML;
+        }
+
+        async function runLoop() {
+            while (true) {
+                if (window.accessibilitySettings && window.accessibilitySettings.pauseAnimations) {
+                    await sleep(1000);
+                    continue;
+                }
+
+                // Reset state
+                conventionalContainer.innerHTML = '<span class="code-cursor"></span>';
+                vibePrompt.innerHTML = '<span class="code-cursor"></span>';
+                vibePreview.style.display = 'none';
+
+                await sleep(1000);
+
+                // Start both simultaneously
+                let convPromise = (async () => {
+                    // Conventional types slowly with a typo
+                    await typeHTMLSlowly(conventionalContainer, convText1, 50);
+                    await typeHTMLSlowly(conventionalContainer, convTextMistake, 60);
+                    
+                    // Realizes mistake, pauses
+                    await sleep(600);
+
+                    // Deletes mistake: "docment.getElmentById" is 21 chars
+                    let currentHTML = convText1 + convTextMistake;
+                    currentHTML = await deleteSlowly(conventionalContainer, currentHTML, 21, 40);
+
+                    // Pauses to think
+                    await sleep(400);
+
+                    // Types correct version
+                    await typeHTMLSlowly(conventionalContainer, currentHTML + convCorrection, 40);
+                })();
+
+                let vibePromise = (async () => {
+                    // Vibe Coding types prompt super fast
+                    await typeHTMLSlowly(vibePrompt, vibeText, 15, true);
+                    
+                    // Instant Processing
+                    vibePrompt.innerHTML = vibeText + '<span class="code-cursor" style="animation: none; opacity: 0.5;"></span>';
+                    await sleep(400);
+                    
+                    // Shows preview instantly!
+                    vibePreview.style.display = 'flex';
+                })();
+
+                // Wait for both to finish this cycle
+                await Promise.all([convPromise, vibePromise]);
+
+                // Wait at the end of the loop to let user see the result
+                await sleep(5000);
+            }
+        }
+
+        // Start the infinite loop
+        runLoop();
+    }
+
 })();
