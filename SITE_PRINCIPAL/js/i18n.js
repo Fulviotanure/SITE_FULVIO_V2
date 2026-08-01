@@ -24,8 +24,8 @@
             },
             nav: {
                 home: "Home",
-                services: "Especialidades",
-                portfolio: "Criações",
+                services: "Serviços",
+                portfolio: "Sites",
                 contact: "Contato"
             },
             hero: {

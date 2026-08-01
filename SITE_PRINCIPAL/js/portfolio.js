@@ -26,7 +26,8 @@
         // Triggers
         const btnOpenGallery = document.getElementById('btn-open-gallery');
         const btnOpenSites = document.getElementById('btn-open-sites');
-        const mobileNavGaleria = document.querySelector('a[href="#portfolio"]');
+        const mobileNavSites = document.getElementById('mobile-nav-sites');
+        const portfolioNavLinks = document.querySelectorAll('a[href="#portfolio"]');
 
         let lastFocusedElement = null;
 
@@ -59,13 +60,22 @@
             });
         }
 
-        if (mobileNavGaleria) {
-            mobileNavGaleria.addEventListener('click', (e) => {
+        if (mobileNavSites) {
+            mobileNavSites.addEventListener('click', (e) => {
                 e.preventDefault();
-                lastFocusedElement = mobileNavGaleria;
-                openModal(galleryListModal);
+                e.stopPropagation();
+                lastFocusedElement = mobileNavSites;
+                openModal(sitesListModal);
             });
         }
+
+        portfolioNavLinks.forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                lastFocusedElement = link;
+                openModal(sitesListModal);
+            });
+        });
 
         if (btnOpenSites) {
             btnOpenSites.addEventListener('click', (e) => {

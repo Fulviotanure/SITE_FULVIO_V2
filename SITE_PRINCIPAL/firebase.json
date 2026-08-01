@@ -25,6 +25,14 @@
       {
         "source": "/PAGINAS/SITE_FOTO/**",
         "destination": "/PAGINAS/SITE_FOTO/index.html"
+      },
+      {
+        "source": "/PAGINAS/SITE_WMACRO",
+        "destination": "/PAGINAS/SITE_WMACRO/index.html"
+      },
+      {
+        "source": "/PAGINAS/SITE_WMACRO/**",
+        "destination": "/PAGINAS/SITE_WMACRO/index.html"
       }
     ],
     "headers": [

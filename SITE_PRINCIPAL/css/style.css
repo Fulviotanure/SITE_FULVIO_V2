@@ -37,6 +37,7 @@
     /* Accents */
     --accent-blue: #3b82f6;
     --accent-primary: #2563eb;
+    --accent-indigo: #2563eb;
     --accent-cyan: #0ea5e9;
     --accent-gradient: linear-gradient(135deg, #3b82f6, #0ea5e9);
 
@@ -65,6 +66,7 @@ body.dark-theme {
 
     --accent-blue: #3b82f6;
     --accent-primary: #60a5fa;
+    --accent-indigo: #60a5fa;
     --accent-cyan: #38bdf8;
     --accent-gradient: linear-gradient(135deg, #3b82f6, #38bdf8);
 
@@ -1139,21 +1141,55 @@ body.light-theme .footer-accessibility .accessibility-icon {
     /* Mobile Header Layout Optimization */
     .header {
         height: 60px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
     }
 
     .header-container {
         padding: 0 1rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+        width: 100%;
+    }
+
+    .toggle-high-contrast {
+        position: absolute;
+        left: 1rem;
+        top: 50%;
+        transform: translateY(-50%);
+        z-index: 10;
+    }
+
+    .header-brand {
+        margin: 0 auto;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
     }
 
     .logo {
         font-size: 1.25rem;
+        text-align: center;
+        margin: 0 auto;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
     }
 
     .logo-line-2 {
-        padding-left: 0.8em;
+        padding-left: 0.5em;
     }
 
     .header-actions {
+        position: absolute;
+        right: 1rem;
+        top: 50%;
+        transform: translateY(-50%);
+        z-index: 10;
         gap: 0.5rem;
     }
 
@@ -1203,17 +1239,17 @@ body.light-theme .footer-accessibility .accessibility-icon {
         display: flex;
         position: fixed;
         bottom: 20px;
-        left: 20px;
-        right: 20px;
-        height: 68px;
+        left: 16px;
+        right: 16px;
+        height: 64px;
         background-color: var(--bg-color);
         border: none;
         border-radius: 30px;
         box-shadow: var(--shadow-out);
         z-index: 999;
-        justify-content: space-around;
+        justify-content: space-between;
         align-items: center;
-        padding: 0 10px;
+        padding: 0 6px;
         transition: transform var(--transition-normal), background-color var(--transition-normal), box-shadow var(--transition-normal);
     }
 
@@ -1222,13 +1258,14 @@ body.light-theme .footer-accessibility .accessibility-icon {
         flex-direction: column;
         align-items: center;
         justify-content: center;
-        flex: 1;
-        max-width: none;
+        flex: 1 1 0;
+        width: 25%;
+        min-width: 0;
         height: 52px;
-        border-radius: 14px;
-        background: transparent !important;
-        box-shadow: none !important;
-        border: none !important;
+        border-radius: 18px;
+        background: transparent;
+        box-shadow: none;
+        border: none;
         color: var(--text-secondary);
         font-family: var(--font-heading);
         font-weight: 600;
@@ -1238,37 +1275,44 @@ body.light-theme .footer-accessibility .accessibility-icon {
         gap: 3px;
         transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
         cursor: pointer;
+        padding: 0 4px;
     }
 
     .mobile-bottom-nav-item .nav-icon {
         stroke-width: 2.2;
+        stroke: var(--text-secondary);
         transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1), stroke 0.25s ease;
     }
 
     .mobile-bottom-nav-item .nav-label {
         font-size: 0.58rem;
         font-weight: 700;
-        opacity: 0.8;
-        transition: color 0.25s ease;
+        opacity: 0.85;
+        color: var(--text-secondary);
+        transition: color 0.25s ease, opacity 0.25s ease;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        max-width: 100%;
     }
 
-    /* Active State on mobile tab bar (Colors only, no background/border to maintain size) */
+    /* Active State on mobile tab bar: Inset Neumorphic Sunken ("Afundado") effect, no blue color */
     .mobile-bottom-nav-item.active {
-        color: var(--accent-indigo) !important;
-        background: transparent !important;
-        box-shadow: none !important;
+        color: var(--text-primary) !important;
+        background-color: var(--bg-color) !important;
+        box-shadow: var(--shadow-in-sm) !important;
         border: none !important;
     }
 
     .mobile-bottom-nav-item.active .nav-label {
-        color: var(--accent-indigo) !important;
+        color: var(--text-primary) !important;
         opacity: 1;
         font-weight: 800;
     }
 
     .mobile-bottom-nav-item.active .nav-icon {
-        transform: translateY(-2px) scale(1.1);
-        stroke: var(--accent-indigo) !important;
+        transform: translateY(1px);
+        stroke: var(--text-primary) !important;
     }
 
     /* Add space at the bottom of the body so content doesn't get covered by the bottom nav */

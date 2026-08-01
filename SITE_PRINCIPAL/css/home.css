@@ -543,22 +543,57 @@
 
 @media (max-width: 768px) {
     .hero-section {
-        padding-top: 110px;
-        padding-bottom: 50px;
+        padding-top: 100px;
+        padding-bottom: 40px;
         min-height: auto;
     }
 
+    .hero-container {
+        padding: 0 0.75rem;
+        width: 100%;
+    }
+
+    .hero-text-block {
+        align-items: center;
+        text-align: center;
+        max-width: 100%;
+        width: 100%;
+        padding: 0.75rem 0;
+        margin: 0 auto;
+    }
+
+    .tag-badge {
+        display: inline-block;
+        margin-left: auto;
+        margin-right: auto;
+        text-align: center;
+        margin-bottom: 1rem;
+    }
+
     .hero-title {
-        font-size: 2.1rem;
+        font-size: 2.05rem;
+        line-height: 1.2;
         text-align: center;
         width: 100%;
+        max-width: 100%;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .hero-title br {
+        display: none;
     }
 
     .hero-subtitle {
         font-size: 0.95rem;
+        line-height: 1.55;
         text-align: center;
         width: 100%;
         max-width: 100%;
+        padding: 0 0.25rem;
+        margin-left: auto;
+        margin-right: auto;
+        margin-top: 0.75rem;
     }
 
     .hero-floating-cards-wrapper {
@@ -569,6 +604,7 @@
         max-width: 100%;
         justify-content: center;
         align-items: stretch;
+        margin-top: 1.5rem;
     }
 
     .hero-card {
@@ -576,25 +612,90 @@
         max-width: 100%;
         transform: none !important;
         margin: 0;
+        border-radius: 12px;
+        height: 140px;
+        display: flex;
+        flex-direction: column;
     }
 
     .hero-card-header {
         padding: 4px 6px;
+        min-height: 24px;
+    }
+
+    .mac-dots {
+        gap: 4px;
+    }
+
+    .mac-dot {
+        width: 6px;
+        height: 6px;
     }
 
     .hero-card-title {
-        font-size: 0.58rem;
+        font-size: 0.55rem;
+    }
+
+    .hero-card-badge {
+        font-size: 0.48rem;
+        padding: 1px 4px;
     }
 
     .hero-card .dark-code-body {
-        font-size: 0.52rem !important;
-        line-height: 1.3;
-        padding: 0.4rem 0.4rem;
-        height: 135px;
+        font-size: 0.46rem !important;
+        line-height: 1.35;
+        padding: 0.3rem 0.4rem;
+        height: 115px;
+    }
+
+    .hero-card-ai .ai-split-layout {
+        height: 115px;
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+    }
+
+    .hero-card-ai .ai-split-left {
+        height: 68px;
+        width: 100%;
+        border-right: none;
+        border-bottom: 1px solid var(--glass-border);
+        flex: none;
+    }
+
+    .hero-card-ai .ai-fast-code {
+        font-size: 0.46rem;
+        padding: 0.3rem;
+        line-height: 1.35;
+    }
+
+    .hero-card-ai .ai-split-right {
+        height: 47px;
+        width: 100%;
+        padding: 0.2rem 0.3rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: rgba(255, 255, 255, 0.04);
+        flex: none;
+    }
+
+    .hero-card-ai .ai-chat-bubble {
+        font-size: 0.5rem;
+        line-height: 1.25;
+        padding: 3px 6px;
+        max-width: 98%;
+        border-radius: 6px;
+        margin: 0;
+        text-align: center;
+        white-space: normal;
+        word-break: normal;
+        display: block;
+        align-self: center;
     }
 
     .carousel-text-wrapper {
-        min-width: 200px;
+        min-width: 180px;
         height: 34px;
         margin: 2px 4px;
     }
@@ -612,28 +713,34 @@
 
 @media (max-width: 480px) {
     .hero-section {
-        padding-top: 100px;
-        padding-bottom: 40px;
+        padding-top: 90px;
+        padding-bottom: 30px;
+    }
+
+    .hero-container {
+        padding: 0 0.5rem;
     }
 
     .hero-title {
-        font-size: 1.95rem;
+        font-size: 1.85rem;
+        line-height: 1.22;
     }
 
     .hero-subtitle {
-        font-size: 0.95rem;
-        line-height: 1.55;
+        font-size: 0.9rem;
+        line-height: 1.5;
+        padding: 0;
     }
 
     .carousel-text-wrapper {
         display: block;
         margin: 8px auto;
-        min-width: 180px;
+        min-width: 170px;
         max-width: 220px;
     }
 
     .hero-text-block {
-        padding: 1.25rem 0.5rem;
+        padding: 0.5rem 0.25rem;
     }
 }
 
