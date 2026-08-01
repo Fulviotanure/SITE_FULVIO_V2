@@ -1222,11 +1222,13 @@ body.light-theme .footer-accessibility .accessibility-icon {
         flex-direction: column;
         align-items: center;
         justify-content: center;
-        flex-grow: 1;
-        max-width: 90px;
-        /* prevent item from pushing others out */
+        flex: 1;
+        max-width: none;
         height: 52px;
-        border-radius: 22px;
+        border-radius: 14px;
+        background: transparent !important;
+        box-shadow: none !important;
+        border: none !important;
         color: var(--text-secondary);
         font-family: var(--font-heading);
         font-weight: 600;
@@ -1250,21 +1252,23 @@ body.light-theme .footer-accessibility .accessibility-icon {
         transition: color 0.25s ease;
     }
 
-    /* Tactile Debossed / Low-Relief Inset Active State on mobile tab bar */
+    /* Active State on mobile tab bar (Colors only, no background/border to maintain size) */
     .mobile-bottom-nav-item.active {
-        color: var(--text-primary);
-        box-shadow: var(--shadow-in-sm);
-        background-color: var(--card-color);
-        border: 1px solid var(--glass-border);
+        color: var(--accent-indigo) !important;
+        background: transparent !important;
+        box-shadow: none !important;
+        border: none !important;
+    }
+
+    .mobile-bottom-nav-item.active .nav-label {
+        color: var(--accent-indigo) !important;
+        opacity: 1;
+        font-weight: 800;
     }
 
     .mobile-bottom-nav-item.active .nav-icon {
-        transform: translateY(-2px) scale(1.08);
-        stroke: var(--accent-purple);
-    }
-
-    body.light-theme .mobile-bottom-nav-item.active .nav-icon {
-        stroke: var(--accent-indigo);
+        transform: translateY(-2px) scale(1.1);
+        stroke: var(--accent-indigo) !important;
     }
 
     /* Add space at the bottom of the body so content doesn't get covered by the bottom nav */

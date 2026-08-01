@@ -505,12 +505,18 @@
    ========================================================================== */
 @media (max-width: 1024px) {
     .hero-container {
+        grid-template-columns: 1fr;
         text-align: center;
+        gap: 2rem;
+        padding: 0 1.5rem;
     }
 
     .hero-text-block {
         align-items: center;
+        text-align: center;
         max-width: 100%;
+        width: 100%;
+        padding: 1rem 0;
     }
 
     .hero-glass-layer {
@@ -520,6 +526,14 @@
 
     .hero-title {
         font-size: 3rem;
+        text-align: center;
+        width: 100%;
+    }
+
+    .hero-subtitle {
+        text-align: center;
+        width: 100%;
+        max-width: 100%;
     }
 
     .hero-buttons {
@@ -535,11 +549,48 @@
     }
 
     .hero-title {
-        font-size: 2.3rem;
+        font-size: 2.1rem;
+        text-align: center;
+        width: 100%;
     }
 
     .hero-subtitle {
-        font-size: 1rem;
+        font-size: 0.95rem;
+        text-align: center;
+        width: 100%;
+        max-width: 100%;
+    }
+
+    .hero-floating-cards-wrapper {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 0.5rem;
+        width: 100%;
+        max-width: 100%;
+        justify-content: center;
+        align-items: stretch;
+    }
+
+    .hero-card {
+        width: 100%;
+        max-width: 100%;
+        transform: none !important;
+        margin: 0;
+    }
+
+    .hero-card-header {
+        padding: 4px 6px;
+    }
+
+    .hero-card-title {
+        font-size: 0.58rem;
+    }
+
+    .hero-card .dark-code-body {
+        font-size: 0.52rem !important;
+        line-height: 1.3;
+        padding: 0.4rem 0.4rem;
+        height: 135px;
     }
 
     .carousel-text-wrapper {
