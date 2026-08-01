@@ -10,27 +10,36 @@
 
 .services-grid {
     display: grid;
-    grid-template-columns: repeat(5, 1fr);
-    gap: 1.5rem;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2.5rem;
+    max-width: 1100px;
+    margin: 0 auto;
 }
 
 .service-card {
-    padding: 2rem 1.5rem;
+    padding: 3rem 2.5rem;
     text-align: left;
     height: 100%;
     display: flex;
     flex-direction: column;
     align-items: flex-start;
+    border-radius: 24px;
+    justify-content: space-between;
+    transition: transform var(--transition-normal), box-shadow var(--transition-normal);
 }
 
 .service-card:hover {
-    transform: translateY(-5px);
+    transform: translateY(-8px);
+}
+
+.service-card-header {
+    width: 100%;
 }
 
 .service-icon-wrapper {
-    width: 60px;
-    height: 60px;
-    border-radius: 18px;
+    width: 70px;
+    height: 70px;
+    border-radius: 20px;
     background-color: var(--card-color);
     box-shadow: var(--shadow-in-sm);
     display: flex;
@@ -41,35 +50,94 @@
 }
 
 .service-icon {
-    width: 28px;
-    height: 28px;
+    width: 32px;
+    height: 32px;
+    stroke: #dc2626;
 }
 
 .service-card-title {
-    font-size: 1.25rem;
-    margin-bottom: 1rem;
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 1.2rem;
     color: var(--text-primary);
 }
 
 .service-card-text {
-    font-size: 0.95rem;
-    line-height: 1.6;
+    font-size: 1.02rem;
+    line-height: 1.7;
     color: var(--text-secondary);
+    margin-bottom: 1.8rem;
+}
+
+.service-features-list {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 2rem 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    width: 100%;
+}
+
+.service-feature-item {
+    font-size: 0.95rem;
+    color: var(--text-primary);
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    font-weight: 500;
+}
+
+.service-feature-icon {
+    stroke: #16a34a;
+    color: #16a34a;
+    flex-shrink: 0;
+}
+
+.service-card-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.65rem;
+    padding: 0.9rem 1.8rem;
+    border-radius: 16px;
+    font-weight: 600;
+    font-size: 0.95rem;
+    color: var(--text-primary);
+    text-decoration: none;
+    cursor: pointer;
+    background-color: var(--card-color);
+    box-shadow: var(--shadow-out);
+    border: 1px solid var(--glass-border);
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    margin-top: auto;
+}
+
+.service-card-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-out-hover);
+    color: var(--text-primary);
+}
+
+.service-card-btn:active {
+    transform: translateY(0);
+    box-shadow: var(--shadow-in);
 }
 
 /* ==========================================================================
    RESPONSIVENESS (SERVICES SECTION)
    ========================================================================== */
-@media (max-width: 1200px) {
+@media (max-width: 992px) {
     .services-grid {
-        grid-template-columns: repeat(3, 1fr);
+        grid-template-columns: 1fr;
+        max-width: 600px;
+    }
+    .service-card {
+        padding: 2.2rem 1.8rem;
     }
 }
 
 @media (max-width: 768px) {
-    .services-grid {
-        grid-template-columns: 1fr;
-    }
     .services-section {
         padding: 60px 0;
     }

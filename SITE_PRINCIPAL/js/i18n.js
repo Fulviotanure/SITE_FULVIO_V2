@@ -38,18 +38,32 @@
             },
             services: {
                 sub: "O QUE EU FAÇO",
-                title: "Especialidades Digitais",
+                title: "Serviços Digitais",
                 desc: "Combinando criatividade humana e algoritmos avançados para entregar resultados rápidos, estéticos e altamente otimizados.",
-                s1_title: "Criação de Imagens e Arte",
-                s1_text: "Geração de artes conceituais, ilustrações personalizadas e visuais de altíssimo nível usando modelos de difusão de última geração, adaptados à identidade de sua marca.",
-                s2_title: "Banners & Social Media",
-                s2_text: "Desenvolvimento de peças publicitárias inteligentes e banners otimizados para redes sociais e anúncios. Design focado em conversão com layout calibrado por inteligência artificial.",
-                s3_title: "Edição & Upscaling",
-                s3_text: "Remoção de fundos complexos, restauração de fotos antigas, expansão inteligente de bordas (outpainting) e aumento de resolução (upscaling) sem perda de fidelidade.",
-                s4_title: "Sites & Web Apps",
-                s4_text: "Desenvolvimento de landing pages, sites institucionais e painéis dinâmicos interativos. Criação de interfaces web modernas e esteticamente alinhadas à identidade do seu projeto, aliadas a uma arquitetura robusta conectada a APIs.",
-                s5_title: "Código & Aplicativos",
-                s5_text: "Construção de aplicativos robustos e estruturação de bases de código limpas, modernas e escaláveis. Transformando ideias complexas em soluções mobile nativas e híbridas."
+                s1_title: "Criação de Imagens & Design Visual",
+                s1_text: "Geração de artes conceituais, ilustrações personalizadas, embalagens, banners e identidade visual de alto nível. Edição generativa, expansão de bordas e aumento de resolução com IA.",
+                s1_f1: "Concept Art & Character Design",
+                s1_f2: "Banners Publicitários & Social Media",
+                s1_f3: "Edição Generativa & Upscaling 4K",
+                s1_f4: "Design de Embalagens & Identidade Visual",
+                btn_gallery: "Ver Galeria",
+
+                s2_title: "Criação de Sites & Web Apps",
+                s2_text: "Desenvolvimento completo de landing pages de alta conversão, sites institucionais e sistemas web modernos. Código limpo, design responsivo e otimização para SEO com entrega rápida.",
+                s2_f1: "Landing Pages de Alta Conversão",
+                s2_f2: "Sites Institucionais & Portfólios",
+                s2_f3: "Web Apps & Interfaces Interativas",
+                s2_f4: "Design Responsivo, Performance & SEO",
+                btn_sites: "Ver Sites"
+            },
+            gallery: {
+                modal_title: "Galeria de Imagens"
+            },
+            sites: {
+                modal_title: "Criação de Sites",
+                wmacro: "WMacro",
+                fotografias: "Fotografias",
+                sobmedida: "Solicitar Sob Medida"
             },
             portfolio: {
                 sub: "MEU PORTFÓLIO",
@@ -115,8 +129,7 @@
             },
             footer: {
                 motto: "Modelando o futuro visual através da inteligência artificial aplicada ao design digital.",
-                copy: "&copy; 2026 Fulvio Tanure. Todos os direitos reservados. Design Neomórfico & Inteligência Artificial.",
-                accessibility_statement: "Este site segue as diretrizes de acessibilidade WCAG 2.1 nível AA."
+                copy: "© 2026 Fulvio Tanure. Todos os direitos reservados. Design Neomórfico"
             },
             modal: {
                 close: "Fechar"
@@ -154,18 +167,32 @@
             },
             services: {
                 sub: "WHAT I DO",
-                title: "Digital Specialties",
+                title: "Digital Services",
                 desc: "Combining human creativity and advanced algorithms to deliver fast, aesthetic, and highly optimized results.",
-                s1_title: "Image & Art Creation",
-                s1_text: "Generation of concept arts, custom illustrations, and top-tier visuals using state-of-the-art diffusion models, tailored to your brand identity.",
-                s2_title: "Banners & Social Media",
-                s2_text: "Development of smart advertising pieces and banners optimized for social networks and ads. Conversion-focused design with layouts calibrated by artificial intelligence.",
-                s3_title: "Editing & Upscaling",
-                s3_text: "Removal of complex backgrounds, restoration of old photos, intelligent border expansion (outpainting), and resolution upscaling without loss of fidelity.",
-                s4_title: "Websites & Web Apps",
-                s4_text: "Development of landing pages, corporate websites, and interactive dynamic panels. Creation of modern web interfaces aesthetically aligned with your project identity, combined with a robust API-connected architecture.",
-                s5_title: "Code & Applications",
-                s5_text: "Building robust applications and structuring clean, modern, and scalable codebases. Turning complex ideas into native and hybrid mobile solutions."
+                s1_title: "Image Creation & Visual Design",
+                s1_text: "Generation of concept arts, custom illustrations, packaging, banners, and top-tier visual identity. Generative editing, outpainting, and resolution upscaling with AI.",
+                s1_f1: "Concept Art & Character Design",
+                s1_f2: "Ad Banners & Social Media Assets",
+                s1_f3: "Generative Editing & 4K Upscaling",
+                s1_f4: "Packaging Design & Visual Identity",
+                btn_gallery: "View Gallery",
+
+                s2_title: "Website & Web App Creation",
+                s2_text: "Complete development of high-converting landing pages, corporate websites, and modern web systems. Clean code, responsive design, and SEO optimization with fast delivery.",
+                s2_f1: "High-Converting Landing Pages",
+                s2_f2: "Corporate Websites & Portfolios",
+                s2_f3: "Web Apps & Interactive Interfaces",
+                s2_f4: "Responsive Design, Performance & SEO",
+                btn_sites: "View Websites"
+            },
+            gallery: {
+                modal_title: "Image Gallery"
+            },
+            sites: {
+                modal_title: "Website Creation",
+                wmacro: "WMacro",
+                fotografias: "Photographs",
+                sobmedida: "Request Custom Site"
             },
             portfolio: {
                 sub: "MY PORTFOLIO",
@@ -231,8 +258,7 @@
             },
             footer: {
                 motto: "Shaping the visual future through artificial intelligence applied to digital design.",
-                copy: "&copy; 2026 Fulvio Tanure. All rights reserved. Neumorphic Design & Artificial Intelligence.",
-                accessibility_statement: "This website complies with WCAG 2.1 Level AA accessibility guidelines."
+                copy: "© 2026 Fulvio Tanure. All rights reserved. Neumorphic Design"
             },
             modal: {
                 close: "Close"
@@ -270,18 +296,32 @@
             },
             services: {
                 sub: "COSA FACCIO",
-                title: "Specialità Digitali",
+                title: "Servizi Digitali",
                 desc: "Combinando creatività umana e algoritmi avanzati per fornire risultati rapidi, estetici e altamente ottimizzati.",
-                s1_title: "Creazione di Immagini e Arte",
-                s1_text: "Generazione di concept art, illustrazioni personalizzate e visual di altissimo livello utilizzando modelli di diffusione di ultima generazione, adatti all'identità del tuo brand.",
-                s2_title: "Banner & Social Media",
-                s2_text: "Sviluppo di pezzi pubblicitari intelligenti e banner ottimizzati per social network e annunci. Design incentrato sulla conversione con layout calibrato dall'intelligenza artificiale.",
-                s3_title: "Modifica & Upscaling",
-                s3_text: "Rimozione di sfondi complessi, restauro di foto antiche, espansione intelligente dei bordi (outpainting) e aumento della risoluzione (upscaling) senza perdita di fedeltà.",
-                s4_title: "Siti & Web App",
-                s4_text: "Sviluppo di landing page, siti aziendali e pannelli dinamici interattivi. Creazione di interfacce web moderne ed esteticamente allineate all'identità del tuo progetto, unite a un'architettura robusta connessa alle API.",
-                s5_title: "Codice & Applicazioni",
-                s5_text: "Costruzione di applicazioni robuste e strutturazione di codebase pulite, moderne e scalabili. Trasformando idee complesse in soluzioni mobile native e ibride."
+                s1_title: "Creazione di Immagini & Design Visivo",
+                s1_text: "Generazione di concept art, illustrazioni personalizzate, packaging, banner e identità visiva di alto livello. Editing generativo, outpainting e upscaling ad alta risoluzione con IA.",
+                s1_f1: "Concept Art & Character Design",
+                s1_f2: "Banner Pubblicitari & Social Media",
+                s1_f3: "Editing Generativo & Upscaling 4K",
+                s1_f4: "Design di Packaging & Identità Visiva",
+                btn_gallery: "Vedi Galleria",
+
+                s2_title: "Creazione di Siti Web & Web App",
+                s2_text: "Sviluppo completo di landing page ad alta conversione, siti aziendali e sistemi web moderni. Codice pulito, design reattivo e ottimizzazione SEO con consegna rapida.",
+                s2_f1: "Landing Page ad Alta Conversione",
+                s2_f2: "Siti Aziendali & Portfolio",
+                s2_f3: "Web App & Interfacce Interattive",
+                s2_f4: "Design Reattivo, Prestazioni & SEO",
+                btn_sites: "Vedi Siti"
+            },
+            gallery: {
+                modal_title: "Galleria di Immagini"
+            },
+            sites: {
+                modal_title: "Creazione di Siti Web",
+                wmacro: "WMacro",
+                fotografias: "Fotografie",
+                sobmedida: "Richiedi Su Misura"
             },
             portfolio: {
                 sub: "IL MIO PORTFOLIO",
@@ -347,8 +387,7 @@
             },
             footer: {
                 motto: "Plasmare il futuro visivo attraverso l'intelligenza artificiale applicata al design digitale.",
-                copy: "&copy; 2026 Fulvio Tanure. Tutti i diritti riservati. Design Neomorfico & Intelligenza Artificiale.",
-                accessibility_statement: "Questo sito rispetta le linee guida di accessibilità WCAG 2.1 livello AA."
+                copy: "© 2026 Fulvio Tanure. Tutti i diritti riservati. Design Neomorfico"
             },
             modal: {
                 close: "Chiudi"

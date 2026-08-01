@@ -4,6 +4,8 @@
    ========================================================================== */
 
 (() => {
+    let isNavClickScroll = false; // Bloqueia scrollspy durante o click
+
     document.addEventListener('DOMContentLoaded', () => {
         // Dark mode removed
         initMobileNavigation();
@@ -14,6 +16,7 @@
     });
 
 
+    /* ==========================================================================
        MOBILE NAVIGATION MENU & BOTTOM NAV
        ========================================================================== */
     function initMobileNavigation() {
@@ -41,11 +44,25 @@
             window.addEventListener('languageChanged', updateMobileToggleAria);
         }
 
-        // Close menu when clicking on any navigation link
+        // Close menu when clicking on any navigation link and set active state immediately
         navLinks.forEach(link => {
             link.addEventListener('click', () => {
                 document.body.classList.remove('mobile-active');
                 if (mobileToggleBtn) updateMobileToggleAria();
+                
+                // Immediate tactile feedback
+                navLinks.forEach(item => {
+                    item.classList.remove('active');
+                    item.removeAttribute('aria-current');
+                });
+                link.classList.add('active');
+                link.setAttribute('aria-current', 'page');
+
+                // Suspend scrollSpy to prevent it reverting the active class during smooth scroll
+                isNavClickScroll = true;
+                setTimeout(() => {
+                    isNavClickScroll = false;
+                }, 800);
             });
         });
 
@@ -73,6 +90,8 @@
         if (!sections.length) return;
 
         window.addEventListener('scroll', () => {
+            if (isNavClickScroll) return; // Ignora o scroll enquanto a página desce pelo clique
+
             let currentSectionId = '';
             const scrollPosition = window.scrollY + 150; // offset height threshold
 

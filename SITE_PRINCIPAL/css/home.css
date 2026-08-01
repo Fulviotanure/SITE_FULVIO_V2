@@ -29,16 +29,149 @@
     max-width: 1440px;
     margin: 0 auto;
     padding: 0 3rem;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
+    display: grid;
+    grid-template-columns: 1.1fr 0.9fr;
+    align-items: center;
+    gap: 2.5rem;
     position: relative;
     z-index: 2;
 }
 
-/* ===============================
-   GLASSMORPHISM LAYER
-================================= */
+/* ==========================================================================
+   HERO FLOATING NEUMORPHIC COMPARISON CARDS
+   ========================================================================== */
+.hero-floating-cards-wrapper {
+    display: flex;
+    gap: 1.4rem;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    z-index: 3;
+    padding: 1rem 0;
+}
+
+.hero-card {
+    width: 290px;
+    border-radius: 20px;
+    background-color: var(--card-color);
+    box-shadow: var(--shadow-out);
+    border: 1px solid var(--glass-border);
+    overflow: hidden;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+
+.hero-card-trad {
+    transform: perspective(1000px) rotateY(6deg) rotateX(2deg) rotate(-2deg);
+}
+
+.hero-card-ai {
+    transform: perspective(1000px) rotateY(-6deg) rotateX(2deg) rotate(2deg);
+    box-shadow: var(--shadow-out-hover);
+}
+
+.hero-card:hover {
+    transform: perspective(1000px) rotateY(0deg) rotateX(0deg) translateY(-8px) scale(1.03);
+    box-shadow: var(--shadow-out-hover);
+    z-index: 5;
+}
+
+.hero-card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.75rem 1rem;
+    background: rgba(255, 255, 255, 0.45);
+    border-bottom: 1px solid var(--glass-border);
+    backdrop-filter: blur(8px);
+}
+
+.mac-dots {
+    display: flex;
+    gap: 6px;
+    align-items: center;
+}
+
+.mac-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    display: inline-block;
+}
+
+.mac-dot.red { background-color: #ff5f56; }
+.mac-dot.yellow { background-color: #ffbd2e; }
+.mac-dot.green { background-color: #27c93f; }
+
+.hero-card-title {
+    font-family: "JetBrains Mono", monospace;
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: var(--text-secondary);
+}
+
+.hero-card-badge {
+    font-size: 0.68rem;
+    font-weight: 700;
+    padding: 2px 8px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.badge-trad {
+    background-color: rgba(239, 68, 68, 0.1);
+    color: #ef4444;
+}
+
+.badge-ai {
+    background-color: rgba(16, 185, 129, 0.12);
+    color: #10b981;
+}
+
+.hero-card-body {
+    padding: 1.2rem;
+    font-family: "JetBrains Mono", monospace;
+    font-size: 0.82rem;
+    line-height: 1.6;
+    background-color: var(--card-color);
+}
+
+.code-line {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    color: var(--text-primary);
+}
+
+.code-line.indent {
+    padding-left: 1.2rem;
+}
+
+.code-keyword { color: #8b5cf6; font-weight: 600; }
+.code-comment { color: #94a3b8; font-style: italic; }
+.code-operator { color: #64748b; }
+.code-func { color: #2563eb; font-weight: 600; }
+.code-string { color: #059669; font-weight: 600; }
+
+.ai-prompt-bar {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    padding: 0.4rem 0.75rem;
+    border-radius: 10px;
+    margin-bottom: 0.8rem;
+    box-shadow: var(--shadow-in-sm);
+    font-size: 0.75rem;
+}
+
+.ai-prompt-text {
+    color: var(--accent-blue);
+    font-weight: 500;
+}
 .hero-text-block {
     display: flex;
     flex-direction: column;
@@ -58,16 +191,16 @@
 
 
 .tag-badge {
-    background-color: rgba(37, 99, 235, 0.06);
+    background-color: rgba(220, 38, 38, 0.06);
     padding: 0.45rem 1.1rem;
     border-radius: 50px;
     font-size: 0.72rem;
     font-weight: 800;
     letter-spacing: 1.2px;
-    color: var(--accent-blue);
+    color: #dc2626;
     margin-bottom: 1.5rem;
     display: inline-block;
-    border: 1px solid rgba(37, 99, 235, 0.4);
+    border: 1px solid rgba(220, 38, 38, 0.4);
     text-transform: uppercase;
 }
 
@@ -214,11 +347,11 @@
     #typewriter {
         height: 32px;
         font-size: 0.85rem;
-        background: none !important;
-        -webkit-background-clip: initial !important;
-        background-clip: initial !important;
-        -webkit-text-fill-color: initial !important;
-        color: var(--accent-purple) !important;
+        background: none;
+        -webkit-background-clip: initial;
+        background-clip: initial;
+        -webkit-text-fill-color: initial;
+        color: var(--accent-purple);
     }
 }
 
@@ -246,5 +379,456 @@
 
     .hero-text-block {
         padding: 1.25rem 0.5rem;
+    }
+}
+
+/* ==========================================================================
+   HERO CODE COMPARISON CARDS
+   ========================================================================== */
+
+.code-preview-container {
+    width: 100%;
+    margin-top: 2.5rem;
+}
+
+.code-preview-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    width: 100%;
+    max-width: 780px;
+}
+
+/* --- Base Card --- */
+.code-card {
+    border-radius: 14px;
+    overflow: hidden;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12), 0 2px 8px rgba(0, 0, 0, 0.08);
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.code-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 16px 48px rgba(0, 0, 0, 0.18), 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* --- Dark Card (Conventional Code) --- */
+.code-card-dark {
+    background: #131320;
+    border: 1px solid rgba(74, 222, 128, 0.12);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.35), 0 0 0 1px rgba(74, 222, 128, 0.06);
+}
+
+/* --- Light Card (Vibe Coding IA) --- */
+.code-card-light {
+    background: #f8fafc;
+    border: 1px solid rgba(37, 99, 235, 0.12);
+}
+
+/* --- Card Header (Traffic Lights + Title) --- */
+.code-card-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 14px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    flex-shrink: 0;
+}
+
+.code-card-dark .code-card-header {
+    background: #0d0d1a;
+    border-bottom-color: rgba(74, 222, 128, 0.1);
+}
+
+.code-card-light .code-card-header {
+    background: #f1f5f9;
+    border-bottom-color: rgba(37, 99, 235, 0.1);
+}
+
+.code-dots {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    flex-shrink: 0;
+}
+
+.code-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    display: inline-block;
+}
+
+.code-dot-red    { background: #ff5f57; }
+.code-dot-yellow { background: #febc2e; }
+.code-dot-green  { background: #28c840; }
+
+.code-header-title {
+    font-family: var(--font-heading), sans-serif;
+    font-size: 0.6rem;
+    font-weight: 700;
+    letter-spacing: 1.4px;
+    text-transform: uppercase;
+    flex: 1;
+    text-align: center;
+}
+
+.code-card-dark  .code-header-title { color: rgba(74, 222, 128, 0.55); letter-spacing: 1.6px; }
+.code-card-light .code-header-title { color: rgba(15, 23, 42, 0.45); }
+
+/* --- Card Body --- */
+.code-card-body {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    overflow: hidden;
+}
+
+/* --- Code Editor Area (left / dark card) --- */
+.code-editor-area {
+    flex: 1;
+    font-family: 'JetBrains Mono', 'Fira Code', 'Cascadia Code', 'Courier New', monospace;
+    font-size: 0.65rem;
+    line-height: 1.65;
+    color: #4ade80;          /* phosphor terminal green */
+    padding: 12px 14px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    min-height: 180px;
+    max-height: 220px;
+    white-space: pre-wrap;
+    word-break: break-word;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(74,222,128,0.12) transparent;
+    text-shadow: 0 0 8px rgba(74, 222, 128, 0.25);
+}
+
+.code-editor-area::-webkit-scrollbar { width: 4px; }
+.code-editor-area::-webkit-scrollbar-track { background: transparent; }
+.code-editor-area::-webkit-scrollbar-thumb { background: rgba(74,222,128,0.15); border-radius: 4px; }
+
+/* Syntax highlighting tokens — phosphor green palette */
+.code-keyword { color: #86efac; font-weight: 700; }   /* bright green */
+.code-func    { color: #6ee7b7; }                      /* teal-green   */
+.code-str     { color: #bbf7d0; }                      /* pale green   */
+.code-comment { color: #166534; font-style: italic; }  /* dark green   */
+
+/* --- Cursor --- */
+.code-cursor {
+    display: inline-block;
+    width: 2px;
+    height: 1em;
+    background: #4ade80;      /* phosphor green cursor on dark card */
+    margin-left: 1px;
+    vertical-align: text-bottom;
+    border-radius: 1px;
+    animation: blink-block 0.85s step-end infinite;
+    box-shadow: 0 0 6px rgba(74, 222, 128, 0.8);
+}
+
+.code-card-light .code-cursor {
+    background: #2563eb;
+    box-shadow: none;
+}
+
+@keyframes blink-block {
+    0%, 100% { opacity: 1; }
+    50%       { opacity: 0; }
+}
+
+/* --- Badges at bottom of each card --- */
+.conventional-badge-slow,
+.ai-badge-instant {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    font-family: 'JetBrains Mono', 'Fira Code', monospace;
+    font-size: 0.6rem;
+    font-weight: 600;
+    letter-spacing: 0.3px;
+    padding: 6px 14px;
+    flex-shrink: 0;
+    border-radius: 0;
+}
+
+.conventional-badge-slow {
+    background: rgba(239, 68, 68, 0.18);
+    color: #fca5a5;
+    border-top: 1px solid rgba(239, 68, 68, 0.25);
+}
+
+.ai-badge-instant {
+    background: rgba(16, 185, 129, 0.14);
+    color: #34d399;
+    border-top: 1px solid rgba(16, 185, 129, 0.22);
+}
+
+.badge-icon { font-size: 0.85rem; }
+
+/* =============================================
+   VIBE CODING CARD — SPLIT LAYOUT
+   ============================================= */
+
+.vibe-split-body {
+    display: flex;
+    flex-direction: row;
+    position: relative;
+    overflow: hidden;
+    min-height: 200px;
+}
+
+/* Left pane: Agent prompt */
+.vibe-prompt-pane {
+    width: 46%;
+    border-right: 1px solid rgba(37, 99, 235, 0.1);
+    display: flex;
+    flex-direction: column;
+    padding: 8px;
+    background: #f8fafc;
+    flex-shrink: 0;
+    min-width: 0;
+}
+
+.ai-prompt-box {
+    background: #ffffff;
+    border: 1px solid rgba(37, 99, 235, 0.15);
+    border-radius: 10px;
+    padding: 8px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    box-shadow: 0 2px 8px rgba(37, 99, 235, 0.06);
+    overflow: hidden;
+}
+
+.agent-header {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    white-space: nowrap;   /* never break Agent label */
+    overflow: hidden;
+    flex-shrink: 0;
+}
+
+.agent-icon-emoji {
+    font-size: 0.85rem;
+    line-height: 1;
+}
+
+.ai-agent-label {
+    font-family: var(--font-heading), sans-serif;
+    font-size: 0.68rem;
+    font-weight: 700;
+    color: #1d4ed8;
+    letter-spacing: 0.3px;
+    white-space: nowrap;   /* force single line */
+}
+
+.prompt-text {
+    font-family: var(--font-body), sans-serif;
+    font-size: 0.6rem;
+    line-height: 1.55;
+    color: #334155;
+    font-style: italic;
+    flex: 1;
+    word-break: break-word;   /* no mid-word splits */
+    overflow-wrap: break-word;
+    overflow: hidden;
+}
+
+/* Right pane: Generated code / preview */
+.vibe-preview-pane {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    position: relative;
+    background: #f1f5f9;
+}
+
+.fast-code-area {
+    flex: 1;
+    font-family: 'JetBrains Mono', 'Fira Code', monospace;
+    font-size: 0.55rem;
+    line-height: 1.6;
+    color: #334155;
+    padding: 10px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    white-space: pre-wrap;
+    word-break: break-word;   /* no mid-word splits in code output */
+    transition: opacity 0.3s ease;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(0,0,0,0.08) transparent;
+}
+
+.fast-code-area::-webkit-scrollbar { width: 3px; }
+.fast-code-area::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.1); border-radius: 3px; }
+
+/* AI Preview (mini landing page mockup) */
+.ai-preview-dash {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 5px;
+    padding: 8px;
+    overflow: hidden;
+    background: #f1f5f9;
+    transition: opacity 0.3s ease;
+}
+
+/* Mini UI mockup pieces injected via JS */
+.mini-ui {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    padding: 4px;
+    background: #fff;
+    border-radius: 6px;
+    overflow: hidden;
+}
+
+.mini-ui.dark { background: #0f172a; }
+
+.mini-nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 4px 6px;
+    background: rgba(37, 99, 235, 0.08);
+    border-radius: 4px;
+    height: 14px;
+    flex-shrink: 0;
+}
+
+.mini-title {
+    height: 5px;
+    background: #2563eb;
+    border-radius: 3px;
+    width: 40%;
+}
+
+.mini-nav-dots { display: flex; gap: 4px; align-items: center; }
+
+.mini-nav-dot {
+    width: 16px;
+    height: 4px;
+    background: #94a3b8;
+    border-radius: 2px;
+}
+
+.mini-hero {
+    background: linear-gradient(135deg, #2563eb 0%, #0284c7 100%);
+    border-radius: 6px;
+    padding: 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    flex-shrink: 0;
+}
+
+.mini-sub {
+    height: 4px;
+    background: rgba(255, 255, 255, 0.5);
+    border-radius: 2px;
+    width: 60%;
+}
+
+.mini-btn {
+    height: 12px;
+    width: 40px;
+    background: #2563eb;
+    border-radius: 4px;
+}
+
+.mini-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4px;
+    flex: 1;
+}
+
+.mini-card {
+    background: #f1f5f9;
+    border-radius: 5px;
+    border: 1px solid rgba(37, 99, 235, 0.08);
+    padding: 4px;
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    overflow: hidden;
+}
+
+.mini-ui.dark .mini-card { background: #1e293b; border-color: rgba(255,255,255,0.05); }
+
+.ai-preview-chart {
+    width: 100%;
+    height: 8px;
+    background: linear-gradient(90deg, #2563eb 30%, #0284c7 100%);
+    border-radius: 4px;
+    flex-shrink: 0;
+}
+
+/* ==========================================================================
+   RESPONSIVENESS (CODE CARDS)
+   ========================================================================== */
+@media (max-width: 900px) {
+    .code-preview-grid {
+        max-width: 100%;
+        gap: 0.75rem;
+    }
+
+    .code-editor-area {
+        font-size: 0.6rem;
+        min-height: 150px;
+        max-height: 180px;
+    }
+}
+
+@media (max-width: 640px) {
+    .code-preview-grid {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+
+    .vibe-split-body {
+        flex-direction: column;
+    }
+
+    .vibe-prompt-pane {
+        width: 100%;
+        border-right: none;
+        border-bottom: 1px solid rgba(37, 99, 235, 0.1);
+        padding: 8px;
+    }
+
+@media (max-width: 1024px) {
+    .hero-container {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+    }
+    .hero-text-block {
+        align-items: center;
+        text-align: center;
+        margin: 0 auto;
+    }
+    .hero-floating-cards-wrapper {
+        flex-direction: column;
+        gap: 1.2rem;
+    }
+    .hero-card-trad, .hero-card-ai {
+        transform: none;
+        width: 100%;
+        max-width: 340px;
     }
 }

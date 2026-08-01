@@ -135,3 +135,82 @@ a.contact-info-card:hover {
         gap: 1.5rem;
     }
 }
+
+/* From Uiverse.io by ercnersoy - Adapted to Neumorphic Theme */
+.input {
+ width: 100%;
+ box-sizing: border-box;
+ border: none;
+ padding: 1rem 1.2rem;
+ border-radius: 15px;
+ background: var(--bg-color);
+ box-shadow: var(--shadow-out);
+ transition: 0.3s;
+ color: var(--text-primary);
+ font-family: var(--font-body);
+ font-size: 0.95rem;
+ outline: none;
+}
+
+.input:focus {
+ outline-color: transparent;
+ background: var(--bg-color);
+ box-shadow: var(--shadow-in);
+ transition: 0.3s;
+}
+
+textarea.input {
+ height: 110px;
+ resize: none;
+}
+
+.input::placeholder {
+ color: var(--text-muted);
+}
+
+/* Contact Form Button High-Contrast Overrides */
+#contact-form .btn-creations,
+#contact-form .btn-creations .btn-text {
+ color: #1E2938;
+ text-shadow: none;
+ font-weight: 700;
+}
+
+#contact-form .btn-creations .btn-icon,
+#contact-form .btn-creations svg {
+ color: #1E2938;
+ stroke: #1E2938;
+}
+
+#contact-form .btn-creations:hover,
+#contact-form .btn-creations:hover .btn-text {
+ color: #dc2626;
+}
+
+#contact-form .btn-creations:hover .btn-icon,
+#contact-form .btn-creations:hover svg {
+ color: #dc2626;
+ stroke: #dc2626;
+}
+
+body.dark-theme #contact-form .btn-creations,
+body.dark-theme #contact-form .btn-creations .btn-text {
+ color: #f3f4f6;
+}
+
+body.dark-theme #contact-form .btn-creations .btn-icon,
+body.dark-theme #contact-form .btn-creations svg {
+ color: #f3f4f6;
+ stroke: #f3f4f6;
+}
+
+body.dark-theme #contact-form .btn-creations:hover,
+body.dark-theme #contact-form .btn-creations:hover .btn-text {
+ color: #ef4444;
+}
+
+body.dark-theme #contact-form .btn-creations:hover .btn-icon,
+body.dark-theme #contact-form .btn-creations:hover svg {
+ color: #ef4444;
+ stroke: #ef4444;
+}
