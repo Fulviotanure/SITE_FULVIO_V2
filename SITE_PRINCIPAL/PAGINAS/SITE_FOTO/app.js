@@ -23,9 +23,6 @@ let startTouchDistance = 0;
 let startTouchScale = 1;
 let isPinching = false;
 
-// Hero Showcase State
-let showcaseIndex = 0;
-let showcaseTimer = null;
 
 
 
@@ -49,7 +46,6 @@ const formFeedback = document.getElementById("formFeedback");
 const backButtonContainer = document.getElementById("backButtonContainer");
 
 
-const showcaseSlides = document.querySelectorAll(".showcase-slide");
 
 // --- Banco de fotos (preenchido via API ou fallback estático) ---
 let photos = [];
@@ -62,7 +58,6 @@ document.addEventListener("DOMContentLoaded", () => {
   setupLightbox();
   setupContactForm();
   setupScrollIndicator();
-  setupHeroShowcase();
 
   // Carrega fotos diretamente do banco de dados estático
   if (typeof photosData !== "undefined" && Array.isArray(photosData)) {
@@ -97,28 +92,6 @@ function handleRouting() {
 }
 
 
-// --- Hero Showcase Auto Slideshow ---
-function setupHeroShowcase() {
-  if (showcaseSlides.length === 0) return;
-
-  // Function to switch showcase slide
-  function switchSlide(index) {
-    showcaseIndex = index;
-    
-    showcaseSlides.forEach(slide => slide.classList.remove("active"));
-    showcaseSlides[showcaseIndex].classList.add("active");
-  }
-
-  // Automatic slideshow tick
-  function startShowcaseTimer() {
-    showcaseTimer = setInterval(() => {
-      let next = (showcaseIndex + 1) % showcaseSlides.length;
-      switchSlide(next);
-    }, 4500); // Rotate every 4.5 seconds
-  }
-
-  startShowcaseTimer();
-}
 
 // --- Scroll-Reveal Logic (IntersectionObserver) ---
 function setupScrollReveal() {
@@ -173,12 +146,7 @@ function setupMenuToggle() {
 
 // --- Portfolio Filter & Category selection ---
 function setupFilterButtons() {
-  filterButtons.forEach(btn => {
-    btn.addEventListener("click", (e) => {
-      const filter = e.target.getAttribute("data-filter");
-      window.location.hash = filter === "todos" ? "" : filter;
-    });
-  });
+  // Links update the hash natively via href.
 }
 
 function updateFilterButtonsActiveState(activeFilter) {
@@ -264,6 +232,14 @@ function applyCategoryFilter(filter) {
   activeFilter = filter;
   galleryGrid.innerHTML = "";
   
+  const titleEl = document.getElementById("portfolioTitle");
+  if (titleEl) {
+    if (filter === "todos") titleEl.textContent = "GALERIA";
+    else if (filter === "retratos") titleEl.textContent = "RETRATOS";
+    else if (filter === "cenas") titleEl.textContent = "CENAS";
+    else if (filter === "ensaios") titleEl.textContent = "ENSAIOS";
+  }
+
   if (backButtonContainer) {
     backButtonContainer.style.display = "none";
     backButtonContainer.innerHTML = "";
@@ -324,11 +300,15 @@ function applyCategoryFilter(filter) {
   loadAllPhotos();
 }
 
-// Photoshoot navigation functions
 function openPhotoshoot(category) {
   galleryGrid.classList.remove("album-view");
   galleryGrid.innerHTML = "";
   
+  const titleEl = document.getElementById("portfolioTitle");
+  if (titleEl) {
+    titleEl.textContent = "ENSAIO — " + category.toUpperCase();
+  }
+
   if (backButtonContainer) {
     backButtonContainer.style.display = "flex";
     backButtonContainer.innerHTML = `

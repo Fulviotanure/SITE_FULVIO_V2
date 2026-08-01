@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <base href="./">
+
   <meta name="description" content="Fulvio Tanure | Portfólio de Fotografia — Retratos ao ar livre, ensaios fotográficos e cenas autorais. Fotógrafo profissional em Vitória, Espírito Santo, Brasil.">
   <meta name="keywords" content="fotografia, fulvio tanure, portfolio, retratos externos, ensaio fotográfico, cenas urbanas, natureza, macro, fotógrafo profissional, vitoria, espirito santo">
   <meta name="author" content="Fulvio Tanure">
@@ -61,23 +61,23 @@
   <header>
     <div class="container nav-container">
       <div class="logo-group">
-        <a href="../" class="back-link" title="Voltar ao site principal">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-            <line x1="19" y1="12" x2="5" y2="12"></line>
-            <polyline points="12 19 5 12 12 5"></polyline>
-          </svg>
-        </a>
         <div class="logo-text-group">
-          <a href="#inicio" class="logo">FULVIO TANURE</a>
-          <span class="logo-sub">FOTOGRAFIA</span>
+          <a href="#portfolio" class="logo">FULVIO TANURE</a>
         </div>
       </div>
       
       <!-- Navegação Principal -->
       <nav>
         <ul class="nav-menu" id="navMenu">
-          <li><a href="#inicio" class="nav-link active">Início</a></li>
-          <li><a href="#portfolio" class="nav-link">Portfólio</a></li>
+          <li class="has-dropdown">
+            <a href="#portfolio" class="nav-link active">Portfólio <span class="dropdown-icon">▼</span></a>
+            <ul class="dropdown-menu">
+              <li><a href="#todos" class="dropdown-link filter-btn" data-filter="todos">Galeria</a></li>
+              <li><a href="#retratos" class="dropdown-link filter-btn" data-filter="retratos">Retratos</a></li>
+              <li><a href="#cenas" class="dropdown-link filter-btn" data-filter="cenas">Cenas</a></li>
+              <li><a href="#ensaios" class="dropdown-link filter-btn" data-filter="ensaios">Ensaios</a></li>
+            </ul>
+          </li>
           <li><a href="#contatos" class="nav-link">Contatos</a></li>
         </ul>
       </nav>
@@ -90,61 +90,12 @@
     </div>
   </header>
 
-  <!-- Seção Hero Split Dinâmica (Início) -->
-  <section id="inicio" class="hero-section">
-    <!-- Lado Direito: Showcase Rotativo com Enquadramento Fixo -->
-    <div class="hero-showcase-side">
-      <div class="showcase-frame">
-        <!-- Imagem 1 (Arquitetura Moderna Vidro) -->
-        <div class="showcase-slide active" style="background-image: url('CENAS/arquitetura_moderna_vidro.jpg');" data-index="0"></div>
-        <!-- Imagem 2 (Caminho Parque Raios Sol) -->
-        <div class="showcase-slide" style="background-image: url('CENAS/caminho_parque_raios_sol_arvores.jpg');" data-index="1"></div>
-        <!-- Imagem 3 (Fotógrafa na Pedra) -->
-        <div class="showcase-slide" style="background-image: url('PESSOAS/fotografa_sentada_pedra_ar_livre.jpg');" data-index="2"></div>
-        <!-- Imagem 4 (Vista de Montanha ao Crepúsculo) -->
-        <div class="showcase-slide" style="background-image: url('CENAS/vista_de_montanha_ao_crepusculo.jpg');" data-index="3"></div>
-        <!-- Imagem 5 (Estrada ao Pôr do Sol) -->
-        <div class="showcase-slide" style="background-image: url('CENAS/estrada_por_do_sol.jpg');" data-index="4"></div>
-        <!-- Imagem 6 (Cavalos Pastando) -->
-        <div class="showcase-slide" style="background-image: url('CENAS/dois_cavalos_pastando_em_campo_perto_da_floresta.jpg');" data-index="5"></div>
-        <!-- Imagem 7 (Panorama Terceira Ponte) -->
-        <div class="showcase-slide" style="background-image: url('CENAS/panorama_terceira_ponte.jpg');" data-index="6"></div>
-        <!-- Imagem 8 (Casal Abraçado ao Ar Livre) -->
-        <div class="showcase-slide" style="background-image: url('PESSOAS/casal_abracado_sorrindo_ar_livre.jpg');" data-index="7"></div>
-      </div>
-    </div>
-
-    <div class="container hero-container">
-      <div class="hero-split">
-        <!-- Lado Esquerdo: Texto & CTA -->
-        <div class="hero-text-side">
-          <h1 class="hero-title">FOTOGRAFIA</h1>
-          <p class="hero-subtitle">a arte de transformar um momento em eternidade</p>
-          <div class="hero-cta">
-            <a href="#portfolio" class="btn-primary">Explorar Acervo</a>
-          </div>
-        </div>
-      </div>
-    </div>
-    <a href="#portfolio" class="scroll-indicator" aria-label="Rolar para baixo">
-      <span class="mouse-icon"><span class="mouse-wheel"></span></span>
-    </a>
-  </section>
 
   <!-- Seção Galeria Masonry (Portfólio) -->
   <section id="portfolio" class="portfolio-section">
     <div class="container">
-      <h2 class="section-title reveal reveal-up">PORTFÓLIO</h2>
-      
-      <!-- Menu de Filtros de Categoria (Estilo Aba Wix) -->
-      <div class="filter-wrapper reveal reveal-fade">
-        <ul class="filter-menu">
-          <li><button class="filter-btn active" data-filter="todos">Galeria</button></li>
-          <li><button class="filter-btn" data-filter="retratos">Retratos</button></li>
-          <li><button class="filter-btn" data-filter="cenas">Cenas</button></li>
-          <li><button class="filter-btn" data-filter="ensaios">Ensaios</button></li>
-        </ul>
-      </div>
+      <h2 id="portfolioTitle" class="section-title reveal reveal-up">GALERIA</h2>
+
 
       <!-- Container para Botão Voltar do Ensaio -->
       <div id="backButtonContainer" class="back-button-container" style="display: none;"></div>
@@ -176,14 +127,6 @@
             <div class="detail-item reveal reveal-fade" style="transition-delay: 0.1s;">
               <span class="detail-label">Localização</span>
               <span class="detail-value">Vitória, Espírito Santo, Brasil</span>
-            </div>
-            <div class="detail-item reveal reveal-fade" style="transition-delay: 0.15s;">
-              <span class="detail-label">Instagram</span>
-              <a href="https://www.instagram.com/aylamendesia?utm_source=qr&igsh=dGhhbnByc2MzbnNy" target="_blank" rel="noopener noreferrer" class="detail-value">@aylamendesia</a>
-            </div>
-            <div class="detail-item reveal reveal-fade" style="transition-delay: 0.2s;">
-              <span class="detail-label">Instagram IA</span>
-              <a href="https://www.instagram.com/artimagination.ia?utm_source=qr&igsh=MTVlbXhjYnJoaWRzOA==" target="_blank" rel="noopener noreferrer" class="detail-value">@artimagination.ia</a>
             </div>
           </div>
 

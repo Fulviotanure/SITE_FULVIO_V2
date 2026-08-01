@@ -12,7 +12,123 @@
     });
 
     /* ==========================================================================
+       SYNTAX HIGHLIGHTER UTILITY
+       ========================================================================== */
+    function highlightLine(str) {
+        if (!str) return "";
+        if (str.trim().startsWith("//")) {
+            return `<span class="code-comment">${str.replace(/</g, "&lt;").replace(/>/g, "&gt;")}</span>`;
+        }
+
+        const KEYWORDS = new Set([
+            'import', 'from', 'export', 'default', 'function', 'async', 'await',
+            'const', 'let', 'var', 'for', 'of', 'in', 'while', 'do', 'try', 'catch',
+            'if', 'else', 'throw', 'new', 'return', 'continue', 'break', 'typeof',
+            'instanceof', 'class', 'extends', 'super', 'this'
+        ]);
+
+        const BUILTINS = new Set([
+            'console', 'Date', 'Math', 'Error', 'JSON', 'Array', 'Object', 'String',
+            'Number', 'Boolean', 'Promise', 'TensorUtils', 'VectorDB', 'TelemetryService',
+            'GlobalState', 'React', 'useState', 'useEffect', 'config',
+            'HyperNode', 'QuantumEngine', 'SingularityGateway', 'RuntimeFlags',
+            'ENGINE_VERSION', 'GALAXY_CLUSTER', 'QUANTUM_SIGNATURE',
+            'MAX_PHOTON_STREAM', 'TEMPORAL_OFFSET', 'CORE_STABILITY_LIMIT', 'DEBUG_MODE'
+        ]);
+
+        const BOOLEANS = new Set(['true', 'false', 'null', 'undefined']);
+
+        let result = "";
+        let i = 0;
+        const len = str.length;
+
+        while (i < len) {
+            // Comentário no meio da linha
+            if (str[i] === '/' && str[i + 1] === '/') {
+                const commentText = str.substring(i);
+                result += `<span class="code-comment">${commentText.replace(/</g, "&lt;").replace(/>/g, "&gt;")}</span>`;
+                break;
+            }
+
+            // Strings (aspas simples, duplas ou template literal)
+            if (str[i] === '"' || str[i] === "'" || str[i] === '`') {
+                const quote = str[i];
+                let start = i;
+                i++;
+                while (i < len && str[i] !== quote) {
+                    if (str[i] === '\\') i++;
+                    i++;
+                }
+                if (i < len) i++;
+                const strVal = str.substring(start, i);
+                result += `<span class="code-string">${strVal.replace(/</g, "&lt;").replace(/>/g, "&gt;")}</span>`;
+                continue;
+            }
+
+            // Números
+            if (/\d/.test(str[i])) {
+                let start = i;
+                while (i < len && /[\d.]/.test(str[i])) i++;
+                const numVal = str.substring(start, i);
+                result += `<span class="code-num">${numVal}</span>`;
+                continue;
+            }
+
+            // Identificadores (palavras, variáveis, funções, propriedades)
+            if (/[a-zA-Z_$]/.test(str[i])) {
+                let start = i;
+                while (i < len && /[\w$]/.test(str[i])) i++;
+                const word = str.substring(start, i);
+
+                let peek = i;
+                while (peek < len && /\s/.test(str[peek])) peek++;
+                const isFnCall = peek < len && str[peek] === '(';
+
+                let lookBehind = start - 1;
+                while (lookBehind >= 0 && /\s/.test(str[lookBehind])) lookBehind--;
+                const isProp = lookBehind >= 0 && str[lookBehind] === '.';
+
+                if (KEYWORDS.has(word)) {
+                    result += `<span class="code-keyword">${word}</span>`;
+                } else if (BUILTINS.has(word)) {
+                    result += `<span class="code-builtin">${word}</span>`;
+                } else if (BOOLEANS.has(word)) {
+                    result += `<span class="code-bool">${word}</span>`;
+                } else if (isFnCall) {
+                    result += `<span class="code-func">${word}</span>`;
+                } else if (isProp) {
+                    result += `<span class="code-prop">${word}</span>`;
+                } else {
+                    result += `<span class="code-var">${word}</span>`;
+                }
+                continue;
+            }
+
+            // Operadores (=, +, -, *, /, !, ===, =>, &&, ||...)
+            if (/[=+\-*\/%<>!&|^~?:]/.test(str[i])) {
+                let start = i;
+                while (i < len && /[=+\-*\/%<>!&|^~?:]/.test(str[i])) i++;
+                const opVal = str.substring(start, i);
+                result += `<span class="code-operator">${opVal.replace(/</g, "&lt;").replace(/>/g, "&gt;")}</span>`;
+                continue;
+            }
+
+            // Pontuação e caracteres especiais ({}, (), ;, ., virgulas)
+            const ch = str[i];
+            if (/[{}();,.]/.test(ch)) {
+                result += `<span class="code-punct">${ch}</span>`;
+            } else {
+                result += ch.replace(/</g, "&lt;").replace(/>/g, "&gt;");
+            }
+            i++;
+        }
+
+        return result;
+    }
+
+    /* ==========================================================================
        INTERACTIVE NEURAL NETWORK CANVAS (HERO BACKGROUND)
+
        ========================================================================== */
     function initNeuralCanvas() {
         const heroSection = document.querySelector("#home");
@@ -601,15 +717,8 @@
                 let codeHTML = "";
                 for (let b of blocks) {
                     if (!isAnimating) return;
-                    
-                    let highlighted = b
-                        .replace(/</g, "&lt;").replace(/>/g, "&gt;")
-                        .replace(/\b(import|from|export|default|function|return|const|let|async|await)\b/g, '<span class="code-keyword">$1</span>')
-                        .replace(/\b(return)\b/g, '<span class="code-keyword">$1</span>')
-                        .replace(/(['"`].*?['"`])/g, '<span class="code-string">$1</span>')
-                        .replace(/\b([A-Z][a-zA-Z0-9_]*)\b/g, '<span class="code-func">$1</span>')
-                        .replace(/\b(\d+)\b/g, '<span class="code-num">$1</span>');
-                        
+
+                    let highlighted = highlightLine(b);
                     codeHTML += highlighted + "<br>";
                     fastCodeArea.innerHTML = codeHTML;
                     fastCodeArea.scrollTop = fastCodeArea.scrollHeight;
@@ -644,109 +753,231 @@
         const sleep = (ms) => new Promise((res) => setTimeout(res, ms));
 
         const FAKE_60_LINES = [
-            { text: "  // Iniciando processamento do cluster de dados", typo: null },
-            { text: "  function processClusterBatch(batchId, payload) {", typo: { at: 23, wrong: "DataBundle(", back: 11 } },
-            { text: "    console.log(`[CLUSTER] Recebendo batch ${batchId}`);", typo: null },
-            { text: "    let processedRecords = 0;", typo: null },
-            { text: "    let validationErrors = [];", typo: null },
-            { text: "    ", typo: null },
-            { text: "    // Verificando integridade estrutural do batch", typo: null },
-            { text: "    if (!payload || !payload.items || !payload.signature) {", typo: { at: 18, wrong: "data.content", back: 12 } },
-            { text: "      throw new Error('Assinatura do payload inválida');", typo: null },
+            { text: "\"use strict\";", typo: null },
+            { text: "", typo: null },
+            { text: "const ENGINE_VERSION = \"12.94.Ω\";", typo: { at: 22, wrong: "v12-omega", back: 9 } },
+            { text: "const GALAXY_CLUSTER = \"Andromeda-X\";", typo: null },
+            { text: "const QUANTUM_SIGNATURE = \"0xA7F3-OMEGA-9B\";", typo: null },
+            { text: "const MAX_PHOTON_STREAM = 8192;", typo: { at: 26, wrong: "4096", back: 4 } },
+            { text: "const TEMPORAL_OFFSET = 0.00000042;", typo: null },
+            { text: "const DEBUG_MODE = true;", typo: null },
+            { text: "const CORE_STABILITY_LIMIT = 0.985;", typo: null },
+            { text: "", typo: null },
+            { text: "const RuntimeFlags = Object.freeze({", typo: null },
+            { text: "    IDLE: 0,", typo: null },
+            { text: "    BOOTING: 1,", typo: null },
+            { text: "    ACTIVE: 2,", typo: null },
+            { text: "    COLLAPSING: 3,", typo: null },
+            { text: "    RECOVERING: 4", typo: null },
+            { text: "});", typo: null },
+            { text: "", typo: null },
+            { text: "class HyperNode {", typo: { at: 6, wrong: "Hyperlayer", back: 10 } },
+            { text: "    constructor(id) {", typo: null },
+            { text: "        this.id = id;", typo: null },
+            { text: "        this.energy = Math.random() * 5000;", typo: null },
+            { text: "        this.entropy = Math.random();", typo: { at: 20, wrong: "calculateEntropy()", back: 18 } },
+            { text: "        this.vector = {", typo: null },
+            { text: "            x: Math.random(),", typo: null },
+            { text: "            y: Math.random(),", typo: null },
+            { text: "            z: Math.random()", typo: null },
+            { text: "        };", typo: null },
+            { text: "        this.online = true;", typo: null },
+            { text: "        this.timestamp = Date.now();", typo: null },
             { text: "    }", typo: null },
-            { text: "    ", typo: null },
-            { text: "    console.log('[CLUSTER] Decodificando matriz de tensores...');", typo: null },
-            { text: "    const tensorMatrix = TensorUtils.decode(payload.items);", typo: { at: 35, wrong: "parser", back: 6 } },
-            { text: "    ", typo: null },
-            { text: "    // Aplicando algoritmo de redução de dimensionalidade", typo: null },
-            { text: "    for (let i = 0; i < tensorMatrix.length; i++) {", typo: null },
-            { text: "      const vector = tensorMatrix[i];", typo: null },
-            { text: "      try {", typo: null },
-            { text: "        // Normalização L2", typo: null },
-            { text: "        const norm = Math.sqrt(vector.reduce((sum, v) => sum + v * v, 0));", typo: { at: 28, wrong: "calculateLength", back: 15 } },
-            { text: "        if (norm === 0) {", typo: null },
-            { text: "          validationErrors.push({ index: i, reason: 'Zero vector' });", typo: null },
-            { text: "          continue;", typo: null },
+            { text: "", typo: null },
+            { text: "    synchronize() {", typo: null },
+            { text: "        this.energy *= 1.002;", typo: null },
+            { text: "        this.entropy *= 0.995;", typo: null },
+            { text: "    }", typo: null },
+            { text: "", typo: null },
+            { text: "    injectPhoton(value) {", typo: null },
+            { text: "        this.energy += value;", typo: null },
+            { text: "    }", typo: null },
+            { text: "", typo: null },
+            { text: "    collapse() {", typo: null },
+            { text: "        this.online = false;", typo: null },
+            { text: "        this.energy = 0;", typo: null },
+            { text: "    }", typo: null },
+            { text: "", typo: null },
+            { text: "    serialize() {", typo: null },
+            { text: "        return {", typo: null },
+            { text: "            id: this.id,", typo: null },
+            { text: "            energy: this.energy,", typo: null },
+            { text: "            entropy: this.entropy,", typo: null },
+            { text: "            vector: this.vector,", typo: null },
+            { text: "            online: this.online", typo: null },
+            { text: "        };", typo: null },
+            { text: "    }", typo: null },
+            { text: "}", typo: null },
+            { text: "", typo: null },
+            { text: "class QuantumEngine {", typo: null },
+            { text: "    constructor(seed) {", typo: null },
+            { text: "        this.seed = seed;", typo: null },
+            { text: "        this.nodes = [];", typo: null },
+            { text: "        this.state = RuntimeFlags.IDLE;", typo: { at: 20, wrong: "BOOTING", back: 7 } },
+            { text: "        this.cycles = 0;", typo: null },
+            { text: "        this.energy = 100000;", typo: null },
+            { text: "        this.logs = [];", typo: null },
+            { text: "    }", typo: null },
+            { text: "", typo: null },
+            { text: "    boot() {", typo: null },
+            { text: "        this.state = RuntimeFlags.BOOTING;", typo: null },
+            { text: "        this.log(\"Initializing HyperCore...\");", typo: null },
+            { text: "        this.energy += this.seed * 50;", typo: null },
+            { text: "    }", typo: null },
+            { text: "", typo: null },
+            { text: "    createNodes(quantity) {", typo: null },
+            { text: "        for (let i = 0; i < quantity; i++) {", typo: null },
+            { text: "            this.nodes.push(", typo: null },
+            { text: "                new HyperNode(`QNODE-${i.toString(16).padStart(4, \"0\")}`)", typo: { at: 40, wrong: "toHex()", back: 7 } },
+            { text: "            );", typo: null },
             { text: "        }", typo: null },
-            { text: "        ", typo: null },
-            { text: "        // Aplicando pesos de treinamento e viés", typo: null },
-            { text: "        const normalizedVector = vector.map(v => (v / norm) * config.learningRate);", typo: { at: 42, wrong: "val", back: 3 } },
-            { text: "        ", typo: null },
-            { text: "        // Função de ativação ReLU", typo: null },
-            { text: "        const activatedVector = normalizedVector.map(v => Math.max(0, v));", typo: { at: 55, wrong: "min(1, v)", back: 9 } },
-            { text: "        ", typo: null },
-            { text: "        // Inserção no banco de dados vetorial", typo: null },
-            { text: "        VectorDB.upsert(`batch_${batchId}_${i}`, activatedVector);", typo: { at: 15, wrong: "insertData", back: 10 } },
-            { text: "        processedRecords++;", typo: null },
-            { text: "        ", typo: null },
-            { text: "      } catch (err) {", typo: null },
-            { text: "        console.error(`[ERR] Falha ao processar vetor ${i}: ${err.message}`);", typo: { at: 50, wrong: "error.details", back: 13 } },
-            { text: "        validationErrors.push({ index: i, reason: err.message });", typo: null },
-            { text: "      }", typo: null },
+            { text: "        this.log(`${quantity} HyperNodes allocated.`);", typo: null },
             { text: "    }", typo: null },
-            { text: "    ", typo: null },
-            { text: "    // Gerando relatório de telemetria", typo: null },
-            { text: "    const telemetry = {", typo: null },
-            { text: "      batchId,", typo: null },
-            { text: "      processed: processedRecords,", typo: null },
-            { text: "      errors: validationErrors.length,", typo: null },
-            { text: "      timestamp: Date.now()", typo: null },
-            { text: "    };", typo: null },
-            { text: "    ", typo: null },
-            { text: "    if (validationErrors.length > 0) {", typo: null },
-            { text: "      console.warn(`[WARN] Processamento concluído com ${validationErrors.length} anomalias.`);", typo: { at: 57, wrong: "erros", back: 5 } },
-            { text: "      TelemetryService.reportAnomaly(telemetry);", typo: null },
-            { text: "    } else {", typo: null },
-            { text: "      console.log('[SUCCESS] Batch processado sem erros.');", typo: null },
-            { text: "      TelemetryService.reportSuccess(telemetry);", typo: { at: 35, wrong: "Log", back: 3 } },
+            { text: "", typo: null },
+            { text: "    stabilize() {", typo: null },
+            { text: "        this.nodes.forEach(node => {", typo: null },
+            { text: "            node.synchronize();", typo: null },
+            { text: "        });", typo: null },
+            { text: "        this.energy *= CORE_STABILITY_LIMIT;", typo: null },
+            { text: "        this.state = RuntimeFlags.ACTIVE;", typo: null },
+            { text: "        this.log(\"Quantum field stabilized.\");", typo: null },
             { text: "    }", typo: null },
-            { text: "    ", typo: null },
-            { text: "    // Sincronizando estado global", typo: null },
-            { text: "    GlobalState.commit(batchId, { status: 'COMPLETED' });", typo: { at: 23, wrong: "update", back: 6 } },
-            { text: "    return telemetry;", typo: null },
-            { text: "  }", typo: null },
+            { text: "", typo: null },
+            { text: "    executeCycle() {", typo: null },
+            { text: "        this.cycles++;", typo: null },
+            { text: "        for (const node of this.nodes) {", typo: null },
+            { text: "            const photon =", typo: null },
+            { text: "                Math.sin(node.energy / 1000) *", typo: { at: 22, wrong: "cos(", back: 4 } },
+            { text: "                MAX_PHOTON_STREAM;", typo: null },
+            { text: "            node.injectPhoton(photon);", typo: null },
+            { text: "            if (node.entropy > 0.95) {", typo: null },
+            { text: "                node.entropy *= 0.9;", typo: null },
+            { text: "            }", typo: null },
+            { text: "            if (node.energy > 15000) {", typo: null },
+            { text: "                node.energy *= 0.92;", typo: null },
+            { text: "            }", typo: null },
+            { text: "        }", typo: null },
+            { text: "        this.log(`Cycle ${this.cycles} executed.`);", typo: null },
+            { text: "    }", typo: null },
+            { text: "", typo: null },
+            { text: "    calculateEntropy() {", typo: null },
+            { text: "        return this.nodes.reduce((sum, node) => {", typo: null },
+            { text: "            return sum + node.entropy;", typo: null },
+            { text: "        }, 0) / this.nodes.length;", typo: null },
+            { text: "    }", typo: null },
+            { text: "", typo: null },
+            { text: "    buildPhotonMesh() {", typo: null },
+            { text: "        return this.nodes.map(node => ({", typo: null },
+            { text: "            id: node.id,", typo: null },
+            { text: "            photon: node.energy * TEMPORAL_OFFSET,", typo: { at: 30, wrong: "TEMPORAL_SHIFT", back: 14 } },
+            { text: "            entropy: node.entropy,", typo: null },
+            { text: "            checksum:", typo: null },
+            { text: "                Math.floor(node.energy * 17)", typo: null },
+            { text: "                    .toString(16)", typo: null },
+            { text: "                    .toUpperCase()", typo: null },
+            { text: "        }));", typo: null },
+            { text: "    }", typo: null },
+            { text: "", typo: null },
+            { text: "    renderDiagnostics() {", typo: null },
+            { text: "        return {", typo: null },
+            { text: "            version: ENGINE_VERSION,", typo: null },
+            { text: "            cluster: GALAXY_CLUSTER,", typo: null },
+            { text: "            state: this.state,", typo: null },
+            { text: "            cycles: this.cycles,", typo: null },
+            { text: "            entropy: this.calculateEntropy(),", typo: null },
+            { text: "            nodes: this.nodes.length,", typo: null },
+            { text: "            signature: QUANTUM_SIGNATURE", typo: null },
+            { text: "        };", typo: null },
+            { text: "    }", typo: null },
+            { text: "", typo: null },
+            { text: "    log(message) {", typo: null },
+            { text: "        const record = {", typo: null },
+            { text: "            timestamp: new Date().toISOString(),", typo: null },
+            { text: "            message", typo: null },
+            { text: "        };", typo: null },
+            { text: "        this.logs.push(record);", typo: null },
+            { text: "        if (DEBUG_MODE) {", typo: null },
+            { text: "            console.log(", typo: null },
+            { text: "                `[LOG ${record.timestamp}]`,", typo: null },
+            { text: "                message", typo: null },
+            { text: "            );", typo: null },
+            { text: "        }", typo: null },
+            { text: "    }", typo: null },
+            { text: "}", typo: null },
+            { text: "", typo: null },
+            { text: "class SingularityGateway {", typo: null },
+            { text: "    constructor(engine) {", typo: null },
+            { text: "        this.engine = engine;", typo: null },
+            { text: "        this.protocol = \"OMEGA-LINK\";", typo: { at: 24, wrong: "ALPHA-LINK", back: 10 } },
+            { text: "        this.dimension = \"Sector-77\";", typo: null },
+            { text: "    }", typo: null },
+            { text: "", typo: null },
+            { text: "    open() {", typo: null },
+            { text: "        console.log(`Opening ${this.protocol}...`);", typo: null },
+            { text: "        return {", typo: null },
+            { text: "            status: \"CONNECTED\",", typo: null },
+            { text: "            dimension: this.dimension,", typo: null },
+            { text: "            nodes: this.engine.nodes.length", typo: null },
+            { text: "        };", typo: null },
+            { text: "    }", typo: null },
+            { text: "", typo: null },
+            { text: "    transmit(mesh) {", typo: null },
+            { text: "        return mesh.map(packet => ({", typo: null },
+            { text: "            ...packet,", typo: null },
+            { text: "            encrypted: true,", typo: null },
+            { text: "            latency: Math.random() * 2,", typo: null },
+            { text: "            resonance: packet.photon * 400", typo: { at: 32, wrong: "photonFlux", back: 10 } },
+            { text: "        }));", typo: null },
+            { text: "    }", typo: null },
+            { text: "}", typo: null },
+            { text: "", typo: null },
+            { text: "function calculateQuantumNoise(mesh) {", typo: null },
+            { text: "    let noise = 0;", typo: null },
+            { text: "    for (const packet of mesh) {", typo: null },
+            { text: "        noise += Math.cos(packet.photon) * packet.entropy;", typo: null },
+            { text: "    }", typo: null },
+            { text: "    return noise;", typo: null },
+            { text: "}", typo: null },
+            { text: "", typo: null },
+            { text: "function generateTemporalHash(length = 64) {", typo: null },
+            { text: "    const alphabet = \"0123456789ABCDEFΩΣΔXYZ\";", typo: null },
+            { text: "    let hash = \"\";", typo: null },
+            { text: "    for (let i = 0; i < length; i++) {", typo: null },
+            { text: "        hash += alphabet[Math.floor(Math.random() * alphabet.length)];", typo: { at: 20, wrong: "Math.ceil(", back: 10 } },
+            { text: "    }", typo: null },
+            { text: "    return hash;", typo: null },
+            { text: "}", typo: null },
+            { text: "", typo: null },
+            { text: "const engine = new QuantumEngine(4421);", typo: null },
+            { text: "engine.boot();", typo: null },
+            { text: "engine.createNodes(64);", typo: null },
+            { text: "engine.stabilize();", typo: null },
+            { text: "", typo: null },
+            { text: "for (let i = 0; i < 25; i++) {", typo: null },
+            { text: "    engine.executeCycle();", typo: null },
+            { text: "}", typo: null },
+            { text: "", typo: null },
+            { text: "const mesh = engine.buildPhotonMesh();", typo: null },
+            { text: "const gateway = new SingularityGateway(engine);", typo: null },
+            { text: "const channel = gateway.open();", typo: null },
+            { text: "const packets = gateway.transmit(mesh);", typo: null },
+            { text: "const diagnostics = engine.renderDiagnostics();", typo: null },
+            { text: "const noise = calculateQuantumNoise(mesh);", typo: null },
+            { text: "const quantumHash = generateTemporalHash(128);", typo: { at: 24, wrong: "generateHash(256)", back: 17 } },
+            { text: "", typo: null },
+            { text: "console.table(diagnostics);", typo: null },
+            { text: "console.log(\"Photon Packets:\", packets.length);", typo: null },
+            { text: "console.log(\"Quantum Noise:\", noise.toFixed(8));", typo: null },
+            { text: "console.log(\"Temporal Hash:\", quantumHash);", typo: null },
+            { text: "console.log(\"Gateway:\", channel.status);", typo: null },
+            { text: "console.log(\"Cluster:\", GALAXY_CLUSTER);", typo: null },
+            { text: "console.log(\"Runtime:\", ENGINE_VERSION);", typo: null },
+            { text: "console.log(\"Simulation Completed Successfully.\");", typo: null },
+            { text: "console.log(\"Awaiting Neural Synchronization...\");", typo: null },
+            { text: "console.log(\"HyperCore Ready.\");", typo: null },
             { text: "", typo: null }
         ];
-
-        function highlightLine(str) {
-            if (str.trim().startsWith("//")) {
-                return `<span class="code-comment">${str.replace(/</g, "&lt;").replace(/>/g, "&gt;")}</span>`;
-            }
-            
-            let result = "";
-            // Split by whitespace, punctuation, and brackets while keeping them as tokens
-            let tokens = str.split(/([ \t\{\}\(\)\.;:,'"`\=\[\]])/);
-            let inString = false;
-            let stringChar = "";
-            
-            for(let t of tokens) {
-                if (!t) continue;
-                
-                if (inString) {
-                    result += t.replace(/</g, "&lt;").replace(/>/g, "&gt;");
-                    if (t === stringChar) {
-                        inString = false;
-                        result += "</span>";
-                    }
-                } else {
-                    if (t === "'" || t === '"' || t === '`') {
-                        inString = true;
-                        stringChar = t;
-                        result += `<span class="code-string">${t}`;
-                    } else if (['import','from','export','default','function','async','await','const','let','for','of','try','catch','if','throw','new','return'].includes(t)) {
-                        result += `<span class="code-keyword">${t}</span>`;
-                    } else if (['console','log','error','warn','Date','now','loadModule','deploySite','validateSchema','buildApp','Error','useState','useEffect','React','fetchUserData','initializeCache'].includes(t)) {
-                        result += `<span class="code-func">${t}</span>`;
-                    } else if (!isNaN(t) && t.trim() !== "") {
-                        result += `<span class="code-num">${t}</span>`;
-                    } else {
-                        result += t.replace(/</g, "&lt;").replace(/>/g, "&gt;");
-                    }
-                }
-            }
-            if (inString) result += "</span>";
-            return result;
-        }
 
         async function runTypingLoop() {
             while (true) {
@@ -759,17 +990,26 @@
                     bodyEl.appendChild(lineDiv);
 
                     let currentText = "";
-                    const fullText = lineData.text;
+                    let fullText = lineData.text;
 
+                    // Se for linha em branco
+                    if (!fullText) {
+                        lineDiv.innerHTML = '<br>';
+                        await sleep(50);
+                        continue;
+                    }
+
+                    // Simula digitação caractere por caractere
                     for (let i = 0; i < fullText.length; i++) {
+                        // Introduz erro de digitação proposital
                         if (lineData.typo && i === lineData.typo.at) {
-                            for (let ch of lineData.typo.wrong) {
-                                currentText += ch;
+                            let wrongStr = lineData.typo.wrong;
+                            for (let w = 0; w < wrongStr.length; w++) {
+                                currentText += wrongStr[w];
                                 lineDiv.innerHTML = highlightLine(currentText) + '<span class="code-cursor"></span>';
                                 bodyEl.scrollTop = bodyEl.scrollHeight;
-                                await sleep(35 + Math.random() * 25);
+                                await sleep(35 + Math.random() * 40);
                             }
-
                             await sleep(220);
 
                             for (let b = 0; b < lineData.typo.back; b++) {
@@ -785,26 +1025,24 @@
                         currentText += fullText[i];
                         lineDiv.innerHTML = highlightLine(currentText) + '<span class="code-cursor"></span>';
                         bodyEl.scrollTop = bodyEl.scrollHeight;
-                        await sleep(25 + Math.random() * 35);
+                        await sleep(22 + Math.random() * 30);
                     }
 
                     lineDiv.innerHTML = highlightLine(currentText);
-                    await sleep(120 + Math.random() * 150);
+                    await sleep(80 + Math.random() * 100);
                 }
 
-                await sleep(3500);
+                // Pausa no final antes de reiniciar
+                await sleep(2500);
 
-                const startScroll = bodyEl.scrollTop;
-                const startTime = performance.now();
-                while (performance.now() - startTime < 1200) {
-                    const progress = (performance.now() - startTime) / 1200;
-                    // Ease-in-out scroll
-                    const easeProgress = progress < 0.5 ? 2 * progress * progress : -1 + (4 - 2 * progress) * progress;
-                    bodyEl.scrollTop = startScroll * (1 - easeProgress);
-                    await sleep(16);
+                // Fade out suave: apaga linha por linha de trás para frente
+                const allLines = bodyEl.querySelectorAll(".code-line");
+                for (let k = allLines.length - 1; k >= 0; k--) {
+                    allLines[k].style.transition = "opacity 0.08s ease";
+                    allLines[k].style.opacity = "0";
+                    await sleep(18);
                 }
-                bodyEl.scrollTop = 0;
-                await sleep(500);
+                await sleep(300);
             }
         }
 

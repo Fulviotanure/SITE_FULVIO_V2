@@ -275,6 +275,66 @@ header.scrolled .nav-container {
   color: var(--accent);
 }
 
+/* Dropdown Menu */
+.has-dropdown {
+  position: relative;
+}
+
+.dropdown-icon {
+  font-size: 0.6rem;
+  margin-left: 2px;
+  vertical-align: middle;
+}
+
+.dropdown-menu {
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%) translateY(10px);
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  border-radius: 8px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+  padding: 0.5rem 0;
+  min-width: 140px;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  display: flex;
+  flex-direction: column;
+}
+
+.has-dropdown:hover .dropdown-menu {
+  opacity: 1;
+  visibility: visible;
+  transform: translateX(-50%) translateY(0);
+}
+
+.dropdown-link {
+  display: block;
+  padding: 0.6rem 1.5rem;
+  color: var(--text-secondary);
+  text-decoration: none;
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  text-align: center;
+  transition: background-color 0.2s, color 0.2s;
+  background: none;
+  border: none;
+  width: 100%;
+  cursor: pointer;
+}
+
+.dropdown-link:hover,
+.dropdown-link.active {
+  background-color: rgba(0, 0, 0, 0.02);
+  color: var(--accent);
+}
+
 /* Mobile Menu Toggle button */
 .menu-toggle {
   display: none;
@@ -616,7 +676,7 @@ header.scrolled .nav-container {
   flex-direction: row;
   justify-content: center;
   align-items: flex-start;
-  gap: 1.8rem;
+  gap: 4px;
   width: 100%;
 }
 
@@ -624,24 +684,24 @@ header.scrolled .nav-container {
   flex: 1;
   display: flex;
   flex-direction: column;
-  gap: 1.8rem;
+  gap: 4px;
 }
 
 @media (max-width: 1200px) {
   .gallery-grid {
-    gap: 1.5rem;
+    gap: 4px;
   }
   .masonry-col {
-    gap: 1.5rem;
+    gap: 4px;
   }
 }
 
 @media (max-width: 768px) {
   .gallery-grid {
-    gap: 0.5rem;
+    gap: 4px;
   }
   .masonry-col {
-    gap: 0.5rem;
+    gap: 4px;
   }
 }
 

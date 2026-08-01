@@ -240,6 +240,17 @@ img {
     box-shadow: var(--shadow-in);
 }
 
+/* --- Text Effects --- */
+.text-raised {
+    color: #475569; /* Bem mais escuro, estilo grafite, para leitura perfeita */
+    text-shadow: -2px -2px 5px rgba(255, 255, 255, 1), 3px 3px 6px rgba(163, 177, 198, 0.9);
+}
+
+body.dark-theme .text-raised {
+    color: #cbd5e1; /* Cor bem mais clara no modo escuro */
+    text-shadow: -2px -2px 5px rgba(255, 255, 255, 0.15), 3px 3px 6px rgba(0, 0, 0, 0.9);
+}
+
 /* --- Buttons System --- */
 .btn {
     display: inline-flex;
