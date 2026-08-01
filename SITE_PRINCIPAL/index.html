@@ -81,20 +81,20 @@
     </svg>
 
     <header class="header">
+        <!-- High Contrast Toggle (Far Left Corner) -->
+        <label class="toggle toggle-high-contrast" aria-label="Alternar alto contraste">
+            <input type="checkbox" id="contrast-toggle-btn">
+            <span class="button"></span>
+            <span class="label">
+                <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7-10-7-10-7Z" />
+                    <circle cx="12" cy="12" r="4" />
+                    <circle cx="14" cy="10" r="1.5" fill="currentColor" />
+                </svg>
+            </span>
+        </label>
         <div class="header-container">
             <div class="header-brand">
-                <!-- High Contrast Toggle -->
-                <label class="toggle toggle-high-contrast" aria-label="Alternar alto contraste">
-                    <input type="checkbox" id="contrast-toggle-btn">
-                    <span class="button"></span>
-                    <span class="label">
-                        <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7-10-7-10-7Z" />
-                            <circle cx="12" cy="12" r="4" />
-                            <circle cx="14" cy="10" r="1.5" fill="currentColor" />
-                        </svg>
-                    </span>
-                </label>
                 <a href="#home" class="logo" id="logo-nav">
                     <span class="logo-line-1"><span class="logo-dot">.</span>FULVIO</span>
                     <span class="logo-line-2">{TANURE}</span>
@@ -148,8 +148,8 @@
 
                 <!-- HERO FLOATING NEUMORPHIC COMPARISON CARDS -->
                 <div class="hero-floating-cards-wrapper">
-                    <!-- CARD 1: TRADITIONAL DEVELOPMENT -->
-                    <div class="hero-card hero-card-trad btn-neu">
+                    <!-- CARD 1: TRADITIONAL DEVELOPMENT (BLACK THEME WITH REALTIME TYPEWRITER) -->
+                    <div class="hero-card hero-card-trad btn-neu dark-code-card">
                         <div class="hero-card-header">
                             <div class="mac-dots">
                                 <span class="mac-dot red"></span>
@@ -159,12 +159,8 @@
                             <span class="hero-card-title">script.js</span>
                             <span class="hero-card-badge badge-trad">Manual</span>
                         </div>
-                        <div class="hero-card-body">
-                            <div class="code-line"><span class="code-keyword">const</span> build = () => {</div>
-                            <div class="code-line indent"><span class="code-comment">// Código manual demorado</span></div>
-                            <div class="code-line indent">writeCodeManually();</div>
-                            <div class="code-line indent">fixBugsManually();</div>
-                            <div class="code-line"><span class="code-operator">};</span></div>
+                        <div class="hero-card-body dark-code-body" id="trad-code-body">
+                            <!-- Code typed in real-time by JS -->
                         </div>
                     </div>
 
@@ -176,18 +172,22 @@
                                 <span class="mac-dot yellow"></span>
                                 <span class="mac-dot green"></span>
                             </div>
-                            <span class="hero-card-title">ai-assistant.ts</span>
+                            <span class="hero-card-title">antigravity.ai</span>
                             <span class="hero-card-badge badge-ai">
                                 <span class="pulse-dot"></span> IA Ativa
                             </span>
                         </div>
-                        <div class="hero-card-body">
-                            <div class="ai-prompt-bar">
-                                <span class="ai-icon">✨</span>
-                                <span class="ai-prompt-text">Criar site em tempo recorde...</span>
+                        <div class="hero-card-body ai-split-layout">
+                            <div class="ai-split-left">
+                                <div class="ai-fast-code dark-code-body" id="ai-fast-code"></div>
+                                <div class="ai-vibe-preview" id="ai-vibe-preview" style="display: none;"></div>
                             </div>
-                            <div class="code-line"><span class="code-keyword">const</span> app = <span class="code-func">await</span> generateSite();</div>
-                            <div class="code-line"><span class="code-string">"✨ Site pronto & otimizado!"</span></div>
+                            <div class="ai-split-right">
+                                <div class="ai-chat-bubble">
+                                    <span class="ai-icon">✨</span>
+                                    <span class="ai-prompt-text" id="ai-prompt-text"></span>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -326,7 +326,7 @@
  
                             <a href="https://maps.google.com/?q=Vitória+-+ES,+Brasil" target="_blank" rel="noopener noreferrer" class="contact-info-card btn-neu">
                                 <div class="info-card-icon">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="url(#avatar-grad)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#ef4444" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
                                 </div>
                                 <div class="info-card-content">
                                     <span class="info-label" data-i18n="contact.card_location_label">Localização</span>
@@ -355,15 +355,19 @@
                             <div class="form-row">
                                 <div class="form-group">
                                     <label for="form-service" class="input-label" data-i18n="contact.form_service_label">Serviço de Interesse</label>
-                                    <div class="select-wrapper">
-                                        <select id="form-service" class="input select-neu" required>
-                                            <option value="" disabled selected data-i18n="contact.form_service_placeholder">Selecione um serviço</option>
-                                            <option value="images" data-i18n="contact.form_service_images">Criação de Imagens e Arte Digital</option>
-                                            <option value="banners" data-i18n="contact.form_service_banners">Design de Banners & Anúncios</option>
-                                            <option value="editing" data-i18n="contact.form_service_editing">Edição e Tratamento de Imagens</option>
-                                            <option value="sites" data-i18n="contact.form_service_sites">Desenvolvimento de Websites</option>
-                                            <option value="other" data-i18n="contact.form_service_other">Outro Projeto Baseado em IA</option>
-                                        </select>
+                                    <div class="custom-select-wrapper" id="custom-service-select">
+                                        <div class="custom-select-trigger input select-neu">
+                                            <span class="custom-select-text" data-i18n="contact.form_service_placeholder">Selecione um serviço</span>
+                                            <span class="custom-select-arrow">▼</span>
+                                        </div>
+                                        <div class="custom-select-options" style="box-shadow: 0 10px 25px rgba(0,0,0,0.1); border: 1px solid var(--border-color);">
+                                            <div class="custom-option" data-value="images" data-i18n="contact.form_service_images">Criação de Imagens e Arte Digital</div>
+                                            <div class="custom-option" data-value="banners" data-i18n="contact.form_service_banners">Design de Banners & Anúncios</div>
+                                            <div class="custom-option" data-value="editing" data-i18n="contact.form_service_editing">Edição e Tratamento de Imagens</div>
+                                            <div class="custom-option" data-value="sites" data-i18n="contact.form_service_sites">Desenvolvimento de Websites</div>
+                                            <div class="custom-option" data-value="other" data-i18n="contact.form_service_other">Outro Projeto Baseado em IA</div>
+                                        </div>
+                                        <input type="hidden" id="form-service" required>
                                     </div>
                                 </div>
                             </div>
@@ -503,10 +507,74 @@
                 </a>
                 <a href="#contact" id="sites-contact-link" class="gallery-grid-item btn-neu" style="text-decoration: none;">
                     <div class="gallery-item-img-wrap animated-landing-slideshow">
-                        <img src="img/wmacro-dashboard.png" alt="Mini Landing Page 1" class="slide-img slide-1">
-                        <img src="img/foto-portfolio.png" alt="Mini Landing Page 2" class="slide-img slide-2">
-                        <img src="img/marmitas-facebook-banner.jpg" alt="Mini Landing Page 3" class="slide-img slide-3">
-                        <img src="img/creative-concept-packaging.jpg" alt="Mini Landing Page 4" class="slide-img slide-4">
+                        <!-- Slide 1: SaaS Analytics Dark -->
+                        <div class="slide-item slide-1 mini-ui dark" style="gap:4px; padding:8px; border-radius:0;">
+                            <div class="mini-nav" style="background:rgba(6,182,212,0.1); border-radius:4px; height: 20px;">
+                                <div class="mini-title" style="width:35%; background:linear-gradient(90deg,#06b6d4,#3b82f6);"></div>
+                                <div style="width:8px;height:8px;border-radius:50%;background:#22c55e;"></div>
+                            </div>
+                            <div class="mini-grid" style="grid-template-columns:1fr 1fr 1fr 1fr; gap:6px;">
+                                <div class="mini-card" style="background:#0f172a;border:1px solid rgba(6,182,212,0.2);height:30px;"></div>
+                                <div class="mini-card" style="background:#0f172a;border:1px solid rgba(6,182,212,0.2);height:30px;"></div>
+                                <div class="mini-card" style="background:#0f172a;border:1px solid rgba(6,182,212,0.2);height:30px;"></div>
+                                <div class="mini-card" style="background:#0f172a;border:1px solid rgba(6,182,212,0.2);height:30px;"></div>
+                            </div>
+                            <div class="mini-card" style="background:#0f172a; border:1px solid rgba(255,255,255,0.05); flex:1; display:flex; flex-direction:column; gap:6px; justify-content:center;">
+                                <div class="ai-preview-chart" style="width:90%; height:8px; background:linear-gradient(90deg,#06b6d4,#3b82f6);"></div>
+                                <div class="ai-preview-chart" style="width:60%; height:8px; background:linear-gradient(90deg,#8b5cf6,#ec4899);"></div>
+                                <div class="ai-preview-chart" style="width:75%; height:8px; background:linear-gradient(90deg,#10b981,#06b6d4);"></div>
+                            </div>
+                        </div>
+                        
+                        <!-- Slide 2: E-commerce Minimalista -->
+                        <div class="slide-item slide-2 mini-ui" style="background: #fff; padding: 8px; border-radius:0;">
+                            <div class="mini-nav" style="background: transparent; border-bottom: 1px solid #e2e8f0; border-radius: 0; height: 20px;">
+                                <div class="mini-title" style="width:30%; background:#1e293b;"></div>
+                                <div class="mini-nav-dots"><div class="mini-nav-dot" style="background:#1e293b;"></div></div>
+                            </div>
+                            <div class="mini-grid" style="grid-template-columns: 1fr 1fr 1fr; gap: 6px;">
+                                <div class="mini-card" style="height:60px; background:#f1f5f9; border:none;"></div>
+                                <div class="mini-card" style="height:60px; background:#f1f5f9; border:none;"></div>
+                                <div class="mini-card" style="height:60px; background:#f1f5f9; border:none;"></div>
+                            </div>
+                            <div class="mini-sub" style="margin: 8px auto; background:#64748b; width:40%;"></div>
+                        </div>
+
+                        <!-- Slide 3: Neumorphic Portfolio -->
+                        <div class="slide-item slide-3 mini-ui" style="background: #e2e8f0; padding: 8px; gap: 8px; border-radius:0;">
+                            <div class="mini-hero" style="background: transparent; padding: 0;">
+                                <div class="mini-title" style="width: 40%; background: #64748b; height:12px;"></div>
+                            </div>
+                            <div style="display:flex; justify-content:center; gap:12px; margin-top: 10px;">
+                                <div class="mini-btn" style="background:#e2e8f0; box-shadow: 3px 3px 6px #cbd5e1, -3px -3px 6px #f8fafc; border-radius: 20px; width:70px; height: 24px;"></div>
+                                <div class="mini-btn" style="background:#e2e8f0; box-shadow: inset 3px 3px 6px #cbd5e1, inset -3px -3px 6px #f8fafc; border-radius: 20px; width:70px; height: 24px;"></div>
+                            </div>
+                            <div class="mini-card" style="background: #e2e8f0; box-shadow: 4px 4px 8px #cbd5e1, -4px -4px 8px #f8fafc; border:none; height: 40px; margin-top: 10px;"></div>
+                        </div>
+
+                        <!-- Slide 4: Real Estate Glassmorphism -->
+                        <div class="slide-item slide-4 mini-ui" style="background: linear-gradient(135deg, #e0e7ff, #f3e8ff); padding: 8px; border-radius:0;">
+                            <div class="mini-hero" style="background: rgba(255,255,255,0.4); border: 1px solid rgba(255,255,255,0.8); backdrop-filter: blur(8px); height: 60px;">
+                                <div class="mini-title" style="width:50%; background:#475569; height:10px;"></div>
+                                <div class="mini-sub" style="width:70%; background:#64748b; height:6px;"></div>
+                                <div class="mini-btn" style="background:#3b82f6; width:50px; height:16px;"></div>
+                            </div>
+                            <div class="mini-grid" style="grid-template-columns: 1fr 1fr; gap:6px;">
+                                <div class="mini-card" style="height:45px; background:rgba(255,255,255,0.5); backdrop-filter: blur(4px);"><div class="mini-title" style="width:80%"></div></div>
+                                <div class="mini-card" style="height:45px; background:rgba(255,255,255,0.5); backdrop-filter: blur(4px);"><div class="mini-title" style="width:80%"></div></div>
+                            </div>
+                        </div>
+
+                        <!-- Slide 5: Finance Dark Mode -->
+                        <div class="slide-item slide-5 mini-ui dark" style="background: #020617; padding: 8px; gap:6px; border-radius:0;">
+                            <div class="mini-nav" style="border:none; height:16px;"><span class="mini-title" style="width:30%; background:#94a3b8;"></span></div>
+                            <div class="mini-card" style="background: linear-gradient(135deg, #4f46e5, #9333ea); border: none; height: 50px; display:flex; flex-direction:column; justify-content:center; padding: 8px;">
+                                <div class="mini-sub" style="background:rgba(255,255,255,0.7); width: 40%"></div>
+                                <div class="mini-title" style="background:#fff; width: 70%; margin-top:4px; height:8px;"></div>
+                            </div>
+                            <div class="mini-card" style="height: 18px; display:flex; align-items:center; background:#0f172a; border-color:#1e293b;"><div class="mini-sub" style="background:#64748b;"></div></div>
+                            <div class="mini-card" style="height: 18px; display:flex; align-items:center; background:#0f172a; border-color:#1e293b;"><div class="mini-sub" style="background:#64748b;"></div></div>
+                        </div>
                         <div class="slideshow-badge">
                             <span class="pulse-dot"></span> Custom Web
                         </div>

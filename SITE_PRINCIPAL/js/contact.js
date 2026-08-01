@@ -11,7 +11,37 @@ const WEB3FORMS_ACCESS_KEY = "bf2e767b-e809-4b59-968e-9ba6d342f3f2";
 (() => {
     document.addEventListener('DOMContentLoaded', () => {
         initContactFormHandler();
+        initCustomSelect();
     });
+
+    function initCustomSelect() {
+        const wrapper = document.getElementById('custom-service-select');
+        if (!wrapper) return;
+
+        const trigger = wrapper.querySelector('.custom-select-trigger');
+        const options = wrapper.querySelectorAll('.custom-option');
+        const textSpan = wrapper.querySelector('.custom-select-text');
+        const hiddenInput = document.getElementById('form-service');
+
+        trigger.addEventListener('click', (e) => {
+            e.stopPropagation();
+            wrapper.classList.toggle('open');
+        });
+
+        options.forEach(opt => {
+            opt.addEventListener('click', () => {
+                textSpan.textContent = opt.textContent;
+                hiddenInput.value = opt.getAttribute('data-value');
+                wrapper.classList.remove('open');
+            });
+        });
+
+        document.addEventListener('click', (e) => {
+            if (!wrapper.contains(e.target)) {
+                wrapper.classList.remove('open');
+            }
+        });
+    }
 
     /* ==========================================================================
        CONTACT FORM HANDLER WITH NEUMORPHIC ALERT MODAL

@@ -8,6 +8,7 @@
         initNeuralCanvas();
         initTypewriterEffect();
         initCodeCardsAnimation();
+        initRealtimeTypewriter();
     });
 
     /* ==========================================================================
@@ -357,174 +358,20 @@
        HERO CODE CARDS ANIMATION (CONVENTIONAL VS VIBE CODING)
        ========================================================================== */
     function initCodeCardsAnimation() {
-        const conventionalContainer = document.getElementById('conventional-code-container');
-        const vibePrompt = document.getElementById('vibe-coding-prompt');
-        const vibePreview = document.getElementById('vibe-coding-preview');
-        const fastCodeArea = document.getElementById('vibe-coding-fast-code');
+        const vibePrompt = document.getElementById('ai-prompt-text');
+        const vibePreview = document.getElementById('ai-vibe-preview');
+        const fastCodeArea = document.getElementById('ai-fast-code');
 
-        if (!conventionalContainer || !vibePrompt || !vibePreview || !fastCodeArea) return;
+        if (!vibePrompt || !vibePreview || !fastCodeArea) return;
 
         let isAnimating = true;
         async function sleep(ms) { return new Promise(resolve => setTimeout(resolve, ms)); }
 
-        // --- Conventional Code (manual, slow) ---
-        const convLines = [
-            "function initializeWebApp() {",
-            "  console.log(\"Iniciando carregamento manual...\");",
-            "  const appContainer = document.getElementById('app');",
-            "  if (!appContainer) return;",
-            "  ",
-            "  // Carrega configurações de inicialização",
-            "  const config = fetchConfig();",
-            "  applyTheme(config.theme);",
-            "  ",
-            "  // Inicializa componentes da interface",
-            "  const nav = new Navigation();",
-            "  nav.render(appContainer);",
-            "  ",
-            "  const hero = new HeroSection();",
-            "  hero.setTitle('Bem-vindo');",
-            "  hero.render(appContainer);",
-            "  ",
-            "  // Listener de eventos manuais",
-            "  window.addEventListener('scroll', () => {",
-            "    nav.handleScroll(window.scrollY);",
-            "  });",
-            "  ",
-            "  console.log('App montado manualmente!');",
-            "}",
-            "",
-            "function fetchConfig() {",
-            "  return {",
-            "    theme: 'dark',",
-            "    version: '1.0.0',",
-            "    api: 'https://api.example.com'",
-            "  };",
-            "}",
-            "",
-            "class Navigation {",
-            "  constructor() {",
-            "    this.items = ['Home', 'About', 'Contact'];",
-            "  }",
-            "  render(target) {",
-            "    const navEl = document.createElement('nav');",
-            "    this.items.forEach(item => {",
-            "      const link = document.createElement('a');",
-            "      link.href = '#' + item.toLowerCase();",
-            "      link.innerText = item;",
-            "      navEl.appendChild(link);",
-            "    });",
-            "    target.appendChild(navEl);",
-            "  }",
-            "}",
-            "",
-            "class HeroSection {",
-            "  render(target) {",
-            "    const section = document.createElement('section');",
-            "    section.className = 'hero';",
-            "    const h1 = document.createElement('h1');",
-            "    h1.innerText = this.title;",
-            "    section.appendChild(h1);",
-            "    target.appendChild(section);",
-            "  }",
-            "}"
-        ];
-
-        function highlightCode(plainText) {
-            const KEYWORDS = new Set(['function','const','let','var','class','return','if','else','new','constructor']);
-            const FUNCS = new Set(['initializeWebApp','log','fetchConfig','applyTheme','render','handleScroll','setTitle','getElementById','createElement','appendChild','addEventListener']);
-            function esc(s) { return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
-
-            return plainText.split('\n').map(function(line) {
-                // Detect comment start
-                var commentAt = line.indexOf('//');
-                var code = commentAt >= 0 ? line.slice(0, commentAt) : line;
-                var comment = commentAt >= 0 ? line.slice(commentAt) : '';
-                var out = '';
-                var i = 0;
-                while (i < code.length) {
-                    var c = code[i];
-                    // String literal (single or double quote)
-                    if (c === '"' || c === "'") {
-                        var j = i + 1;
-                        while (j < code.length && code[j] !== c) {
-                            if (code[j] === '\\') j++;
-                            j++;
-                        }
-                        var str = code.slice(i, j + 1);
-                        out += '<span class="code-str">' + esc(str) + '</span>';
-                        i = j + 1;
-                        continue;
-                    }
-                    // Word / identifier / keyword
-                    if (/[a-zA-Z_$]/.test(c)) {
-                        var k = i;
-                        while (k < code.length && /[\w$]/.test(code[k])) k++;
-                        var word = code.slice(i, k);
-                        if (KEYWORDS.has(word)) {
-                            out += '<span class="code-keyword">' + esc(word) + '</span>';
-                        } else if (FUNCS.has(word)) {
-                            out += '<span class="code-func">' + esc(word) + '</span>';
-                        } else {
-                            out += esc(word);
-                        }
-                        i = k;
-                        continue;
-                    }
-                    out += esc(c);
-                    i++;
-                }
-                if (comment) out += '<span class="code-comment">' + esc(comment) + '</span>';
-                return out;
-            }).join('\n');
-        }
-
-        async function typeConventionalCode() {
-            let currentPlainText = "";
-            for (let lineIdx = 0; lineIdx < convLines.length; lineIdx++) {
-                if (!isAnimating) break;
-                if (window.accessibilitySettings && window.accessibilitySettings.pauseAnimations) {
-                    await sleep(1000); lineIdx--; continue;
-                }
-                let rawLine = convLines[lineIdx];
-                let typedLine = "";
-                let isMistakeLine = Math.random() < 0.25 && rawLine.length > 15;
-                let charsToType = isMistakeLine ? rawLine.substring(0, rawLine.length - 5) + "err" : rawLine;
-                for (let i = 0; i < charsToType.length; i++) {
-                    if (!isAnimating) break;
-                    typedLine += charsToType[i];
-                    conventionalContainer.innerHTML = highlightCode(currentPlainText + typedLine) + '<span class="code-cursor"></span>';
-                    conventionalContainer.scrollTop = conventionalContainer.scrollHeight;
-                    await sleep(35 + Math.random() * 35);
-                }
-                if (isMistakeLine) {
-                    await sleep(300);
-                    for (let k = 0; k < 3; k++) {
-                        typedLine = typedLine.slice(0, -1);
-                        conventionalContainer.innerHTML = highlightCode(currentPlainText + typedLine) + '<span class="code-cursor"></span>';
-                        await sleep(40);
-                    }
-                    await sleep(200);
-                    let remaining = rawLine.substring(rawLine.length - 5);
-                    for (let i = 0; i < remaining.length; i++) {
-                        typedLine += remaining[i];
-                        conventionalContainer.innerHTML = highlightCode(currentPlainText + typedLine) + '<span class="code-cursor"></span>';
-                        await sleep(35 + Math.random() * 35);
-                    }
-                }
-                currentPlainText += typedLine + "\n";
-                conventionalContainer.innerHTML = highlightCode(currentPlainText) + '<span class="code-cursor"></span>';
-                conventionalContainer.scrollTop = conventionalContainer.scrollHeight;
-                await sleep(100);
-            }
-            conventionalContainer.innerHTML = highlightCode(currentPlainText) + '<span class="code-cursor"></span>';
-        }
-
-        // --- Vibe Coding Stages (9 Prompts — 5 originais + 4 novos) ---
+        // --- Vibe Coding Stages (5 Prompts) ---
         const vibeStages = [
             // ── STAGE 1: Dashboard Admin ─────────────────────────────────────
             {
-                prompt: "Gere dashboard admin com gráficos dinâmicos",
+                prompt: "Generate admin dashboard with dynamic charts",
                 fastCode: "import Dashboard from '@/components/Dashboard';\nimport { LineChart, BarChart } from 'recharts';\nimport { useAdminData } from '@/hooks/useData';\nimport React, { useState, useEffect } from 'react';\n\nexport default function Admin() {\n  const { stats, revenue, isLoading } = useAdminData();\n  const [timeRange, setTimeRange] = useState('7d');\n\n  if (isLoading) return <LoadingSpinner />;\n\n  return (\n    <div className='p-4 min-h-screen bg-gray-50'>\n      <header className='flex justify-between items-center'>\n         <h1 className='text-2xl font-bold'>Admin Dashboard</h1>\n         <DateSelector value={timeRange} onChange={setTimeRange} />\n      </header>\n      \n      <main className='mt-6 grid grid-cols-1 lg:grid-cols-3 gap-6'>\n        <div className='col-span-2 bg-white rounded shadow p-4'>\n          <h2>Revenue Overview</h2>\n          <LineChart data={stats} width={800} height={300} />\n        </div>\n        <div className='bg-white rounded shadow p-4'>\n          <h2>User Growth</h2>\n          <BarChart data={revenue} width={300} height={300} />\n        </div>\n      </main>\n    </div>\n  );\n}",
                 previewHTML: `
                     <div class="mini-ui">
@@ -536,7 +383,7 @@
             },
             // ── STAGE 2: Landing Imobiliária ─────────────────────────────────
             {
-                prompt: "Crie landing page imobiliária glassmorphism",
+                prompt: "Create real estate landing page with glassmorphism",
                 fastCode: "import Hero from '@/components/Hero';\nimport PropertyGrid from '@/components/Grid';\nimport ContactForm from '@/components/Contact';\nimport { motion } from 'framer-motion';\n\nexport default function RealEstate() {\n  return (\n    <main className='bg-slate-50 overflow-hidden relative'>\n      <div className='absolute top-[-10%] left-[-10%] w-[50%] h-[50%] bg-blue-300 rounded-full blur-[120px] opacity-50 z-0' />\n      \n      <nav className='relative z-10 glass-nav'>\n        <Logo /> <Menu />\n      </nav>\n\n      <Hero title='Encontre seu lar perfeito' subtitle='Mais de 10.000 propriedades esperando por você.' />\n      \n      <section className='py-20 relative z-10'>\n         <PropertyGrid filters={['Casa', 'Apartamento', 'Luxo']} />\n      </section>\n\n      <ContactForm />\n    </main>\n  );\n}\n\nconst glass = 'bg-white bg-opacity-20 backdrop-blur-lg border border-white/30 shadow-xl';\n",
                 previewHTML: `
                     <div class="mini-ui">
@@ -553,7 +400,7 @@
             },
             // ── STAGE 3: App Financeiro ──────────────────────────────────────
             {
-                prompt: "App financeiro com cartões dark mode",
+                prompt: "Finance app with dark mode cards",
                 fastCode: "import BalanceCard from '@/components/Balance';\nimport Transactions from '@/components/List';\n\nexport default function FintechApp() {\n  return (\n    <div className='bg-slate-950 text-white min-h-screen flex flex-col p-6'>\n      <header className='flex justify-between'>\n        <UserAvatar />\n        <SettingsIcon />\n      </header>\n\n      <div className='mt-8 relative'>\n        <h2 className='text-slate-400 text-sm'>Total Balance</h2>\n        <h1 className='text-4xl font-bold'>$ 14,500.00</h1>\n      </div>\n\n      <BalanceCard \n         cardNumber='**** **** **** 4021'\n         validThru='12/28'\n         cardHolder='John Doe'\n         theme='neon-purple'\n      />\n\n      <section className='mt-8 flex-1 bg-slate-900 rounded-t-3xl p-6'>\n        <h3 className='text-lg mb-4'>Recent Transactions</h3>\n        <Transactions limit={5} />\n      </section>\n    </div>\n  );\n}",
                 previewHTML: `
                     <div class="mini-ui dark">
@@ -568,7 +415,7 @@
             },
             // ── STAGE 4: E-commerce minimalista ──────────────────────────────
             {
-                prompt: "E-commerce de moda layout minimalista",
+                prompt: "Fashion e-commerce with minimalist layout",
                 fastCode: "import ProductGallery from './Gallery';\nimport CartBtn from './Cart';\nimport { AnimatePresence } from 'framer-motion';\n\nexport default function Store() {\n  return (\n    <div className='font-sans text-slate-900 bg-white'>\n      <nav className='flex justify-between items-center py-6 px-12 border-b border-gray-100'>\n        <span className='font-bold text-xl tracking-widest uppercase'>Minimalist</span>\n        <div className='flex gap-8 text-sm'>\n          <a href='/new'>New Arrivals</a>\n          <a href='/collection'>Collection</a>\n          <a href='/about'>About</a>\n        </div>\n        <CartBtn />\n      </nav>\n\n      <main className='max-w-7xl mx-auto py-16'>\n        <header className='text-center mb-16'>\n          <h1 className='text-5xl font-light mb-4'>Fall 2026</h1>\n          <p className='text-gray-400 max-w-md mx-auto'>Discover the essence of pure design.</p>\n        </header>\n        <ProductGallery layout='masonry' />\n      </main>\n    </div>\n  );\n}",
                 previewHTML: `
                     <div class="mini-ui" style="background: #fff; padding: 4px;">
@@ -586,7 +433,7 @@
             },
             // ── STAGE 5: Portfólio Neumórfico ────────────────────────────────
             {
-                prompt: "Portfólio criativo com botões neumórficos",
+                prompt: "Creative portfolio with neumorphic buttons",
                 fastCode: "import Projects from './Projects';\nimport NeumorphicBtn from './Button';\nimport { NeumorphicCard } from './UI';\n\nexport default function Portfolio() {\n  return (\n    <main className='bg-gray-200 min-h-screen p-10 flex flex-col items-center justify-center font-sans'>\n      <NeumorphicCard className='w-full max-w-4xl p-12 text-center rounded-3xl'>\n        <h1 className='text-6xl font-extrabold text-gray-700 tracking-tight mb-6'>\n          Creative Developer\n        </h1>\n        <p className='text-gray-500 mb-12 max-w-2xl mx-auto'>\n          Crafting tactile digital experiences using light, shadow, and code.\n        </p>\n        \n        <div className='flex justify-center gap-6'>\n          <NeumorphicBtn variant='outset'>View Work</NeumorphicBtn>\n          <NeumorphicBtn variant='inset'>Contact Me</NeumorphicBtn>\n        </div>\n\n        <section className='mt-20 text-left'>\n          <h2 className='text-2xl text-gray-600 mb-8'>Selected Projects</h2>\n          <Projects />\n        </section>\n      </NeumorphicCard>\n    </main>\n  );\n}",
                 previewHTML: `
                     <div class="mini-ui" style="background: #e2e8f0; padding: 6px; gap: 8px;">
@@ -602,7 +449,7 @@
             },
             // ── STAGE 6 (NOVO): SaaS Analytics ─────────────────────────────
             {
-                prompt: "Plataforma SaaS analytics com KPIs em tempo real",
+                prompt: "SaaS analytics platform with real-time KPIs",
                 fastCode: "import { useRealtime } from '@/hooks/useRealtime';\nimport KPICard from '@/components/KPICard';\nimport PieChart from '@/components/PieChart';\nimport LiveFeed from '@/components/LiveFeed';\n\nexport default function Analytics() {\n  const { kpis, events } = useRealtime('/api/metrics');\n\n  return (\n    <div className='min-h-screen bg-[#0a0f1e] text-white p-8'>\n      <header className='mb-10 flex items-center justify-between'>\n        <h1 className='text-3xl font-bold bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent'>\n          Analytics Pro\n        </h1>\n        <span className='flex items-center gap-2 text-green-400 text-sm'>\n          <span className='w-2 h-2 rounded-full bg-green-400 animate-pulse'></span>\n          Live\n        </span>\n      </header>\n\n      <div className='grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8'>\n        {kpis.map(kpi => (\n          <KPICard key={kpi.id} title={kpi.name} value={kpi.value} trend={kpi.trend} />\n        ))}\n      </div>\n\n      <div className='grid grid-cols-3 gap-6'>\n        <div className='col-span-2 bg-slate-900 rounded-2xl p-6'>\n          <LiveFeed events={events} maxItems={20} />\n        </div>\n        <PieChart data={kpis} />\n      </div>\n    </div>\n  );\n}",
                 previewHTML: `
                     <div class="mini-ui dark" style="gap:4px;">
@@ -630,7 +477,7 @@
             },
             // ── STAGE 7 (NOVO): App de Chat / Mensagens ──────────────────────
             {
-                prompt: "App de chat com IA integrada e histórico",
+                prompt: "Chat app with integrated AI and history",
                 fastCode: "import { useState, useRef, useEffect } from 'react';\nimport { sendMessage } from '@/lib/ai';\nimport MessageBubble from '@/components/Bubble';\nimport TypingIndicator from '@/components/Typing';\n\nexport default function ChatApp() {\n  const [messages, setMessages] = useState([\n    { role: 'assistant', content: 'Olá! Como posso ajudar?' }\n  ]);\n  const [input, setInput] = useState('');\n  const [isTyping, setIsTyping] = useState(false);\n  const bottomRef = useRef(null);\n\n  const handleSend = async () => {\n    if (!input.trim()) return;\n    const userMsg = { role: 'user', content: input };\n    setMessages(prev => [...prev, userMsg]);\n    setInput('');\n    setIsTyping(true);\n\n    const reply = await sendMessage([...messages, userMsg]);\n    setIsTyping(false);\n    setMessages(prev => [...prev, { role: 'assistant', content: reply }]);\n    bottomRef.current?.scrollIntoView({ behavior: 'smooth' });\n  };\n\n  return (\n    <div className='flex flex-col h-screen bg-white'>\n      <nav className='p-4 border-b flex items-center gap-3'>\n        <div className='w-9 h-9 rounded-full bg-gradient-to-br from-violet-500 to-pink-500' />\n        <div><p className='font-semibold'>AI Assistant</p><p className='text-xs text-green-500'>Online</p></div>\n      </nav>\n      <main className='flex-1 overflow-y-auto p-4 space-y-3'>\n        {messages.map((m, i) => <MessageBubble key={i} {...m} />)}\n        {isTyping && <TypingIndicator />}\n        <div ref={bottomRef} />\n      </main>\n      <footer className='p-4 border-t flex gap-2'>\n        <input className='flex-1 rounded-full border px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-violet-400'\n          value={input} onChange={e => setInput(e.target.value)}\n          onKeyDown={e => e.key === 'Enter' && handleSend()}\n          placeholder='Digite sua mensagem...'\n        />\n        <button onClick={handleSend} className='w-10 h-10 rounded-full bg-violet-600 flex items-center justify-center text-white'>\n          ➤\n        </button>\n      </footer>\n    </div>\n  );\n}",
                 previewHTML: `
                     <div class="mini-ui" style="background:#fff; gap:3px;">
@@ -666,7 +513,7 @@
             },
             // ── STAGE 8 (NOVO): Portfólio 3D Parallax ──────────────────────
             {
-                prompt: "Portfólio 3D com parallax e cursor magnético",
+                prompt: "3D portfolio with parallax and magnetic cursor",
                 fastCode: "import { useRef, useEffect } from 'react';\nimport { Canvas } from '@react-three/fiber';\nimport { OrbitControls, Float, Text3D } from '@react-three/drei';\nimport { gsap } from 'gsap';\nimport { ScrollTrigger } from 'gsap/ScrollTrigger';\n\ngsap.registerPlugin(ScrollTrigger);\n\nexport default function Portfolio3D() {\n  const heroRef = useRef(null);\n\n  useEffect(() => {\n    const el = heroRef.current;\n    const onMove = (e) => {\n      const { clientX: x, clientY: y } = e;\n      const cx = window.innerWidth / 2, cy = window.innerHeight / 2;\n      gsap.to(el, {\n        rotateX: (y - cy) / 40,\n        rotateY: (cx - x) / 40,\n        duration: 0.8, ease: 'power2.out'\n      });\n    };\n    window.addEventListener('mousemove', onMove);\n    return () => window.removeEventListener('mousemove', onMove);\n  }, []);\n\n  return (\n    <main className='min-h-screen bg-[#050510] overflow-hidden'>\n      <Canvas className='absolute inset-0'>\n        <ambientLight intensity={0.3} />\n        <pointLight position={[10, 10, 10]} color='#7c3aed' />\n        <Float speed={2} rotationIntensity={0.5}>\n          <Text3D font='/fonts/outfit.json'>\n            FULVIO\n            <meshStandardMaterial color='#a78bfa' />\n          </Text3D>\n        </Float>\n        <OrbitControls enableZoom={false} enablePan={false} />\n      </Canvas>\n      <div ref={heroRef} className='relative z-10 p-16'>\n        <h1 className='text-8xl font-black text-transparent bg-clip-text bg-gradient-to-r from-violet-400 to-pink-400'>\n          Creative Dev\n        </h1>\n        <p className='text-slate-400 mt-4 text-xl'>Building the future, one pixel at a time.</p>\n      </div>\n    </main>\n  );\n}",
                 previewHTML: `
                     <div class="mini-ui dark" style="background:linear-gradient(135deg,#050510,#0d0d2b);gap:3px;">
@@ -687,7 +534,7 @@
             },
             // ── STAGE 9 (NOVO): App Mobile Todo / Produtividade ───────────────
             {
-                prompt: "App mobile de tarefas com drag-and-drop e IA",
+                prompt: "Mobile task app with drag-and-drop and AI",
                 fastCode: "import { useState } from 'react';\nimport { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';\nimport { suggestTask } from '@/lib/ai';\n\nconst COLUMNS = [\n  { id: 'todo', title: 'A Fazer', color: '#3b82f6' },\n  { id: 'doing', title: 'Em Progresso', color: '#f59e0b' },\n  { id: 'done', title: 'Concluído', color: '#10b981' }\n];\n\nexport default function TaskBoard() {\n  const [tasks, setTasks] = useState({\n    todo: [\n      { id: '1', text: 'Criar wireframes' },\n      { id: '2', text: 'Revisar design system' }\n    ],\n    doing: [{ id: '3', text: 'Implementar auth' }],\n    done: [{ id: '4', text: 'Setup do projeto' }]\n  });\n\n  const onDragEnd = ({ source: s, destination: d }) => {\n    if (!d) return;\n    const src = [...tasks[s.droppableId]];\n    const dst = [...tasks[d.droppableId]];\n    const [moved] = src.splice(s.index, 1);\n    dst.splice(d.index, 0, moved);\n    setTasks({ ...tasks, [s.droppableId]: src, [d.droppableId]: dst });\n  };\n\n  return (\n    <div className='min-h-screen bg-gray-50 p-6'>\n      <header className='mb-6 flex justify-between items-center'>\n        <h1 className='text-2xl font-bold'>My Board</h1>\n        <button onClick={() => suggestTask(tasks)} className='btn-gradient text-sm'>\n          ✨ Sugerir com IA\n        </button>\n      </header>\n      <DragDropContext onDragEnd={onDragEnd}>\n        <div className='grid grid-cols-3 gap-4'>\n          {COLUMNS.map(col => (\n            <Droppable key={col.id} droppableId={col.id}>\n              {(prov) => (\n                <div ref={prov.innerRef} {...prov.droppableProps}\n                  className='bg-white rounded-2xl p-4 shadow-sm min-h-[300px]'\n                >\n                  <h2 style={{ color: col.color }} className='font-semibold mb-3'>{col.title}</h2>\n                  {tasks[col.id].map((task, i) => (\n                    <Draggable key={task.id} draggableId={task.id} index={i}>\n                      {(p) => (\n                        <div ref={p.innerRef} {...p.draggableProps} {...p.dragHandleProps}\n                          className='bg-gray-50 border rounded-lg p-3 mb-2 text-sm cursor-grab'\n                        >\n                          {task.text}\n                        </div>\n                      )}\n                    </Draggable>\n                  ))}\n                  {prov.placeholder}\n                </div>\n              )}\n            </Droppable>\n          ))}\n        </div>\n      </DragDropContext>\n    </div>\n  );\n}",
                 previewHTML: `
                     <div class="mini-ui" style="background:#f8fafc;gap:4px;">
@@ -754,10 +601,19 @@
                 let codeHTML = "";
                 for (let b of blocks) {
                     if (!isAnimating) return;
-                    let highlighted = b.replace(/import|export|default|function|return|const|let|async|await/g, '<span style="color:#f43f5e">$&</span>');
+                    
+                    let highlighted = b
+                        .replace(/</g, "&lt;").replace(/>/g, "&gt;")
+                        .replace(/\b(import|from|export|default|function|return|const|let|async|await)\b/g, '<span class="code-keyword">$1</span>')
+                        .replace(/\b(return)\b/g, '<span class="code-keyword">$1</span>')
+                        .replace(/(['"`].*?['"`])/g, '<span class="code-string">$1</span>')
+                        .replace(/\b([A-Z][a-zA-Z0-9_]*)\b/g, '<span class="code-func">$1</span>')
+                        .replace(/\b(\d+)\b/g, '<span class="code-num">$1</span>');
+                        
                     codeHTML += highlighted + "<br>";
                     fastCodeArea.innerHTML = codeHTML;
-                    await sleep(55);
+                    fastCodeArea.scrollTop = fastCodeArea.scrollHeight;
+                    await sleep(35);
                 }
 
                 await sleep(500);
@@ -768,16 +624,191 @@
                 vibePreview.innerHTML = stage.previewHTML;
                 vibePreview.style.display = 'flex';
 
-                // 5. Espera pra ler
                 await sleep(4000);
 
                 stageIdx = (stageIdx + 1) % vibeStages.length;
             }
         }
 
-        // Inicia as duas rotinas paralelamente
-        typeConventionalCode();
+        // Inicia a rotina
         cycleVibeStages();
+    }
+
+    /* ==========================================================================
+       REAL-TIME CONTINUOUS TYPEWRITER WITH TYPOS FOR LEFT CODE CARD (60 LINES)
+       ========================================================================== */
+    function initRealtimeTypewriter() {
+        const bodyEl = document.getElementById("trad-code-body");
+        if (!bodyEl) return;
+
+        const sleep = (ms) => new Promise((res) => setTimeout(res, ms));
+
+        const FAKE_60_LINES = [
+            { text: "  // Iniciando processamento do cluster de dados", typo: null },
+            { text: "  function processClusterBatch(batchId, payload) {", typo: { at: 23, wrong: "DataBundle(", back: 11 } },
+            { text: "    console.log(`[CLUSTER] Recebendo batch ${batchId}`);", typo: null },
+            { text: "    let processedRecords = 0;", typo: null },
+            { text: "    let validationErrors = [];", typo: null },
+            { text: "    ", typo: null },
+            { text: "    // Verificando integridade estrutural do batch", typo: null },
+            { text: "    if (!payload || !payload.items || !payload.signature) {", typo: { at: 18, wrong: "data.content", back: 12 } },
+            { text: "      throw new Error('Assinatura do payload inválida');", typo: null },
+            { text: "    }", typo: null },
+            { text: "    ", typo: null },
+            { text: "    console.log('[CLUSTER] Decodificando matriz de tensores...');", typo: null },
+            { text: "    const tensorMatrix = TensorUtils.decode(payload.items);", typo: { at: 35, wrong: "parser", back: 6 } },
+            { text: "    ", typo: null },
+            { text: "    // Aplicando algoritmo de redução de dimensionalidade", typo: null },
+            { text: "    for (let i = 0; i < tensorMatrix.length; i++) {", typo: null },
+            { text: "      const vector = tensorMatrix[i];", typo: null },
+            { text: "      try {", typo: null },
+            { text: "        // Normalização L2", typo: null },
+            { text: "        const norm = Math.sqrt(vector.reduce((sum, v) => sum + v * v, 0));", typo: { at: 28, wrong: "calculateLength", back: 15 } },
+            { text: "        if (norm === 0) {", typo: null },
+            { text: "          validationErrors.push({ index: i, reason: 'Zero vector' });", typo: null },
+            { text: "          continue;", typo: null },
+            { text: "        }", typo: null },
+            { text: "        ", typo: null },
+            { text: "        // Aplicando pesos de treinamento e viés", typo: null },
+            { text: "        const normalizedVector = vector.map(v => (v / norm) * config.learningRate);", typo: { at: 42, wrong: "val", back: 3 } },
+            { text: "        ", typo: null },
+            { text: "        // Função de ativação ReLU", typo: null },
+            { text: "        const activatedVector = normalizedVector.map(v => Math.max(0, v));", typo: { at: 55, wrong: "min(1, v)", back: 9 } },
+            { text: "        ", typo: null },
+            { text: "        // Inserção no banco de dados vetorial", typo: null },
+            { text: "        VectorDB.upsert(`batch_${batchId}_${i}`, activatedVector);", typo: { at: 15, wrong: "insertData", back: 10 } },
+            { text: "        processedRecords++;", typo: null },
+            { text: "        ", typo: null },
+            { text: "      } catch (err) {", typo: null },
+            { text: "        console.error(`[ERR] Falha ao processar vetor ${i}: ${err.message}`);", typo: { at: 50, wrong: "error.details", back: 13 } },
+            { text: "        validationErrors.push({ index: i, reason: err.message });", typo: null },
+            { text: "      }", typo: null },
+            { text: "    }", typo: null },
+            { text: "    ", typo: null },
+            { text: "    // Gerando relatório de telemetria", typo: null },
+            { text: "    const telemetry = {", typo: null },
+            { text: "      batchId,", typo: null },
+            { text: "      processed: processedRecords,", typo: null },
+            { text: "      errors: validationErrors.length,", typo: null },
+            { text: "      timestamp: Date.now()", typo: null },
+            { text: "    };", typo: null },
+            { text: "    ", typo: null },
+            { text: "    if (validationErrors.length > 0) {", typo: null },
+            { text: "      console.warn(`[WARN] Processamento concluído com ${validationErrors.length} anomalias.`);", typo: { at: 57, wrong: "erros", back: 5 } },
+            { text: "      TelemetryService.reportAnomaly(telemetry);", typo: null },
+            { text: "    } else {", typo: null },
+            { text: "      console.log('[SUCCESS] Batch processado sem erros.');", typo: null },
+            { text: "      TelemetryService.reportSuccess(telemetry);", typo: { at: 35, wrong: "Log", back: 3 } },
+            { text: "    }", typo: null },
+            { text: "    ", typo: null },
+            { text: "    // Sincronizando estado global", typo: null },
+            { text: "    GlobalState.commit(batchId, { status: 'COMPLETED' });", typo: { at: 23, wrong: "update", back: 6 } },
+            { text: "    return telemetry;", typo: null },
+            { text: "  }", typo: null },
+            { text: "", typo: null }
+        ];
+
+        function highlightLine(str) {
+            if (str.trim().startsWith("//")) {
+                return `<span class="code-comment">${str.replace(/</g, "&lt;").replace(/>/g, "&gt;")}</span>`;
+            }
+            
+            let result = "";
+            // Split by whitespace, punctuation, and brackets while keeping them as tokens
+            let tokens = str.split(/([ \t\{\}\(\)\.;:,'"`\=\[\]])/);
+            let inString = false;
+            let stringChar = "";
+            
+            for(let t of tokens) {
+                if (!t) continue;
+                
+                if (inString) {
+                    result += t.replace(/</g, "&lt;").replace(/>/g, "&gt;");
+                    if (t === stringChar) {
+                        inString = false;
+                        result += "</span>";
+                    }
+                } else {
+                    if (t === "'" || t === '"' || t === '`') {
+                        inString = true;
+                        stringChar = t;
+                        result += `<span class="code-string">${t}`;
+                    } else if (['import','from','export','default','function','async','await','const','let','for','of','try','catch','if','throw','new','return'].includes(t)) {
+                        result += `<span class="code-keyword">${t}</span>`;
+                    } else if (['console','log','error','warn','Date','now','loadModule','deploySite','validateSchema','buildApp','Error','useState','useEffect','React','fetchUserData','initializeCache'].includes(t)) {
+                        result += `<span class="code-func">${t}</span>`;
+                    } else if (!isNaN(t) && t.trim() !== "") {
+                        result += `<span class="code-num">${t}</span>`;
+                    } else {
+                        result += t.replace(/</g, "&lt;").replace(/>/g, "&gt;");
+                    }
+                }
+            }
+            if (inString) result += "</span>";
+            return result;
+        }
+
+        async function runTypingLoop() {
+            while (true) {
+                bodyEl.innerHTML = "";
+
+                for (let lineIndex = 0; lineIndex < FAKE_60_LINES.length; lineIndex++) {
+                    const lineData = FAKE_60_LINES[lineIndex];
+                    const lineDiv = document.createElement("div");
+                    lineDiv.className = "code-line";
+                    bodyEl.appendChild(lineDiv);
+
+                    let currentText = "";
+                    const fullText = lineData.text;
+
+                    for (let i = 0; i < fullText.length; i++) {
+                        if (lineData.typo && i === lineData.typo.at) {
+                            for (let ch of lineData.typo.wrong) {
+                                currentText += ch;
+                                lineDiv.innerHTML = highlightLine(currentText) + '<span class="code-cursor"></span>';
+                                bodyEl.scrollTop = bodyEl.scrollHeight;
+                                await sleep(35 + Math.random() * 25);
+                            }
+
+                            await sleep(220);
+
+                            for (let b = 0; b < lineData.typo.back; b++) {
+                                currentText = currentText.slice(0, -1);
+                                lineDiv.innerHTML = highlightLine(currentText) + '<span class="code-cursor"></span>';
+                                bodyEl.scrollTop = bodyEl.scrollHeight;
+                                await sleep(50);
+                            }
+
+                            await sleep(150);
+                        }
+
+                        currentText += fullText[i];
+                        lineDiv.innerHTML = highlightLine(currentText) + '<span class="code-cursor"></span>';
+                        bodyEl.scrollTop = bodyEl.scrollHeight;
+                        await sleep(25 + Math.random() * 35);
+                    }
+
+                    lineDiv.innerHTML = highlightLine(currentText);
+                    await sleep(120 + Math.random() * 150);
+                }
+
+                await sleep(3500);
+
+                const startScroll = bodyEl.scrollTop;
+                const startTime = performance.now();
+                while (performance.now() - startTime < 1200) {
+                    const progress = (performance.now() - startTime) / 1200;
+                    // Ease-in-out scroll
+                    const easeProgress = progress < 0.5 ? 2 * progress * progress : -1 + (4 - 2 * progress) * progress;
+                    bodyEl.scrollTop = startScroll * (1 - easeProgress);
+                    await sleep(16);
+                }
+                bodyEl.scrollTop = 0;
+                await sleep(500);
+            }
+        }
+
+        runTypingLoop();
     }
 
 })();
